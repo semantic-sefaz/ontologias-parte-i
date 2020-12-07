@@ -1,0 +1,28 @@
+Estado;Sigla;dbpedia;codigo_ibge
+Acre;AC;http://dbpedia.org/resource/Acre_(state);12
+Alagoas;AL;http://dbpedia.org/resource/Alagoas;27
+Amapá;AP;http://dbpedia.org/resource/Amapá;16
+Amazonas;AM;http://dbpedia.org/resource/Amazonas_(Brazilian_state);13
+Bahia;BA;http://dbpedia.org/resource/Bahia;29
+Ceará;CE;http://dbpedia.org/resource/Ceará;23
+Espírito Santo;ES;http://dbpedia.org/resource/Espírito_Santo;32
+Goiás;GO;http://dbpedia.org/resource/Goiás;52
+Maranhão;MA;http://dbpedia.org/resource/Maranhão;21
+Mato Grosso;MT;http://dbpedia.org/resource/Mato_Grosso;51
+Mato Grosso do Sul;MS;http://dbpedia.org/resource/Mato_Grosso_do_Sul;50
+Minas Gerais;MG;http://dbpedia.org/resource/Minas_Gerais;31
+Pará;PA;http://dbpedia.org/resource/Pará;15
+Paraíba;PB;http://dbpedia.org/resource/Paraíba;25
+Paraná;PR;http://dbpedia.org/resource/Paraná_(state);41
+Pernambuco;PE;http://dbpedia.org/resource/Pernambuco;26
+Piauí;PI;http://dbpedia.org/resource/Piauí;22
+Rio de Janeiro;RJ;http://dbpedia.org/resource/Rio_de_Janeiro_(state);33
+Rio Grande do Norte;RN;http://dbpedia.org/resource/Rio_Grande_do_Norte;24
+Rio Grande do Sul;RS;http://dbpedia.org/resource/Rio_Grande_do_Sul;43
+Rondônia;RO;http://dbpedia.org/resource/Rondônia;11
+Roraima;RR;http://dbpedia.org/resource/Roraima;14
+Santa Catarina;SC;http://dbpedia.org/resource/Santa_Catarina_(state);42
+São Paulo;SP;http://dbpedia.org/resource/São_Paulo_(state);35
+Sergipe;SE;http://dbpedia.org/resource/Sergipe;28
+Tocantins;TO;http://dbpedia.org/resource/Tocantins;17
+Distrito Federal;DF;http://dbpedia.org/resource/Federal_District_(Brazil);53

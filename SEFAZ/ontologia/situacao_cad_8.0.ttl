@@ -1,0 +1,1709 @@
+@prefix : <http://www.sefaz.ma.gov.br/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.sefaz.ma.gov.br/> .
+
+<http://www.sefaz.ma.gov.br/> rdf:type owl:Ontology ;
+                               rdfs:comment "Cadastro de Dados de Contribuintes do Estado do Maranhão"@pt ,
+                                            """Equipe SEFAZ/MA
+
+Roberval Gomes Mariano 
+Coordenador 
+Gestor Chefe CEGPA 
+mariano@sefaz.ma.gov.br
+
+Valeria Priscilla Monteiro Fernandes
+valeria.fernandes@sefaz.ma.gov.br
+
+Adriano Dos Santos Rego
+adriano.rego@sefaz.ma.gov.br
+
+
+
+------------------------------------------------------------------------------------------
+Equipe UFC
+
+Vania P Vidal 
+Coordenador 
+vaniap.vidal@gmail.com 
+
+Angelo Brayner
+brayner@dc.ufc.br
+
+José Maria Monteiro 
+zemaria@lia.ufc.br
+
+Caio Viktor da Silva Avila
+Engenheiro do Conhecimento
+Desenvolvedor
+caioviktor@alu.ufc.br
+
+
+Túlio Vidal Rolim
+Engenheiro do Conhecimento
+Desenvolvedor
+tulio.xcrtf@gmail.com
+
+
+-----------------------------------------------------------------------------------------------
+Financiador: Banco Interamericano de Desenvolvimento
+
+Contrato 4458/OC-BR. 
+P1.3 Planejamento e Gestão da Tecnologia da Informação implantados. Definição e Implantação dos Sistemas de Busca Semântica e Recomendação à Legislação Tributária, com o Uso das Tecnologias da Web Semântica."""@pt ,
+                                            "Ontologia de Situação Cadastral da Secretaria da Fazenda do Estado do Maranhão (SEFAZ-MA)"@pt ,
+                                            "Ontology of the Taxpayer Data Register of the State of Maranhão"@en ;
+                               rdfs:label "Ontologia de Situação Cadastral SEFAZ-MA"@pt ;
+                               owl:versionInfo "1.0"@pt .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/modified
+<http://purl.org/dc/elements/1.1/modified> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+<http://purl.org/dc/terms/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://rs.tdwg.org/ontology/voc/Person#birthdate
+<http://rs.tdwg.org/ontology/voc/Person#birthdate> rdf:type owl:AnnotationProperty ;
+                                                   rdfs:domain <http://xmlns.com/foaf/spec/Person> .
+
+
+###  http://www.w3.org/2002/07/owl#maxQualifiedCardinality
+owl:maxQualifiedCardinality rdf:type owl:AnnotationProperty .
+
+
+###  http://xmlns.com/foaf/spec/name
+<http://xmlns.com/foaf/spec/name> rdf:type owl:AnnotationProperty ;
+                                  rdfs:range rdfs:Literal ;
+                                  rdfs:domain owl:Thing .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#time
+xsd:time rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.sefaz.ma.gov.br/excluded_by
+:excluded_by rdf:type owl:ObjectProperty ,
+                      owl:FunctionalProperty ;
+             rdfs:domain :Disabled_Event ;
+             rdfs:range :User ;
+             rdfs:label "excluded by"@en ,
+                        "excluso por"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_address
+:has_address rdf:type owl:ObjectProperty ,
+                      owl:AsymmetricProperty ,
+                      owl:TransitiveProperty ;
+             rdfs:domain :Establishment ,
+                         <http://xmlns.com/foaf/spec/Agent> ;
+             rdfs:range :Address ;
+             rdfs:label "has address"@en ,
+                        "tem endereço"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_administrative_division
+:has_administrative_division rdf:type owl:ObjectProperty ;
+                             owl:inverseOf :is_administrative_division_of ;
+                             rdf:type owl:SymmetricProperty ;
+                             rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                             rdfs:label "has administrative division"@en ,
+                                        "tem divisão administrativa"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_cadastral_situation
+:has_cadastral_situation rdf:type owl:ObjectProperty ,
+                                  owl:AsymmetricProperty ;
+                         rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                         rdfs:range :SEFAZ_CadastralSituation ;
+                         rdfs:label "has cadastral situation"@en ,
+                                    "tem situação cadastral"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_city
+:has_city rdf:type owl:ObjectProperty ,
+                   owl:FunctionalProperty ;
+          rdfs:label "has city"@en ,
+                     "tem cidade"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_compliance_level
+:has_compliance_level rdf:type owl:ObjectProperty ,
+                               owl:AsymmetricProperty ;
+                      rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                      rdfs:range :ComplianceLevel ;
+                      rdfs:label "has compliance level"@en ,
+                                 "tem nivel cumprimento"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_consumer_unit
+:has_consumer_unit rdf:type owl:ObjectProperty ,
+                            owl:SymmetricProperty ;
+                   rdfs:domain :Establishment ;
+                   rdfs:label "has consumer unit"@en ,
+                              "tem unidade consumidora"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_contact
+:has_contact rdf:type owl:ObjectProperty ,
+                      owl:AsymmetricProperty ,
+                      owl:TransitiveProperty ;
+             rdfs:domain <http://xmlns.com/foaf/spec/Agent> ;
+             rdfs:label "has contact"@en ,
+                        "tem contato"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_deed
+:has_deed rdf:type owl:ObjectProperty ,
+                   owl:FunctionalProperty ;
+          rdfs:domain :TaxBook ;
+          rdfs:range :Deed ;
+          rdfs:label "has deed"@en ,
+                     "tem escritura"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_discharge
+:has_discharge rdf:type owl:ObjectProperty ,
+                        owl:AsymmetricProperty ;
+               rdfs:domain :SEFAZ_CadastralSituation ,
+                           <http://xmlns.com/foaf/spec/Organization> ;
+               rdfs:range :Reason_Cadastral_Situation ;
+               rdfs:label "has discharge"@en ,
+                          "tem baixa"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_economic_activity
+:has_economic_activity rdf:type owl:ObjectProperty ;
+                       rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                       rdfs:label "has economic activity"@en ,
+                                  "tem atividade econômica"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_establishment
+:has_establishment rdf:type owl:ObjectProperty ;
+                   owl:inverseOf :is_establishment_of ;
+                   rdf:type owl:AsymmetricProperty ;
+                   rdfs:domain :Partnership ,
+                               <http://xmlns.com/foaf/spec/Organization> ;
+                   rdfs:range :Establishment ;
+                   rdfs:label "has establishment"@en ,
+                              "tem estabelecimento"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_establishment_type
+:has_establishment_type rdf:type owl:ObjectProperty ,
+                                 owl:AsymmetricProperty ,
+                                 owl:TransitiveProperty ;
+                        rdfs:domain :Establishment ;
+                        rdfs:label "has establishment type"@en ,
+                                   "tem tipo de estabelecimento"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_fiscal_situation
+:has_fiscal_situation rdf:type owl:ObjectProperty ,
+                               owl:AsymmetricProperty ;
+                      rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                      rdfs:range :FiscalSituation ;
+                      rdfs:label "has fiscal situation"@en ,
+                                 "tem situação fiscal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_fiscal_unit
+:has_fiscal_unit rdf:type owl:ObjectProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:domain :Establishment ;
+                 rdfs:range :FiscalUnit ;
+                 rdfs:label "has fiscal unit"@en ,
+                            "tem unidades fiscal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_functional_situation
+:has_functional_situation rdf:type owl:ObjectProperty ,
+                                   owl:AsymmetricProperty ;
+                          rdfs:domain :Partnership ;
+                          rdfs:range :FunctionalSituation ;
+                          rdfs:label "has functional situation"@en ,
+                                     "tem situação funcional"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_head_office
+:has_head_office rdf:type owl:ObjectProperty ;
+                 owl:inverseOf :is_head_office_of_subsidiary ;
+                 rdf:type owl:TransitiveProperty ;
+                 rdfs:label "has head office"@en ,
+                            "tem matriz"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_legal_obligations
+:has_legal_obligations rdf:type owl:ObjectProperty ,
+                                owl:TransitiveProperty ;
+                       rdfs:domain :Establishment ;
+                       rdfs:range :Legal_Obligations ;
+                       rdfs:label "has legal obligations"@en ,
+                                  "tem obrigação legal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_legal_representant
+:has_legal_representant rdf:type owl:ObjectProperty ,
+                                 owl:FunctionalProperty ;
+                        rdfs:domain :TAXPAYER ;
+                        rdfs:range :LegalRepresentant ;
+                        rdfs:label "has legal representative"@en ,
+                                   "tem representante legal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_nacionality
+:has_nacionality rdf:type owl:ObjectProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:domain :TAXPAYER ;
+                 rdfs:label "has nacionality"@en ,
+                            "tem nacionalidade"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_payment_regime
+:has_payment_regime rdf:type owl:ObjectProperty ,
+                             owl:AsymmetricProperty ;
+                    rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                    rdfs:range :PaymentRegime ;
+                    rdfs:label "has payment regime"@en ,
+                               "tem regime pagamento"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_periodicity
+:has_periodicity rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf owl:topObjectProperty ;
+                 rdfs:domain :Tax ;
+                 rdfs:range :Periodicity ;
+                 rdfs:label "has periodicity"@en ,
+                            "tem periodicidade"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_qualification_type
+:has_qualification_type rdf:type owl:ObjectProperty ,
+                                 owl:AsymmetricProperty ;
+                        rdfs:domain :Partnership ;
+                        rdfs:range :Qualification ;
+                        rdfs:label "has relation type"@en ,
+                                   "tem tipo de relação"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_reason_disabled
+:has_reason_disabled rdf:type owl:ObjectProperty ,
+                              owl:AsymmetricProperty ;
+                     rdfs:domain :Disabled_Event ;
+                     rdfs:range :Reason_Cadastral_Situation ;
+                     rdfs:label "has reason disabled"@en ,
+                                "tem razão desabilitado"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_reason_disabled_tax_situation
+:has_reason_disabled_tax_situation rdf:type owl:ObjectProperty ,
+                                            owl:AsymmetricProperty ;
+                                   rdfs:domain :FiscalSituation ;
+                                   rdfs:range :Reason_Cadastral_Situation ;
+                                   rdfs:label "has reason disabled tax situation"@en ,
+                                              "tem razão desabilitado situação fiscal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_register_source
+:has_register_source rdf:type owl:ObjectProperty ,
+                              owl:FunctionalProperty ;
+                     rdfs:domain :TAXPAYER ;
+                     rdfs:range :User ;
+                     rdfs:label "has register source"@en ,
+                                "tem_fonte_cadastro"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_relation
+:has_relation rdf:type owl:ObjectProperty ,
+                       owl:SymmetricProperty ;
+              rdfs:domain [ rdf:type owl:Class ;
+                            owl:unionOf ( :Accountant
+                                          :Representant
+                                        )
+                          ] ;
+              rdfs:range :Partnership ;
+              rdfs:label "has relation"@en ,
+                         "tem relação"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_representant
+:has_representant rdf:type owl:ObjectProperty ,
+                           owl:FunctionalProperty ,
+                           owl:AsymmetricProperty ;
+                  rdfs:domain :TAXPAYER ;
+                  rdfs:range :Representant ;
+                  rdfs:label "has representant"@en ,
+                             "tem representante"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_situation
+:has_situation rdf:type owl:ObjectProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain :Legal_Obligations ;
+               rdfs:label "has situation"@en ,
+                          "tem situacao"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_special_regime
+:has_special_regime rdf:type owl:ObjectProperty ,
+                             owl:AsymmetricProperty ,
+                             owl:IrreflexiveProperty ;
+                    rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                    rdfs:range :SpecialRegime ;
+                    rdfs:label "has special regime"@en ,
+                               "tem regime especial"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_tax
+:has_tax rdf:type owl:ObjectProperty ,
+                  owl:TransitiveProperty ;
+         rdfs:domain :Legal_Obligations ;
+         rdfs:range :Tax ;
+         rdfs:label "has tax"@en ,
+                    "tem imposto"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_tax_book
+:has_tax_book rdf:type owl:ObjectProperty ,
+                       owl:AsymmetricProperty ;
+              rdfs:domain :Partnership ;
+              rdfs:range :TaxBook ;
+              rdfs:label "has fiscal book"@en ,
+                         "tem livro fiscal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_tax_regime
+:has_tax_regime rdf:type owl:ObjectProperty ,
+                         owl:AsymmetricProperty ;
+                rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                rdfs:label "has tax regime"@en ,
+                           "tem regime fiscal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_type_of_society
+:has_type_of_society rdf:type owl:ObjectProperty ,
+                              owl:TransitiveProperty ;
+                     rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                     rdfs:label "has society type"@en ,
+                                "tem tipo de sociedade"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/has_uf
+:has_uf rdf:type owl:ObjectProperty .
+
+
+###  http://www.sefaz.ma.gov.br/has_user
+:has_user rdf:type owl:ObjectProperty ;
+          owl:inverseOf :updated_by ;
+          rdf:type owl:AsymmetricProperty ;
+          rdfs:domain :TAXPAYER ;
+          rdfs:range :User ;
+          rdfs:label "has user"@en ,
+                     "tem usuário"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/included_by
+:included_by rdf:type owl:ObjectProperty ,
+                      owl:FunctionalProperty ;
+             rdfs:domain :Disabled_Event ;
+             rdfs:range :User ;
+             rdfs:label "included by"@en ,
+                        "incluso por"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/is_administrative_division_of
+:is_administrative_division_of rdf:type owl:ObjectProperty ;
+                               rdfs:range <http://xmlns.com/foaf/spec/Organization> ;
+                               rdfs:label "is administrative division of"@en ,
+                                          "é divisão administrativa de"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/is_establishment_of
+:is_establishment_of rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf owl:topObjectProperty ;
+                     rdfs:domain :Establishment ;
+                     rdfs:range :Partnership ;
+                     rdfs:comment "é estabelecimento de"@pt ;
+                     rdfs:label "is stablishment"@en .
+
+
+###  http://www.sefaz.ma.gov.br/is_head_office_of_subsidiary
+:is_head_office_of_subsidiary rdf:type owl:ObjectProperty ,
+                                       owl:AsymmetricProperty ,
+                                       owl:TransitiveProperty ;
+                              rdfs:label "is head office of subsidiary"@en ,
+                                         "é matriz da filial"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/stored_in_establishment
+:stored_in_establishment rdf:type owl:ObjectProperty ,
+                                  owl:FunctionalProperty ;
+                         rdfs:domain :TaxBook ;
+                         rdfs:range :Establishment ;
+                         rdfs:comment "armazenado em estabelecimento"@pt ,
+                                      "stored in establishment"@en .
+
+
+###  http://www.sefaz.ma.gov.br/update
+:update rdf:type owl:ObjectProperty ;
+        owl:inverseOf :updated_by ;
+        rdf:type owl:AsymmetricProperty ,
+                 owl:IrreflexiveProperty ;
+        rdfs:label "atualiza"@pt ,
+                   "update"@en .
+
+
+###  http://www.sefaz.ma.gov.br/updated_by
+:updated_by rdf:type owl:ObjectProperty ,
+                     owl:AsymmetricProperty ;
+            rdfs:domain :TAXPAYER ;
+            rdfs:range :User ;
+            rdfs:label "atualizado por"@pt ,
+                       "updated by"@en .
+
+
+###  http://www.w3.org/ns/prov-o.owlused
+<http://www.w3.org/ns/prov-o.owlused> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/prov-o.owlwasDerivedFrom
+<http://www.w3.org/ns/prov-o.owlwasDerivedFrom> rdf:type owl:ObjectProperty ;
+                                                owl:propertyChainAxiom ( <http://www.w3.org/ns/org#resultedFrom>
+                                                                         <http://www.w3.org/ns/org#originalOrganization>
+                                                                       ) .
+
+
+###  http://www.w3.org/ns/prov-o.owlwasGeneratedBy
+<http://www.w3.org/ns/prov-o.owlwasGeneratedBy> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/org#changedBy
+<http://www.w3.org/ns/org#changedBy> rdf:type owl:ObjectProperty ;
+                                     owl:inverseOf <http://www.w3.org/ns/org#originalOrganization> ;
+                                     rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                                     rdfs:comment "Evento de cambio que resulta en una modificaciÃ³n en la organizaciÃ³n. Dependiendo del evento, la organizaciÃ³n puede dejar de existir tras el cambio. Es la relaciÃ³n inversa de `org:originalOrganization`."@es ,
+                                                  "Indica un evento che ha contribuito al cambiamento di questa organizzazione. A seconda dell'evento, l'organizzazione potrebbe essere esistente dopo l'evento o aver cessato la propria esistenza. Ãˆ l'inverso di `org:originalOrganization`."@it ,
+                                                  "Indicates a change event which resulted in a change to this organization. Depending on the event the organization may or may not have continued to exist after the event. Inverse of `org:originalOrganization`."@en ,
+                                                  "Indique un Ã©vÃ¨nement qui a impliquÃ© un changement dans l'Organisation. Selon l'Ã©vÃ¨nement, l'Organisation a continuÃ© Ã  exister aprÃ¨s l'Ã©vÃ¨nement, ou pas. Inverse de `org:originalOrganization`."@fr ,
+                                                  "ã“ã®çµ„ç¹”ã®å¤‰æ›´ã®ãã£ã‹ã‘ã¨ãªã£ãŸå‡ºæ¥äº‹ã‚’ç¤ºã—ã¾ã™ã€‚"@ja ;
+                                     rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                     rdfs:label "cambiata da"@it ,
+                                                "changed by"@en ,
+                                                "es modificada por"@es ,
+                                                "es modificado por"@es ,
+                                                "modifiÃ©e par"@fr .
+
+
+###  http://www.w3.org/ns/org#hasMembership
+<http://www.w3.org/ns/org#hasMembership> rdf:type owl:ObjectProperty ;
+                                         owl:inverseOf <http://www.w3.org/ns/org#member> ;
+                                         rdfs:domain <http://xmlns.com/foaf/spec/Agent> ;
+                                         rdfs:comment "Indica una relazione di appartenenza che coinvolge un Agent. Ãˆ l'inverso di `org:member`."@it ,
+                                                      "Indicates a membership relationship that the Agent plays. Inverse of `org:member`."@en ,
+                                                      "Indique pour cet Agent un engagement dans une Organisation. Inverse de `org:member`."@fr ,
+                                                      "RelaciÃ³n de pertenencia o afiliaciÃ³n a una organizaciÃ³n en la que el agente desempeÃ±a un cargo o funciÃ³n. Es la relaciÃ³n inversa de `org:member`."@es ,
+                                                      "ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆãŒæ‹…ã†æ§‹æˆå“¡é–¢ä¿‚ã‚’ç¤ºã—ã¾ã™ã€‚"@ja ;
+                                         rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                         rdfs:label "appartenenza"@it ,
+                                                    "engagement"@fr ,
+                                                    "membership"@en ,
+                                                    "tiene membresÃ­a"@es .
+
+
+###  http://www.w3.org/ns/org#hasSubOrganization
+<http://www.w3.org/ns/org#hasSubOrganization> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/org#hasUnit
+<http://www.w3.org/ns/org#hasUnit> rdf:type owl:ObjectProperty ;
+                                   rdfs:subPropertyOf <http://www.w3.org/ns/org#hasSubOrganization> ;
+                                   owl:inverseOf <http://www.w3.org/ns/org#unitOf> ;
+                                   rdfs:comment "Indica un'unitÃ  che Ã¨ parte di questa Organization, come ad esempio un dipartimento facente parte di una piÃ¹ ampia FormalOrganization. Ãˆ l'inverso di `org:unitOf`."@it ,
+                                                "Indicates a unit which is part of this Organization, e.g. a Department within a larger FormalOrganization. Inverse of `org:unitOf`."@en ,
+                                                "Indique une UnitÃ© qui fait partie d'une Organisation, par exemple un DÃ©partment au sein d'une Organisation Formelle plus large. Inverse de `org:unitOf`."@fr ,
+                                                "Unidad que es parte de la organizaciÃ³n, como, por ejemplo, un departamento incluido en una organizaciÃ³n formal mÃ¡s amplia."@es ,
+                                                "ä¾‹ãˆã°ã€ã‚ˆã‚Šå¤§ããªçµ„ç¹”å†…ã®éƒ¨å±€ãªã©ã€ã“ã®çµ„ç¹”ã®ä¸€éƒ¨ã§ã‚ã‚‹å˜ä½ã‚’ç¤ºã—ã¾ã™ã€‚"@ja ;
+                                   rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                   rdfs:label "contiene unidad"@es ,
+                                              "ha Unit"@it ,
+                                              "has Unit"@en ,
+                                              "possÃ¨de une UnitÃ©"@fr .
+
+
+###  http://www.w3.org/ns/org#linkedTo
+<http://www.w3.org/ns/org#linkedTo> rdf:type owl:ObjectProperty ,
+                                             owl:ReflexiveProperty ;
+                                    rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                                    rdfs:range <http://xmlns.com/foaf/spec/Organization> ;
+                                    rdfs:comment "2ã¤ã®çµ„ç¹”ã®ä»»æ„ã®é–¢ä¿‚ã‚’ç¤ºã—ã¾ã™ã€‚"@ja ,
+                                                 "Indica una relazione arbitraria tra due organizzazioni. Ad esempio, specializzazioni di questa proprietÃ  possono essere usate per denotare relazioni particolari tipo il finanziamento o la fornitura."@it ,
+                                                 "Indicates an arbitrary relationship between two organizations. Specializations of this can be used to, for example, denote funding or supply chain relationships."@en ,
+                                                 "Indique une relation arbitraire entre deux Organisations. Des spÃ©cialisations peuvent Ãªtre utilisÃ©es pour, par exemple, qualifier une relation de fournisseur ou de financeur."@fr ,
+                                                 "RelaciÃ³n arbitraria entre dos organizaciones. Las especializaciones de esta relaciÃ³n se pueden utilizar para denotar relaciones de financiaciÃ³n o suministro, entre otras."@es ;
+                                    rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                    rdfs:label "collegato a"@it ,
+                                               "estÃ¡ relacionada con"@es ,
+                                               "estÃ¡ relacionado con"@es ,
+                                               "linked to"@en ,
+                                               "relaciona-se a"@pt ,
+                                               "reliÃ© Ã "@fr .
+
+
+###  http://www.w3.org/ns/org#member
+<http://www.w3.org/ns/org#member> rdf:type owl:ObjectProperty ,
+                                           owl:FunctionalProperty ;
+                                  rdfs:range <http://xmlns.com/foaf/spec/Agent> ;
+                                  rdfs:comment "Indica la Person (o un altro Agent) coinvolto in una relazione di Membership. Ãˆ l'inverso di `org:hasMembership`."@it ,
+                                               "Indicates the Person (or other Agent including Organization) involved in the Membership relationship. Inverse of `org:hasMembership`"@en ,
+                                               "Indique une personne (ou tout autre Agent, y compris une Organisation) impliquÃ© dans la relation d'Engagement. Inverse de `org:hasMembership`"@fr ,
+                                               "Persona (u otro agente, incluyendo una organizaciÃ³n) que participa en la relaciÃ³n de membresÃ­a. Es la relaciÃ³n inversa de `org:hasMembership`."@es ,
+                                               "æ§‹æˆå“¡é–¢ä¿‚ã«å«ã¾ã‚Œã¦ã„ã‚‹äººï¼ˆã¾ãŸã¯ã€çµ„ç¹”ã‚’å«ã‚“ã§ã„ã‚‹ä»–ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆï¼‰ã‚’ç¤ºã—ã¾ã™ã€‚"@ja ;
+                                  rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                  rdfs:label "es condiciÃ³n de miembro sobre agente"@es ,
+                                             "member"@en ,
+                                             "membre"@fr ,
+                                             "membro"@it .
+
+
+###  http://www.w3.org/ns/org#memberOf
+<http://www.w3.org/ns/org#memberOf> rdf:type owl:ObjectProperty ;
+                                    rdfs:domain <http://xmlns.com/foaf/spec/Agent> ;
+                                    rdfs:range <http://xmlns.com/foaf/spec/Organization> ;
+                                    rdfs:comment "Indica che una persona Ã¨ membro di una Organization senza una precisa indicazione sulla natura di questa appartenenza e sul suo ruolo. Si noti che la scelta del nome di questa proprietÃ  non intende limitarla alla sola  rappresentazione formalmente di un'appartenenza. La proprietÃ  puÃ² coprire anche altri coinvolgimenti nell'organizzazione. Questa proprietÃ  puÃ² essere specializzata per indicare ruoli all'interno organizzazione o relazioni di diverse tipologie. Ha `org:hasmember` come proprietÃ  inversa opzionale."@it ,
+                                                 "Indicates that a person is a member of the Organization with no indication of the nature of that membership or the role played. Note that the choice of property name is not meant to limit the property to only formal membership arrangements, it is also indended to cover related concepts such as affilliation or other involvement in the organization. Extensions can specialize this relationship to indicate particular roles within the organization or more nuanced relationships to the organization. Has an optional inverse, `org:hasmember`."@en ,
+                                                 "Indique qu'une personne est membre de l'Organisation sans prÃ©cision sur la nature de cet engagement ou du rÃ´le jouÃ©. Notez que le choix du nom de cette propriÃ©tÃ© ne vise pas Ã  la limiter aux seuls engagements formels, elle peut Ã©galement couvrir des concepts reliÃ©s comme l'affiliation ou le bÃ©nÃ©volat. Des extensions peuvent spÃ©cialiser cette relation pour indiquer des rÃ´les particuliers au sein de l'Organisation or des relations plus nuancÃ©es avec elle. PossÃ¨de une propriÃ©tÃ© inverse optionnelle, `org:hasmember`."@fr ,
+                                                 "Persona que pertenece a la organizaciÃ³n o es miembro de la misma, sin que conste la naturaleza de dicha pertenencia o el papel que desempeÃ±a. Se debe tener en cuenta que la elecciÃ³n de una denominaciÃ³n para esta propiedad no significa que la propiedad estÃ© limitada a ciertos tipos de pertenencia formales, sino que pretende cubrir conceptos relacionados como el de afiliaciÃ³n u otras formas de participaciÃ³n en la organizaciÃ³n. Se puede hacer uso de extensiones para especializar esta relaciÃ³n de forma que incluya tipos especÃ­ficos de pertenencia a las organizaciones o relaciones especiales con la organizaciÃ³n."@es ,
+                                                 "ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆï¼ˆäººã¾ãŸã¯ä»–ã®çµ„ç¹”ï¼‰ãŒçµ„ç¹”ã®ãƒ¡ãƒ³ãƒãƒ¼ã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã—ã¾ã™ã€‚ãŸã ã—ã€ãã®æ§‹æˆå“¡ã®æœ¬è³ªã‚„æ‹…ã†å½¹å‰²ã¯ç¤ºã—ã¾ã›ã‚“ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ¼åã®é¸æŠžã¯ã€ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ¼ã‚’æ­£å¼ãªæ§‹æˆå“¡é…ç½®ã®ã¿ã«åˆ¶é™ã™ã‚‹ã“ã¨ãŒç›®çš„ã§ã¯ãªã„ã“ã¨ã«æ³¨æ„ã—ã¦ãã ã•ã„ã€‚æ‰€å±žã‚„çµ„ç¹”ã¸ã®ãã®ä»–ã®é–¢ä¸Žãªã©ã®é–¢é€£ã™ã‚‹æ¦‚å¿µã‚’ã‚«ãƒãƒ¼ã™ã‚‹ã“ã¨ã‚‚æ„å›³ã•ã‚Œã¦ã„ã¾ã™ã€‚æ‹¡å¼µã«ã‚ˆã‚Šã€ã“ã®é–¢ä¿‚ã‚’ç‰¹æ®ŠåŒ–ã—ã€çµ„ç¹”å†…ã®ç‰¹å®šã®å½¹å‰²ã‚„ã‚ˆã‚Šãƒ‹ãƒ¥ã‚¢ãƒ³ã‚¹ã‚’å«ã‚“ã çµ„ç¹”ã¨ã®é–¢ä¿‚ã‚’ç¤ºã™ã“ã¨ãŒã§ãã¾ã™ã€‚"@ja ;
+                                    rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                    rdfs:label "es miembro de"@es ,
+                                               "member of"@en ,
+                                               "membre de"@fr ,
+                                               "membro di"@it .
+
+
+###  http://www.w3.org/ns/org#originalOrganization
+<http://www.w3.org/ns/org#originalOrganization> rdf:type owl:ObjectProperty ;
+                                                rdfs:subPropertyOf <http://www.w3.org/ns/prov-o.owlused> ;
+                                                rdfs:range <http://xmlns.com/foaf/spec/Organization> ;
+                                                rdfs:comment "Indica una o piÃ¹ organizzazioni pregresse rispetto a un evento di cambiamento. A seconda dell'evento, queste organizzazioni potrebbero essere esistenti dopo l'evento o  aver cessato la loro esistenza. Ãˆ l'inverso di `org:changedBy`."@it ,
+                                                             "Indicates one or more organizations that existed before the change event. Depending on the event they may or may not have continued to exist after the event. Inverse of `org:changedBy`."@en ,
+                                                             "Indique une ou plusieurs organisations qui ont existÃ© avant un Ã©vÃ¨nement de changement. Selon l'Ã©vÃ¨nement, ces organisations ont pu continuer Ã  exister ou non. Inverse de `org:changedBy`. "@fr ,
+                                                             "Una o mÃ¡s organizaciones que existÃ­an antes de que sucediera el cambio en la organizaciÃ³n. Dependiendo del tipo de cambio, dichas organizaciones pueden haber dejado de existir o no. Es la relaciÃ³n inversa de `org:changedBy`."@es ,
+                                                             "å¤‰æ›´ã®ãã£ã‹ã‘ã¨ãªã£ãŸå‡ºæ¥äº‹ä»¥å‰ã«å­˜åœ¨ã—ãŸ1ã¤ä»¥ä¸Šã®çµ„ç¹”ã‚’ç¤ºã—ã¾ã™ã€‚å‡ºæ¥äº‹ã«ã‚ˆã£ã¦ã€å‡ºæ¥äº‹ã®å¾Œã«ãã‚Œã‚‰ã¯å­˜åœ¨ã—ç¶šã‘ãŸã‹ã‚‚ã€å­˜åœ¨ã—ç¶šã‘ãªã‹ã£ãŸã‹ã‚‚ã—ã‚Œã¾ã›ã‚“ã€‚"@ja ;
+                                                rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                                rdfs:label "es organizaciÃ³n original"@es ,
+                                                           "organisation originelle"@fr ,
+                                                           "organizzazione originale"@it ,
+                                                           "original organization"@en .
+
+
+###  http://www.w3.org/ns/org#resultedFrom
+<http://www.w3.org/ns/org#resultedFrom> rdf:type owl:ObjectProperty ;
+                                        rdfs:subPropertyOf <http://www.w3.org/ns/prov-o.owlwasGeneratedBy> ;
+                                        owl:inverseOf <http://www.w3.org/ns/org#resultingOrganization> ;
+                                        rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                                        rdfs:comment "Evento que tiene como resultado la creaciÃ³n de una organizaciÃ³n."@es ,
+                                                     "Indica l'evento che ha permesso all'organizzazione di instaurarsi. Ãˆ l'inverso di `org:resultingOrganization`."@it ,
+                                                     "Indicates an event which resulted in this organization. Inverse of `org:resultingOrganization`."@en ,
+                                                     "Indique un Ã©vÃ¨nement dont est issue l'Organisation. Inverse de `org:resultingOrganization`."@fr ,
+                                                     "ã“ã®çµ„ç¹”ã«ãªã£ãŸï¼ˆå°Žã„ãŸã€ä½œæˆã•ã‚ŒãŸï¼‰ãã£ã‹ã‘ã¨ãªã£ãŸå‡ºæ¥äº‹ã‚’ç¤ºã—ã¾ã™ã€‚"@ja ;
+                                        rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                        rdfs:label "es el resultado de"@es ,
+                                                   "issue de"@fr ,
+                                                   "resulted from"@en ,
+                                                   "risultato da"@it .
+
+
+###  http://www.w3.org/ns/org#resultingOrganization
+<http://www.w3.org/ns/org#resultingOrganization> rdf:type owl:ObjectProperty ;
+                                                 rdfs:range <http://xmlns.com/foaf/spec/Organization> ;
+                                                 rdfs:comment "Indica l'organizzazione che Ã¨ stata creata o mutata a seguito dell'evento. Ãˆ l'inverso di `org:resultedFrom`."@it ,
+                                                              "Indicates an organization which was created or changed as a result of the event. Inverse of `org:resultedFrom`."@en ,
+                                                              "Indique une organisation qui a Ã©tÃ© crÃ©Ã©e ou a Ã©tÃ© modifiÃ©e Ã  la suite d'un Ã‰vÃ¨nement de changement. Inverse de `org:resultedFrom`."@fr ,
+                                                              "OrganizaciÃ³n que ha sido creada o modificada tras un evento especÃ­fico.Â  Es la relaciÃ³n inversa de `org:resultedFrom`."@es ,
+                                                              "å‡ºæ¥äº‹ã®çµæžœã€ä½œæˆã€å¤‰æ›´ã•ã‚ŒãŸçµ„ç¹”ã‚’ç¤ºã—ã¾ã™ã€‚"@ja ;
+                                                 rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                                 rdfs:label "a donnÃ© naissance Ã "@fr ,
+                                                            "resulta en"@es ,
+                                                            "resulted in"@en ,
+                                                            "risultato in"@it .
+
+
+###  http://www.w3.org/ns/org#role
+<http://www.w3.org/ns/org#role> rdf:type owl:ObjectProperty ;
+                                rdfs:comment "Actividad que el agente desempeÃ±a en una relaciÃ³n de pertenencia a una organizaciÃ³n."@es ,
+                                             "Indica il Role che un Agent ricopre in una relazione di Membership con una Organization"@it ,
+                                             "Indicates the Role that the Agent plays in a Membership relationship with an Organization."@en ,
+                                             "Indique le RÃ´le de l'Agent dans son Engagement avec l'Organisation."@fr ,
+                                             "ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆãŒçµ„ç¹”ã¨ã®æ§‹æˆå“¡é–¢ä¿‚ã«ãŠã„ã¦æ‹…ã†å½¹å‰²ã‚’ç¤ºã—ã¾ã™ã€‚ãƒã‚¹ãƒˆã®ä¿æŒè€…ãŒæ‹…ã†å½¹å‰²ã‚’ç¤ºã™ãŸã‚ã«org:Postã§ç”¨ã„ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚"@ja ;
+                                rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                rdfs:label "desempeÃ±a la actividad de"@es ,
+                                           "role"@en ,
+                                           "ruolo"@it ,
+                                           "rÃ´le"@fr .
+
+
+###  http://www.w3.org/ns/org#subOrganizationOf
+<http://www.w3.org/ns/org#subOrganizationOf> rdf:type owl:ObjectProperty .
+
+
+###  http://www.w3.org/ns/org#unitOf
+<http://www.w3.org/ns/org#unitOf> rdf:type owl:ObjectProperty ;
+                                  rdfs:subPropertyOf <http://www.w3.org/ns/org#subOrganizationOf> ;
+                                  rdfs:comment "Indica un Organization di cui questa Unit fa parte, come ad esempio un dipartimento all'interno di una piÃ¹ vasta FormalOrganization. Ãˆ l'inverso di `org:hasUnit`."@it ,
+                                               "Indicates an Organization of which this Unit is a part, e.g. a Department within a larger FormalOrganization. This is the inverse of `org:hasUnit`."@en ,
+                                               "Indique l'Organisation dont cette Organisation ou UnitÃ© fait partie, par exemple un DÃ©partment au sein d'une Organisation Formelle plus large. Inverse de `org:hasUnit`."@fr ,
+                                               "OrganizaciÃ³n de la que es parte esta unidad, por ejemplo, un departamento incluido en una organizaciÃ³n formal mÃ¡s amplia."@es ,
+                                               "ä¾‹ãˆã°ã€ã‚ˆã‚Šå¤§ããªçµ„ç¹”å†…ã®éƒ¨å±€ãªã©ã€ã“ã®å˜ä½ãŒãã®ä¸€éƒ¨åˆ†ã§ã‚ã‚‹çµ„ç¹”ã‚’ç¤ºã—ã¾ã™ã€‚"@ja ;
+                                  rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                  rdfs:label "es unidad de"@es ,
+                                             "unit Of"@en ,
+                                             "unitÃ  di"@it ,
+                                             "unitÃ© de"@fr .
+
+
+###  http://xmlns.com/foaf/spec/member
+<http://xmlns.com/foaf/spec/member> rdf:type owl:ObjectProperty ;
+                                    rdfs:range <http://xmlns.com/foaf/spec/Agent> ;
+                                    rdfs:comment "Indicates a member of a Group" ;
+                                    rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                    rdfs:label "member" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://id.loc.gov/ontologies/bibframe/code
+<http://id.loc.gov/ontologies/bibframe/code> rdf:type owl:DatatypeProperty ;
+                                             rdfs:range rdfs:Literal ;
+                                             <http://purl.org/dc/elements/1.1/modified> "2016-04-21 (New)" ;
+                                             rdfs:comment "String of characters that serves as a code representing information." ;
+                                             rdfs:label "Code" .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty
+<http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> rdf:type owl:DatatypeProperty ;
+                                                                   rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/hasContactDataProperty> .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasAreaCode
+<http://ontology.eil.utoronto.ca/icontact.owl/hasAreaCode> rdf:type owl:DatatypeProperty ;
+                                                           rdfs:range xsd:int .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasBuilding
+<http://ontology.eil.utoronto.ca/icontact.owl/hasBuilding> rdf:type owl:DatatypeProperty ;
+                                                           rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> ;
+                                                           rdfs:range xsd:string ;
+                                                           <http://purl.org/dc/terms/description> "The building where the address is located.  Often used in countries like England, India and Japan."@en ;
+                                                           rdfs:label "has Building"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasCitySection
+<http://ontology.eil.utoronto.ca/icontact.owl/hasCitySection> rdf:type owl:DatatypeProperty ;
+                                                              rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> ;
+                                                              <http://purl.org/dc/terms/description> "The section of the city where the address is located.  Often used in countries like England, India and Japan."@en ;
+                                                              rdfs:label "has City Section"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasContactDataProperty
+<http://ontology.eil.utoronto.ca/icontact.owl/hasContactDataProperty> rdf:type owl:DatatypeProperty .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasCountryCode
+<http://ontology.eil.utoronto.ca/icontact.owl/hasCountryCode> rdf:type owl:DatatypeProperty ;
+                                                              rdfs:subPropertyOf :telephoneDataProperty ;
+                                                              rdfs:range xsd:string ;
+                                                              rdfs:label "has Country Code"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasEmail
+<http://ontology.eil.utoronto.ca/icontact.owl/hasEmail> rdf:type owl:DatatypeProperty ;
+                                                        rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/hasContactDataProperty> .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasPersonalEmail
+<http://ontology.eil.utoronto.ca/icontact.owl/hasPersonalEmail> rdf:type owl:DatatypeProperty ;
+                                                                rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/hasEmail> ;
+                                                                rdfs:domain :Establishment ,
+                                                                            <http://xmlns.com/foaf/spec/Agent> ;
+                                                                rdfs:range xsd:string ;
+                                                                rdfs:label "has Personal Email"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasPhoneNumber
+<http://ontology.eil.utoronto.ca/icontact.owl/hasPhoneNumber> rdf:type owl:DatatypeProperty ;
+                                                              rdfs:subPropertyOf :telephoneDataProperty ;
+                                                              rdfs:range xsd:string ;
+                                                              rdfs:label "has Phone Number"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasPostalBox
+<http://ontology.eil.utoronto.ca/icontact.owl/hasPostalBox> rdf:type owl:DatatypeProperty ;
+                                                            rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> ;
+                                                            rdfs:range xsd:string ;
+                                                            <http://purl.org/dc/terms/description> "An address can have a postal box associated with it."@en ;
+                                                            rdfs:label "has Postal Box"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasPostalCode
+<http://ontology.eil.utoronto.ca/icontact.owl/hasPostalCode> rdf:type owl:DatatypeProperty ;
+                                                             rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> ;
+                                                             rdfs:range xsd:string ;
+                                                             rdfs:label "has Postal Code"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasStreet
+<http://ontology.eil.utoronto.ca/icontact.owl/hasStreet> rdf:type owl:DatatypeProperty ;
+                                                         rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> ;
+                                                         rdfs:label "has Street"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasStreetNumber
+<http://ontology.eil.utoronto.ca/icontact.owl/hasStreetNumber> rdf:type owl:DatatypeProperty ;
+                                                               rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> ;
+                                                               rdfs:label "has Street Number"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasUnitNumber
+<http://ontology.eil.utoronto.ca/icontact.owl/hasUnitNumber> rdf:type owl:DatatypeProperty ;
+                                                             rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> ;
+                                                             rdfs:range xsd:int ;
+                                                             rdfs:label "has Unit Number"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasWebSite
+<http://ontology.eil.utoronto.ca/icontact.owl/hasWebSite> rdf:type owl:DatatypeProperty ;
+                                                          rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/hasContactDataProperty> ;
+                                                          rdfs:range xsd:string ;
+                                                          rdfs:label "has Web Site"@en .
+
+
+###  http://ontology.eil.utoronto.ca/icontact.owl/hasWorkEmail
+<http://ontology.eil.utoronto.ca/icontact.owl/hasWorkEmail> rdf:type owl:DatatypeProperty ;
+                                                            rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/hasEmail> ;
+                                                            rdfs:domain :Establishment ,
+                                                                        <http://xmlns.com/foaf/spec/Agent> ;
+                                                            rdfs:range xsd:string ;
+                                                            rdfs:label "has Work Email"@en .
+
+
+###  http://rs.tdwg.org/ontology/voc/Person#deathdate
+<http://rs.tdwg.org/ontology/voc/Person#deathdate> rdf:type owl:DatatypeProperty ;
+                                                   rdfs:range xsd:dateTime .
+
+
+###  http://sefaz.ma.gov.br/fiscalSituation
+<http://sefaz.ma.gov.br/fiscalSituation> rdf:type owl:DatatypeProperty ;
+                                         rdfs:label "fiscal situation" .
+
+
+###  http://www.sefaz.ma.gov.br/accountant_crc
+:accountant_crc rdf:type owl:DatatypeProperty ,
+                         owl:FunctionalProperty ;
+                rdfs:domain :Accountant ;
+                rdfs:range xsd:string ;
+                rdfs:label "accountant crc"@en ,
+                           "crc do contador"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/acronyms
+:acronyms rdf:type owl:DatatypeProperty ;
+          rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+          rdfs:range xsd:string ;
+          rdfs:label "acronyms"@en ,
+                     "acrônimos"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/address_number
+:address_number rdf:type owl:DatatypeProperty .
+
+
+###  http://www.sefaz.ma.gov.br/beginning_deed
+:beginning_deed rdf:type owl:DatatypeProperty ;
+                rdfs:domain :Deed ;
+                rdfs:range xsd:dateTime ;
+                rdfs:label "beginning_deed"@en ,
+                           "data de inicio escritura"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/cadastral_situation_date
+:cadastral_situation_date rdf:type owl:DatatypeProperty ;
+                          rdfs:domain :SEFAZ_CadastralSituation ;
+                          rdfs:range xsd:dateTime ;
+                          rdfs:label "cadastral situation date"@en ,
+                                     "data situação cadastral"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/city_code
+:city_code rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf <http://id.loc.gov/ontologies/bibframe/code> ;
+           rdfs:range xsd:integer ;
+           rdfs:label "city code"@en ,
+                      "código do município"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/cnpj
+:cnpj rdf:type owl:DatatypeProperty ;
+      rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+      rdfs:range xsd:string ;
+      rdfs:label "cnpj"@en ,
+                 "cnpj"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/commercial_name
+:commercial_name rdf:type owl:DatatypeProperty ;
+                 rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                 rdfs:range xsd:string ;
+                 rdfs:label "commercial name"@en ,
+                            "nome comercial"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/constitution_date
+:constitution_date rdf:type owl:DatatypeProperty ;
+                   rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                   rdfs:range xsd:dateTime ,
+                              xsd:string ;
+                   rdfs:label "constitution date"@en ,
+                              "data de constituição"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/cpf
+:cpf rdf:type owl:DatatypeProperty ;
+     rdfs:domain <http://xmlns.com/foaf/spec/Person> ;
+     rdfs:range xsd:string ;
+     rdfs:label "cpf"@en .
+
+
+###  http://www.sefaz.ma.gov.br/ddd
+:ddd rdf:type owl:DatatypeProperty ;
+     rdfs:range xsd:string .
+
+
+###  http://www.sefaz.ma.gov.br/dddFax
+:dddFax rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf :ddd .
+
+
+###  http://www.sefaz.ma.gov.br/discharge_date
+:discharge_date rdf:type owl:DatatypeProperty ;
+                rdfs:domain :Reason_Cadastral_Situation ;
+                rdfs:range xsd:dateTime ;
+                rdfs:label "data da baixa"@pt ,
+                           "discharge date"@en .
+
+
+###  http://www.sefaz.ma.gov.br/discharge_reason
+:discharge_reason rdf:type owl:DatatypeProperty ;
+                  rdfs:domain :Reason_Cadastral_Situation ;
+                  rdfs:range xsd:string ;
+                  rdfs:label "discharge reason"@en ,
+                             "razão da baixa"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/district
+:district rdf:type owl:DatatypeProperty ;
+          rdfs:range xsd:dateTime ;
+          rdfs:label "bairro"@pt ,
+                     "district"@en .
+
+
+###  http://www.sefaz.ma.gov.br/division_number
+:division_number rdf:type owl:DatatypeProperty ;
+                 rdfs:range xsd:int ;
+                 rdfs:label "division number"@en ,
+                            "divisão administrativa"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/end_date
+:end_date rdf:type owl:DatatypeProperty ;
+          rdfs:subPropertyOf owl:topDataProperty ;
+          rdfs:domain :Legal_Obligations ;
+          rdfs:range xsd:dateTime ;
+          rdfs:label "data fim"@pt ,
+                     "end date"@en .
+
+
+###  http://www.sefaz.ma.gov.br/end_deed
+:end_deed rdf:type owl:DatatypeProperty ;
+          rdfs:domain :Deed ;
+          rdfs:range xsd:dateTime ;
+          rdfs:label "data final da escritura"@pt ,
+                     "end deed"@en .
+
+
+###  http://www.sefaz.ma.gov.br/end_participation
+:end_participation rdf:type owl:DatatypeProperty ;
+                   rdfs:domain :Partnership ;
+                   rdfs:range xsd:dateTime ;
+                   rdfs:label "data final de participação"@pt ,
+                              "end participation"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/establishment_type
+:establishment_type rdf:type owl:DatatypeProperty ;
+                    rdfs:domain :Establishment ;
+                    rdfs:range xsd:string ;
+                    rdfs:label "establishment type"@en ,
+                               "tipo de estabelecimento"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/estimated_value
+:estimated_value rdf:type owl:DatatypeProperty ;
+                 rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                 rdfs:range xsd:double ;
+                 rdfs:label "estimated value"@en ,
+                            "valor estimado"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/faxNumber
+:faxNumber rdf:type owl:DatatypeProperty ;
+           rdfs:range rdfs:Literal .
+
+
+###  http://www.sefaz.ma.gov.br/hasAreaCode
+:hasAreaCode rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf :telephoneDataProperty ;
+             rdfs:label "has Area Code"@en .
+
+
+###  http://www.sefaz.ma.gov.br/hasLocation
+:hasLocation rdf:type owl:DatatypeProperty ;
+             rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/hasContactDataProperty> ;
+             rdfs:range xsd:string ;
+             <http://purl.org/dc/terms/description> "Closet street intersection for the organization."@en ;
+             rdfs:label "has Location"@en .
+
+
+###  http://www.sefaz.ma.gov.br/identity_number
+:identity_number rdf:type owl:DatatypeProperty ;
+                 rdfs:domain <http://xmlns.com/foaf/spec/Person> ;
+                 rdfs:range xsd:string ;
+                 rdfs:label "identity number"@en ,
+                            "número de identidade"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/inclusion_date
+:inclusion_date rdf:type owl:DatatypeProperty ;
+                rdfs:domain :TAXPAYER ;
+                rdfs:range xsd:dateTime ;
+                rdfs:label "data de inclusão"@pt ,
+                           "inclusion date"@en .
+
+
+###  http://www.sefaz.ma.gov.br/license_number
+:license_number rdf:type owl:DatatypeProperty ;
+                rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                rdfs:range xsd:string ;
+                rdfs:label "license number"@en ,
+                           "número da licença"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/liquid_closing_date
+:liquid_closing_date rdf:type owl:DatatypeProperty ;
+                     rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                     rdfs:range xsd:dateTime ;
+                     rdfs:comment "data de fechamento líquido"@pt ,
+                                  "liquid closing date"@en .
+
+
+###  http://www.sefaz.ma.gov.br/mailbox_code
+:mailbox_code rdf:type owl:DatatypeProperty ;
+              rdfs:range rdfs:Literal ;
+              rdfs:label "mailbox code"@en .
+
+
+###  http://www.sefaz.ma.gov.br/observation
+:observation rdf:type owl:DatatypeProperty ;
+             rdfs:domain :Disabled_Event ;
+             rdfs:range xsd:string ;
+             rdfs:label "observacao"@pt ,
+                        "observation"@en .
+
+
+###  http://www.sefaz.ma.gov.br/percentage_participation
+:percentage_participation rdf:type owl:DatatypeProperty ;
+                          rdfs:domain :Partnership ;
+                          rdfs:range xsd:double ;
+                          rdfs:label "percentage participation"@en ,
+                                     "porcentagem de participação"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/reason
+:reason rdf:type owl:DatatypeProperty ;
+        rdfs:domain :Disabled_Event ;
+        rdfs:range xsd:string ;
+        rdfs:label "razão"@pt ,
+                   "reason"@en .
+
+
+###  http://www.sefaz.ma.gov.br/reference
+:reference rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf owl:topDataProperty ;
+           rdfs:range xsd:string ;
+           rdfs:label "reference"@en ,
+                      "referência"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/regime_code
+:regime_code rdf:type owl:DatatypeProperty ;
+             rdfs:domain :PaymentRegime ;
+             rdfs:range xsd:int ;
+             rdfs:label "código do regime"@pt ,
+                        "regime code"@en .
+
+
+###  http://www.sefaz.ma.gov.br/regime_name
+:regime_name rdf:type owl:DatatypeProperty ;
+             rdfs:domain :PaymentRegime ;
+             rdfs:range xsd:string ;
+             rdfs:label "nome do regime"@pt ,
+                        "regime name"@en .
+
+
+###  http://www.sefaz.ma.gov.br/share_capital_value
+:share_capital_value rdf:type owl:DatatypeProperty ;
+                     rdfs:domain <http://xmlns.com/foaf/spec/Organization> ;
+                     rdfs:range xsd:double ;
+                     rdfs:label "share capital value"@en ,
+                                "valor capital social"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/situation_name
+:situation_name rdf:type owl:DatatypeProperty ;
+                rdfs:domain :SEFAZ_CadastralSituation ;
+                rdfs:range xsd:string ;
+                rdfs:label "nome situação"@pt ,
+                           "situation name"@en .
+
+
+###  http://www.sefaz.ma.gov.br/start_date
+:start_date rdf:type owl:DatatypeProperty ;
+            rdfs:domain :Legal_Obligations ;
+            rdfs:range xsd:dateTime ;
+            rdfs:label "data inicio"@pt ,
+                       "start date"@en .
+
+
+###  http://www.sefaz.ma.gov.br/start_participation
+:start_participation rdf:type owl:DatatypeProperty ;
+                     rdfs:domain :Partnership ;
+                     rdfs:range xsd:string ;
+                     rdfs:label "inicio da participação"@pt ,
+                                "start_participation"@en .
+
+
+###  http://www.sefaz.ma.gov.br/state_registration
+:state_registration rdf:type owl:DatatypeProperty ;
+                    rdfs:domain :Establishment ,
+                                :Partnership ,
+                                :TAXPAYER ;
+                    rdfs:range xsd:string ;
+                    rdfs:label "inscrição estadual"@pt ,
+                               "state registration"@en .
+
+
+###  http://www.sefaz.ma.gov.br/street_name
+:street_name rdf:type owl:DatatypeProperty ;
+             rdfs:label "nome da rua"@pt ,
+                        "street name"@en .
+
+
+###  http://www.sefaz.ma.gov.br/street_type
+:street_type rdf:type owl:DatatypeProperty ,
+                      owl:FunctionalProperty ;
+             rdfs:range rdfs:Literal .
+
+
+###  http://www.sefaz.ma.gov.br/telephoneDataProperty
+:telephoneDataProperty rdf:type owl:DatatypeProperty ;
+                       rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/hasContactDataProperty> .
+
+
+###  http://www.sefaz.ma.gov.br/uf_code
+:uf_code rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf <http://id.loc.gov/ontologies/bibframe/code> ;
+         rdfs:range xsd:integer .
+
+
+###  http://www.w3.org/2003/01/geo/wgs84_pos#lat
+<http://www.w3.org/2003/01/geo/wgs84_pos#lat> rdf:type owl:DatatypeProperty ;
+                                              rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> ;
+                                              rdfs:range xsd:decimal ;
+                                              rdfs:label "lattitude"@en .
+
+
+###  http://www.w3.org/2003/01/geo/wgs84_pos#long
+<http://www.w3.org/2003/01/geo/wgs84_pos#long> rdf:type owl:DatatypeProperty ;
+                                               rdfs:subPropertyOf <http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty> ;
+                                               rdfs:range xsd:decimal ;
+                                               rdfs:label "longitude"@en .
+
+
+###  http://www.w3.org/2006/vcard/ns#postal-code
+<http://www.w3.org/2006/vcard/ns#postal-code> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.w3.org/ns/org#identifier
+<http://www.w3.org/ns/org#identifier> rdf:type owl:DatatypeProperty .
+
+
+###  http://www.w3.org/ns/org#location
+<http://www.w3.org/ns/org#location> rdf:type owl:DatatypeProperty ;
+                                    rdfs:domain <http://xmlns.com/foaf/spec/Person> ;
+                                    rdfs:range xsd:string ;
+                                    rdfs:comment "Gives a location description for a person within the organization, for example a _Mail Stop_ for internal posting purposes."@en ,
+                                                 "Indica la descrizione del luogo presso cui Ã¨ possibile reperire una persona dell'organizzazione."@it ,
+                                                 "Indique la description de l'endroit ou est basÃ© une personne de l'Organisation, par exemple pour des besoins de messagerie interne (Bureau 42)."@fr ,
+                                                 "Lugar o ubicaciÃ³n exacta de una persona en una organizaciÃ³n con el objetivo de facilitar, por ejemplo, la entrega de correo."@es ,
+                                                 "ä¾‹ãˆã°ã€å†…éƒ¨é…é€ç›®çš„ã®ãƒ¡ãƒ¼ãƒ«ãƒ»ã‚¹ãƒˆãƒƒãƒ—ï¼ˆMail Stopï¼‰ãªã©ã®ã€çµ„ç¹”å†…ã®äººã®ä½ç½®è¨˜è¿°ã‚’æä¾›ã—ã¾ã™ã€‚"@ja ;
+                                    rdfs:isDefinedBy <http://www.w3.org/ns/org> ;
+                                    rdfs:label "estÃ¡ ubicada en"@es ,
+                                               "estÃ¡ ubicado en"@es ,
+                                               "localisation"@fr ,
+                                               "location"@en ,
+                                               "luogo"@it .
+
+
+###  http://xmlns.com/foaf/spec/birthday
+<http://xmlns.com/foaf/spec/birthday> rdf:type owl:DatatypeProperty ,
+                                               owl:FunctionalProperty ;
+                                      rdfs:domain <http://xmlns.com/foaf/spec/Agent> ;
+                                      rdfs:range rdfs:Literal ;
+                                      rdfs:comment "The birthday of this Agent, represented in mm-dd string form, eg. '12-31'." ;
+                                      rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                      rdfs:label "birthday" .
+
+
+###  http://xmlns.com/foaf/spec/familyName
+<http://xmlns.com/foaf/spec/familyName> rdf:type owl:DatatypeProperty ;
+                                        rdfs:domain <http://xmlns.com/foaf/spec/Person> ;
+                                        rdfs:range rdfs:Literal ;
+                                        rdfs:comment "The family name of some person." ;
+                                        rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                        rdfs:label "familyName" .
+
+
+###  http://xmlns.com/foaf/spec/firstName
+<http://xmlns.com/foaf/spec/firstName> rdf:type owl:DatatypeProperty ;
+                                       rdfs:domain <http://xmlns.com/foaf/spec/Person> ;
+                                       rdfs:range rdfs:Literal ;
+                                       rdfs:comment "The first name of a person." ;
+                                       rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                       rdfs:label "firstName" .
+
+
+###  http://xmlns.com/foaf/spec/gender
+<http://xmlns.com/foaf/spec/gender> rdf:type owl:DatatypeProperty ,
+                                             owl:FunctionalProperty ;
+                                    rdfs:domain <http://xmlns.com/foaf/spec/Agent> ;
+                                    rdfs:range rdfs:Literal ;
+                                    rdfs:comment "The gender of this Agent (typically but not necessarily 'male' or 'female')." ;
+                                    rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                    rdfs:label "gender" .
+
+
+###  http://xmlns.com/foaf/spec/givenName
+<http://xmlns.com/foaf/spec/givenName> rdf:type owl:DatatypeProperty ;
+                                       rdfs:comment "The given name of some person." ;
+                                       rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                       rdfs:label "Given name" .
+
+
+###  http://xmlns.com/foaf/spec/lastName
+<http://xmlns.com/foaf/spec/lastName> rdf:type owl:DatatypeProperty ;
+                                      rdfs:domain <http://xmlns.com/foaf/spec/Person> ;
+                                      rdfs:range rdfs:Literal ;
+                                      rdfs:comment "The last name of a person." ;
+                                      rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                      rdfs:label "lastName" .
+
+
+###  http://xmlns.com/foaf/spec/name
+<http://xmlns.com/foaf/spec/name> rdf:type owl:DatatypeProperty ;
+                                  rdfs:subPropertyOf rdfs:label .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.sefaz.ma.gov.br/ACTIVE
+:ACTIVE rdf:type owl:Class ;
+        rdfs:subClassOf :SEFAZ_CadastralSituation ;
+        rdfs:label "ACTIVE"@en ,
+                   "ATIVO"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Accountant
+:Accountant rdf:type owl:Class ;
+            rdfs:subClassOf :Partnership ,
+                            [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                     owl:onProperty :has_qualification_type ;
+                                                     owl:allValuesFrom :Qualification
+                                                   ]
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty :has_qualification_type ;
+                                                     owl:minCardinality "1"^^xsd:nonNegativeInteger
+                                                   ]
+                                                 ) ;
+                              rdf:type owl:Class
+                            ] ;
+            rdfs:comment "Accountant is the professional of accounting science or accounting responsible for dealing with the entire financial, economic and patrimonial area of a legal entity or individual."@en ,
+                         "É o profissional da ciência contábil ou contabilidade responsável por lidar com toda a área financeira, econômica e patrimonial de uma pessoa jurídica ou pessoa física."@pt ;
+            rdfs:label "Accountant"@en ,
+                       "Contador"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Address
+:Address rdf:type owl:Class ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :address_number ;
+                           owl:someValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty rdfs:label ;
+                           owl:someValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://www.w3.org/2006/vcard/ns#postal-code> ;
+                           owl:someValuesFrom xsd:string
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :address_number ;
+                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onDataRange xsd:string
+                         ] ;
+         rdfs:label "Address"@en ,
+                    "Endereço"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/CANCELED
+:CANCELED rdf:type owl:Class ;
+          rdfs:subClassOf :SEFAZ_CadastralSituation ;
+          rdfs:label "CANCELADO"@pt ,
+                     "CANCELED"@en .
+
+
+###  http://www.sefaz.ma.gov.br/CRAFT_DOWN
+:CRAFT_DOWN rdf:type owl:Class ;
+            rdfs:subClassOf :SEFAZ_CadastralSituation ;
+            rdfs:label "BAIXA DE OFÍCIO"@pt ,
+                       "CRAFT DOWN"@en .
+
+
+###  http://www.sefaz.ma.gov.br/ComplianceLevel
+:ComplianceLevel rdf:type owl:Class ;
+                 rdfs:comment "Level of compliance with tax obligations, with the objective of providing the Government with resources for the achievement of public policies. In this sense, the achievement of better levels of compliance must be oriented to the analysis and observation of the known failures of compliance: omission and delay."@en ,
+                              "Nível de cumprimento das obrigações tributárias, com o objetivo de prover ao Governo recursos para a consecução das políticas públicas. Nesse sentido, a obtenção de melhores níveis de cumprimento precisa estar orientada à análise e à observação das conhecidas falhas de cumprimento: omissão e morosidade."@pt ;
+                 rdfs:label "Compliance Level"@en ,
+                            "Nivel Cumprimento"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Contribution_Type
+:Contribution_Type rdf:type owl:Class ;
+                   rdfs:label "Contribution Type"@en ,
+                              "Tipo de Contribuinte"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/DOWN
+:DOWN rdf:type owl:Class ;
+      rdfs:subClassOf :SEFAZ_CadastralSituation ;
+      rdfs:label "BAIXA"@pt ,
+                 "DOWN"@en .
+
+
+###  http://www.sefaz.ma.gov.br/DOWN_PROCESS
+:DOWN_PROCESS rdf:type owl:Class ;
+              rdfs:subClassOf :SEFAZ_CadastralSituation ;
+              rdfs:label "DOWN PROCESS"@en ,
+                         "PROCESSO DE BAIXA"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Deed
+:Deed rdf:type owl:Class ;
+      rdfs:subClassOf <http://xmlns.com/foaf/spec/Document> ;
+      rdfs:label "Deed"@en ,
+                 "Escritura"@pt-br .
+
+
+###  http://www.sefaz.ma.gov.br/Disabled_Event
+:Disabled_Event rdf:type owl:Class ;
+                rdfs:subClassOf [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                         owl:onProperty :excluded_by ;
+                                                         owl:allValuesFrom :User
+                                                       ]
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty :excluded_by ;
+                                                         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                         owl:onClass :User
+                                                       ]
+                                                     ) ;
+                                  rdf:type owl:Class
+                                ] ,
+                                [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                         owl:onProperty :included_by ;
+                                                         owl:allValuesFrom :User
+                                                       ]
+                                                       [ rdf:type owl:Restriction ;
+                                                         owl:onProperty :included_by ;
+                                                         owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                         owl:onClass :User
+                                                       ]
+                                                     ) ;
+                                  rdf:type owl:Class
+                                ] ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :has_reason_disabled ;
+                                  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                  owl:onClass :Reason_Cadastral_Situation
+                                ] ;
+                rdfs:label "Disabled Event"@en ,
+                           "Evento Desabilitação"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Disabled_Registry
+:Disabled_Registry rdf:type owl:Class ;
+                   rdfs:label "Disabled Registry"@en ,
+                              "Registro Desabilitado"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Establishment
+:Establishment rdf:type owl:Class ;
+               rdfs:subClassOf <http://xmlns.com/foaf/spec/Organization> ,
+                               [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                        owl:onProperty :has_fiscal_unit ;
+                                                        owl:allValuesFrom :FiscalUnit
+                                                      ]
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty :has_fiscal_unit ;
+                                                        owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                        owl:onClass :FiscalSituation
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ,
+                               [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                        owl:onProperty :has_legal_obligations ;
+                                                        owl:allValuesFrom :Legal_Obligations
+                                                      ]
+                                                      [ rdf:type owl:Restriction ;
+                                                        owl:onProperty :has_legal_obligations ;
+                                                        owl:minCardinality "1"^^xsd:nonNegativeInteger
+                                                      ]
+                                                    ) ;
+                                 rdf:type owl:Class
+                               ] ;
+               rdfs:label "Estabelecimento"@pt ,
+                          "Establishment"@en .
+
+
+###  http://www.sefaz.ma.gov.br/Establishment_Type
+:Establishment_Type rdf:type owl:Class ;
+                    rdfs:label "Establishment Type"@en ,
+                               "Tipo de Estabelecimento"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/FiscalSituation
+:FiscalSituation rdf:type owl:Class ;
+                 rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                   owl:onProperty :has_reason_disabled ;
+                                   owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                   owl:onClass :Reason_Cadastral_Situation
+                                 ] ;
+                 rdfs:label "Fiscal Situation"@en ,
+                            "Situação Fiscal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/FiscalUnit
+:FiscalUnit rdf:type owl:Class ;
+            rdfs:subClassOf <http://xmlns.com/foaf/spec/Organization> ;
+            rdfs:label "Fiscal Unit"@en ,
+                       "Unidade Fiscal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/FunctionalSituation
+:FunctionalSituation rdf:type owl:Class ;
+                     rdfs:label "Functional Situation"@en ,
+                                "Situação Funcional"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/ICMS_TAXPAYER
+:ICMS_TAXPAYER rdf:type owl:Class ;
+               rdfs:subClassOf :TAXPAYER .
+
+
+###  http://www.sefaz.ma.gov.br/IPVA_TAXPAYER
+:IPVA_TAXPAYER rdf:type owl:Class ;
+               rdfs:subClassOf :TAXPAYER .
+
+
+###  http://www.sefaz.ma.gov.br/LegalRepresentant
+:LegalRepresentant rdf:type owl:Class ;
+                   rdfs:subClassOf :Representant ;
+                   rdfs:label "Legal Representant"@en ,
+                              "Representante Legal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Legal_Obligations
+:Legal_Obligations rdf:type owl:Class ;
+                   rdfs:subClassOf owl:Thing ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty :has_tax ;
+                                     owl:allValuesFrom :Tax
+                                   ] ;
+                   rdfs:label "Legal Obligation"@en ,
+                              "Obrigação Legal"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/NON_TAXPAYER
+:NON_TAXPAYER rdf:type owl:Class ;
+              rdfs:subClassOf :Contribution_Type ;
+              rdfs:label "NON TAXPAYER"@en ,
+                         "NÃO CONTRIBUINTE"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Partnership
+:Partnership rdf:type owl:Class ;
+             rdfs:subClassOf owl:Thing ,
+                             [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                      owl:onProperty :has_tax_book ;
+                                                      owl:allValuesFrom :TaxBook
+                                                    ]
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty :has_tax_book ;
+                                                      owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                      owl:onClass :TaxBook
+                                                    ]
+                                                  ) ;
+                               rdf:type owl:Class
+                             ] ;
+             rdfs:label "Partnership"@en ,
+                        "Sócio"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/PaymentRegime
+:PaymentRegime rdf:type owl:Class ;
+               rdfs:label "Payment Regime"@en ,
+                          "Regime de Pagamento"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Periodicity
+:Periodicity rdf:type owl:Class ;
+             rdfs:label "Periodicidade"@pt ,
+                        "Periodicity"@en .
+
+
+###  http://www.sefaz.ma.gov.br/Qualification
+:Qualification rdf:type owl:Class ;
+               rdfs:comment "Tipo de Relação entre uma Relação Profissional e um determinado Cargo exercido."@pt ;
+               rdfs:label "Qualification"@en ,
+                          "Tipo de Relação"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/Reason_Cadastral_Situation
+:Reason_Cadastral_Situation rdf:type owl:Class ;
+                            rdfs:comment "Closure of the activities of the company or establishment and its impression of the Taxpayer registered in the ICMS Taxpayer Register."@en ,
+                                         "Encerramento das atividades da empresa ou estabelecimento e sua impressão do Contribuinte inscrito no Cadastro de Contribuintes do ICMS."@pt ;
+                            rdfs:label "Razão Desabilitado"@pt ,
+                                       "Razão Desabilitado Situação Fiscal"@en ,
+                                       "Razão de Desabilitação da Situação Cadastral"@pt ,
+                                       "Reason Cadastral Situation"@en ,
+                                       "Reason Disabled"@en ,
+                                       "Reason Disabled Tax Situation"@en .
+
+
+###  http://www.sefaz.ma.gov.br/Representant
+:Representant rdf:type owl:Class ;
+              rdfs:subClassOf <http://xmlns.com/foaf/spec/Agent> ;
+              rdfs:label "Representant"@en ,
+                         "Representante"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/SEFAZ_CadastralSituation
+:SEFAZ_CadastralSituation rdf:type owl:Class ;
+                          rdfs:comment """Cadastral status is the information that reflects in the CNPJ the registration condition of the entity's registration. The registration situations, before the CNPJ, fall into:
+
+• Active;
+• Downloaded;
+• Suspended;
+• Canceled;
+• Suspended from Office;
+• Discharge process;
+• Suspension process;
+• Low of Office;"""@en ,
+                                       """Situação cadastral é a informação que espelha no CNPJ a condição cadastral da inscrição da entidade. As situações cadastrais, perante o CNPJ, enquadram-se em:
+
+• Ativo;
+• Baixado;
+• Suspenso;
+• Cancelado;
+• Suspenso de Ofício;
+• Processo de Baixa;
+• Processo de Suspensão;
+• Baixa de Ofício;"""@pt ;
+                          rdfs:label "Cadastral Situation"@en ,
+                                     "Situação Cadastral SEFAZ"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/SUSPENDED
+:SUSPENDED rdf:type owl:Class ;
+           rdfs:subClassOf :SEFAZ_CadastralSituation ;
+           rdfs:label "SUSPENDED"@en ,
+                      "SUSPENSO"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/SUSPENDED_FROM_OFFICE
+:SUSPENDED_FROM_OFFICE rdf:type owl:Class ;
+                       rdfs:subClassOf :SEFAZ_CadastralSituation ;
+                       rdfs:label "SUSPENDED FROM OFFICE"@en ,
+                                  "SUSPENSO DE OFÍCIO"@pt .
+
+
+###  http://www.sefaz.ma.gov.br/SUSPENSION_PROCESS
+:SUSPENSION_PROCESS rdf:type owl:Class ;
+                    rdfs:subClassOf :SEFAZ_CadastralSituation ;
+                    rdfs:label "EM PROCESSO DE SUSPENSÃO"@pt ,
+                               "SUSPENSION PROCESS"@en .
+
+
+###  http://www.sefaz.ma.gov.br/Size_Company
+:Size_Company rdf:type owl:Class ;
+              rdfs:label "Porte da Empresa"@pt ,
+                         "Size Company"@en .
+
+
+###  http://www.sefaz.ma.gov.br/SpecialRegime
+:SpecialRegime rdf:type owl:Class ;
+               rdfs:label "Regime Especial"@pt ,
+                          "Special Regime"@en .
+
+
+###  http://www.sefaz.ma.gov.br/TAXPAYER
+:TAXPAYER rdf:type owl:Class ;
+          rdfs:subClassOf :Contribution_Type ,
+                          [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                   owl:onProperty :has_representant ;
+                                                   owl:allValuesFrom :Representant
+                                                 ]
+                                                 [ rdf:type owl:Restriction ;
+                                                   owl:onProperty :has_representant ;
+                                                   owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                   owl:onClass :Representant
+                                                 ]
+                                               ) ;
+                            rdf:type owl:Class
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :updated_by ;
+                            owl:allValuesFrom :User
+                          ] ;
+          rdfs:comment """Contribuinte é o sujeito passivo de uma obrigação tributária. Em outros termos, é aquele que se sujeita, por previsão legal, ao pagamento de tributos ao fisco.
+
+No Brasil, os contribuintes são registrados no Cadastro de Pessoas Físicas (CPF), se pessoas naturais, ou no Cadastro Nacional de Pessoas Jurídicas (CNPJ), se forem sociedades ou firmas individuais."""@pt ,
+                       """Taxpayer is the taxable person of a tax obligation. In other words, it is the one that is subject, by legal provision, to the payment of taxes to the tax authorities.
+
+In Brazil, taxpayers are registered with the Individual Taxpayer Registry (CPF), if they are natural persons, or with the National Registry of Legal Entities (CNPJ), if they are individual companies or firms."""@en ;
+          rdfs:label "CONTRIBUINTE"@pt ,
+                     "TAXPAYER"@en .
+
+
+###  http://www.sefaz.ma.gov.br/Tax
+:Tax rdf:type owl:Class ;
+     rdfs:label "Imposto"@pt ,
+                "Tax"@en .
+
+
+###  http://www.sefaz.ma.gov.br/TaxBook
+:TaxBook rdf:type owl:Class ;
+         rdfs:subClassOf [ owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                  owl:onProperty :has_deed ;
+                                                  owl:allValuesFrom :Deed
+                                                ]
+                                                [ rdf:type owl:Restriction ;
+                                                  owl:onProperty :has_deed ;
+                                                  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                  owl:onClass :Deed
+                                                ]
+                                              ) ;
+                           rdf:type owl:Class
+                         ] ;
+         rdfs:label "Livro Fiscal"@pt ,
+                    "Tax Book"@en .
+
+
+###  http://www.sefaz.ma.gov.br/User
+:User rdf:type owl:Class ;
+      rdfs:label "User"@en ,
+                 "Usuário"@pt .
+
+
+###  http://xmlns.com/foaf/spec/Agent
+<http://xmlns.com/foaf/spec/Agent> rdf:type owl:Class ;
+                                   rdfs:comment "An agent (eg. person, group, software or physical artifact)." ;
+                                   rdfs:label "Agent" .
+
+
+###  http://xmlns.com/foaf/spec/Document
+<http://xmlns.com/foaf/spec/Document> rdf:type owl:Class ;
+                                      owl:disjointWith <http://xmlns.com/foaf/spec/Organization> ;
+                                      rdfs:comment "A document." ;
+                                      rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                      rdfs:label "Document" .
+
+
+###  http://xmlns.com/foaf/spec/Organization
+<http://xmlns.com/foaf/spec/Organization> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://xmlns.com/foaf/spec/Agent> ,
+                                                          [ rdf:type owl:Restriction ;
+                                                            owl:onProperty :has_fiscal_situation ;
+                                                            owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                            owl:onClass :FiscalSituation
+                                                          ] ;
+                                          owl:disjointWith <http://xmlns.com/foaf/spec/Person> ;
+                                          rdfs:comment "An organization." ;
+                                          rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                          rdfs:label "Organization" .
+
+
+###  http://xmlns.com/foaf/spec/Person
+<http://xmlns.com/foaf/spec/Person> rdf:type owl:Class ;
+                                    rdfs:subClassOf <http://xmlns.com/foaf/spec/Agent> ;
+                                    rdfs:comment "A person." ;
+                                    rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                    rdfs:label "Person" .
+
+
+[ owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger
+] .
+
+[ owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger
+ ] .
+
+#################################################################
+#    Annotations
+#################################################################
+
+<http://xmlns.com/foaf/spec/name> rdfs:isDefinedBy <http://xmlns.com/foaf/spec/> ;
+                                   rdfs:comment "A name for some thing." ;
+                                   rdfs:label "name" .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
