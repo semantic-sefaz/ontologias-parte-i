@@ -1,0 +1,74 @@
+<Silk>
+        <Prefixes>
+      <Prefix id="rdf" namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/><Prefix id="sefazr" namespace="http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/"/><Prefix id="sefaz" namespace="http://www.sefaz.ma.gov.br/ontology/"/><Prefix id="owl" namespace="http://www.w3.org/2002/07/owl#"/><Prefix id="foaf" namespace="http://xmlns.com/foaf/0.1/"/><Prefix id="rdfs" namespace="http://www.w3.org/2000/01/rdf-schema#"/><Prefix id="redesimr" namespace="http://www.sefaz.ma.gov.br/REDESIM/resource/"/>
+    </Prefixes>
+        <DataSources>
+          <Dataset id="CADASTRO_DATASET" type="file" uriProperty=""><MetaData>
+        <Label></Label>
+        <Description xml:space="preserve"><![CDATA[]]></Description>
+        
+        
+        
+        
+      </MetaData>
+            <Param name="zipFileRegex" xml:space="preserve"><![CDATA[.*]]></Param><Param name="format" xml:space="preserve"><![CDATA[N-Triples]]></Param><Param name="maxReadSize" xml:space="preserve"><![CDATA[10]]></Param><Param name="file" xml:space="preserve"><![CDATA[CADASTRO_]]></Param><Param name="graph" xml:space="preserve"><![CDATA[]]></Param><Param name="entityList" xml:space="preserve"><![CDATA[]]></Param>
+          </Dataset><Dataset id="REDESIM_DATASET" type="file" uriProperty=""><MetaData>
+        <Label></Label>
+        <Description xml:space="preserve"><![CDATA[]]></Description>
+        
+        
+        
+        
+      </MetaData>
+            <Param name="zipFileRegex" xml:space="preserve"><![CDATA[.*]]></Param><Param name="format" xml:space="preserve"><![CDATA[N-Triples]]></Param><Param name="maxReadSize" xml:space="preserve"><![CDATA[10]]></Param><Param name="file" xml:space="preserve"><![CDATA[REDESIM__]]></Param><Param name="graph" xml:space="preserve"><![CDATA[]]></Param><Param name="entityList" xml:space="preserve"><![CDATA[]]></Param>
+          </Dataset>
+        </DataSources>
+        <Interlinks>
+          <Interlink id="Linking_CADASTRO-REDESIM-ORGANIZATION" linkLimit="1000000" matchingExecutionTimeout="3600"><MetaData>
+        <Label>Linking CADASTRO- REDESIM- ORGANIZATION</Label>
+        <Description xml:space="preserve"><![CDATA[]]></Description>
+        <Modified>2020-12-08T18:52:58.478Z</Modified>
+        <Created>2020-11-23T03:21:17.149Z</Created>
+        
+        
+      </MetaData>
+        <SourceDataset dataSource="CADASTRO_DATASET" var="a" typeUri="http://xmlns.com/foaf/0.1/Organization">
+        <RestrictTo>
+          
+        </RestrictTo>
+      </SourceDataset>
+        <TargetDataset dataSource="REDESIM_DATASET" var="b" typeUri="http://xmlns.com/foaf/0.1/Organization">
+        <RestrictTo>
+          
+        </RestrictTo>
+      </TargetDataset>
+        <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+        <Compare id="equality1" required="false" weight="1" metric="equality" threshold="2.0" indexing="true">
+            <TransformInput id="substring" function="substring">
+        <Input id="sourcePath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/cnpj&gt;"/>
+        <Param name="beginIndex" xml:space="preserve"><![CDATA[1]]></Param><Param name="endIndex" xml:space="preserve"><![CDATA[0]]></Param><Param name="stringMustBeInRange" xml:space="preserve"><![CDATA[true]]></Param>
+      </TransformInput><Input id="targetPath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/cnpj&gt;"/>
+          </Compare>
+        <Filter/>
+      </LinkageRule>
+        <Outputs>
+          <Output id="SAIDA"></Output>
+        </Outputs>
+      </Interlink>
+        </Interlinks>
+        <Transforms>
+          
+        </Transforms>
+        <Outputs>
+          <Dataset id="SAIDA" type="file" uriProperty=""><MetaData>
+        <Label></Label>
+        <Description xml:space="preserve"><![CDATA[]]></Description>
+        
+        
+        
+        
+      </MetaData>
+            <Param name="zipFileRegex" xml:space="preserve"><![CDATA[.*]]></Param><Param name="format" xml:space="preserve"><![CDATA[N-Triples]]></Param><Param name="maxReadSize" xml:space="preserve"><![CDATA[10]]></Param><Param name="file" xml:space="preserve"><![CDATA[OUTPUT]]></Param><Param name="graph" xml:space="preserve"><![CDATA[]]></Param><Param name="entityList" xml:space="preserve"><![CDATA[]]></Param>
+          </Dataset>
+        </Outputs>
+      </Silk>
