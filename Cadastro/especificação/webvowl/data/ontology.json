@@ -1,0 +1,4220 @@
+{
+  "_comment" : "Created with OWL2VOWL (version 0.3.5), http://vowl.visualdataweb.org",
+  "header" : {
+    "languages" : [ "pt", "ja", "en", "it", "fr", "es", "undefined" ],
+    "baseIris" : [ "http://www.w3.org/1999/02/22-rdf-syntax-ns", "http://sefaz.ma.gov.br", "http://www.w3.org/2002/07/owl", "http://www.w3.org/ns/org", "http://www.w3.org/2001/XMLSchema", "http://www.sefaz.ma.gov.br", "http://www.w3.org/ns", "http://rs.tdwg.org/ontology/voc/Person", "http://www.w3.org/2006/vcard/ns", "http://www.w3.org/2003/01/geo/wgs84_pos", "http://www.w3.org/2000/01/rdf-schema", "http://id.loc.gov/ontologies/bibframe", "http://ontology.eil.utoronto.ca/icontact.owl", "http://xmlns.com/foaf/spec" ],
+    "iri" : "http://www.sefaz.ma.gov.br/CADSEFAZ/ontology/",
+    "version" : "1.0",
+    "labels" : {
+      "pt" : "Ontologia de Cadastro da SEFAZ-MA"
+    },
+    "comments" : {
+      "pt" : "Equipe SEFAZ/MA\n\nRoberval Gomes Mariano \nCoordenador \nGestor Chefe CEGPA \nmariano@sefaz.ma.gov.br\n\nValeria Priscilla Monteiro Fernandes\nvaleria.fernandes@sefaz.ma.gov.br\n\nAdriano Dos Santos Rego\nadriano.rego@sefaz.ma.gov.br\n\n\n\n------------------------------------------------------------------------------------------\nEquipe UFC\n\nVania P Vidal \nCoordenador \nvaniap.vidal@gmail.com \n\nAngelo Brayner\nbrayner@dc.ufc.br\n\nJosé Maria Monteiro \nzemaria@lia.ufc.br\n\nCaio Viktor da Silva Avila\nEngenheiro do Conhecimento\nDesenvolvedor\ncaioviktor@alu.ufc.br\n\n\nTúlio Vidal Rolim\nEngenheiro do Conhecimento\nDesenvolvedor\ntulio.xcrtf@gmail.com\n\n\n-----------------------------------------------------------------------------------------------\nFinanciador: Banco Interamericano de Desenvolvimento\n\nContrato 4458/OC-BR. \nP1.3 Planejamento e Gestão da Tecnologia da Informação implantados. Definição e Implantação dos Sistemas de Busca Semântica e Recomendação à Legislação Tributária, com o Uso das Tecnologias da Web Semântica.",
+      "en" : "Ontology of the Taxpayer Data Register of the State of Maranhão"
+    },
+    "other" : {
+      "versionInfo" : [ {
+        "identifier" : "versionInfo",
+        "language" : "pt",
+        "value" : "1.0",
+        "type" : "label"
+      } ]
+    }
+  },
+  "namespace" : [ ],
+  "class" : [ {
+    "id" : "15",
+    "type" : "owl:Class"
+  }, {
+    "id" : "27",
+    "type" : "owl:Class"
+  }, {
+    "id" : "28",
+    "type" : "owl:Class"
+  }, {
+    "id" : "55",
+    "type" : "owl:Class"
+  }, {
+    "id" : "60",
+    "type" : "owl:Class"
+  }, {
+    "id" : "61",
+    "type" : "owl:Class"
+  }, {
+    "id" : "16",
+    "type" : "owl:Class"
+  }, {
+    "id" : "59",
+    "type" : "owl:Class"
+  }, {
+    "id" : "18",
+    "type" : "owl:Class"
+  }, {
+    "id" : "64",
+    "type" : "owl:Class"
+  }, {
+    "id" : "52",
+    "type" : "owl:Class"
+  }, {
+    "id" : "5",
+    "type" : "owl:Class"
+  }, {
+    "id" : "93",
+    "type" : "owl:Class"
+  }, {
+    "id" : "80",
+    "type" : "owl:Class"
+  }, {
+    "id" : "54",
+    "type" : "owl:Class"
+  }, {
+    "id" : "105",
+    "type" : "owl:Class"
+  }, {
+    "id" : "48",
+    "type" : "owl:Class"
+  }, {
+    "id" : "122",
+    "type" : "owl:Class"
+  }, {
+    "id" : "57",
+    "type" : "owl:Class"
+  }, {
+    "id" : "102",
+    "type" : "owl:Class"
+  }, {
+    "id" : "134",
+    "type" : "owl:Class"
+  }, {
+    "id" : "23",
+    "type" : "owl:Class"
+  }, {
+    "id" : "25",
+    "type" : "owl:Class"
+  }, {
+    "id" : "166",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "155",
+    "type" : "owl:Class"
+  }, {
+    "id" : "174",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "175",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "70",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "127",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "176",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "177",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "178",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "179",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "72",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "180",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "50",
+    "type" : "owl:Class"
+  }, {
+    "id" : "143",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "189",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "76",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "110",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "153",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "190",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "38",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "192",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "193",
+    "type" : "owl:Class"
+  }, {
+    "id" : "163",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "194",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "132",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "195",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "161",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "20",
+    "type" : "owl:Class"
+  }, {
+    "id" : "170",
+    "type" : "owl:Class"
+  }, {
+    "id" : "205",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "213",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "214",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "168",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "215",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "95",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "219",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "222",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "26",
+    "type" : "owl:Class"
+  }, {
+    "id" : "223",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "44",
+    "type" : "owl:Class"
+  }, {
+    "id" : "140",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "124",
+    "type" : "owl:Class"
+  }, {
+    "id" : "232",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "172",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "130",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "151",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "235",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "210",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "236",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "121",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "89",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "83",
+    "type" : "owl:Thing"
+  }, {
+    "id" : "11",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "185",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "182",
+    "type" : "owl:Thing"
+  }, {
+    "id" : "40",
+    "type" : "owl:Class"
+  }, {
+    "id" : "1",
+    "type" : "owl:Thing"
+  }, {
+    "id" : "42",
+    "type" : "owl:Class"
+  }, {
+    "id" : "200",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "208",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "6",
+    "type" : "owl:Class"
+  }, {
+    "id" : "202",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "147",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "107",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "157",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "245",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "159",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "198",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "226",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "250",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "261",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "138",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "136",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "258",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "104",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "9",
+    "type" : "owl:Class"
+  }, {
+    "id" : "165",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "109",
+    "type" : "owl:Class"
+  }, {
+    "id" : "100",
+    "type" : "owl:Class"
+  }, {
+    "id" : "253",
+    "type" : "owl:Class"
+  }, {
+    "id" : "112",
+    "type" : "owl:Class"
+  }, {
+    "id" : "266",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "68",
+    "type" : "owl:Class"
+  }, {
+    "id" : "267",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "270",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "272",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "46",
+    "type" : "owl:Class"
+  }, {
+    "id" : "282",
+    "type" : "rdfs:Datatype"
+  }, {
+    "id" : "8",
+    "type" : "owl:Class"
+  }, {
+    "id" : "256",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "36",
+    "type" : "owl:Class"
+  }, {
+    "id" : "117",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "263",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "260",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "97",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "231",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "247",
+    "type" : "owl:Thing"
+  }, {
+    "id" : "88",
+    "type" : "owl:Class"
+  }, {
+    "id" : "238",
+    "type" : "owl:Thing"
+  }, {
+    "id" : "91",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "86",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "14",
+    "type" : "owl:Class"
+  }, {
+    "id" : "221",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "21",
+    "type" : "owl:Class"
+  }, {
+    "id" : "66",
+    "type" : "rdfs:Literal"
+  }, {
+    "id" : "13",
+    "type" : "owl:Class"
+  }, {
+    "id" : "119",
+    "type" : "owl:Thing"
+  }, {
+    "id" : "81",
+    "type" : "owl:Class"
+  }, {
+    "id" : "217",
+    "type" : "owl:Thing"
+  }, {
+    "id" : "78",
+    "type" : "rdfs:Literal"
+  } ],
+  "classAttribute" : [ {
+    "iri" : "http://xmlns.com/foaf/spec/Document",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "instances" : 0,
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "Document",
+      "pt" : "Documento",
+      "undefined" : "Document"
+    },
+    "subClasses" : [ "16" ],
+    "comment" : {
+      "pt" : "Classe Genérica para representar Documentos.",
+      "undefined" : "A document."
+    },
+    "attributes" : [ "external" ],
+    "id" : "15"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/SUSPENDED_FROM_OFFICE",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "SUSPENDED_FROM_OFFICE",
+      "pt" : "SUSPENSO DE OFÍCIO",
+      "en" : "SUSPENDED FROM OFFICE"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Situação Cadastral - Representa o Status de Situação Cadastral: SUSPENSO DE OFÍCIO"
+    },
+    "attributes" : [ "external" ],
+    "id" : "27",
+    "superClasses" : [ "6" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Address",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Address",
+      "pt" : "Endereço",
+      "en" : "Address"
+    },
+    "comment" : {
+      "pt" : "Representa o Endereço de uma determinada Empresa, Estabelecimento ou Pessoa Física."
+    },
+    "attributes" : [ "external" ],
+    "id" : "28"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Establishment_Type",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Establishment_Type",
+      "pt" : "Tipo de Estabelecimento",
+      "en" : "Establishment Type"
+    },
+    "comment" : {
+      "pt" : "Tipo de Estabelecimento – podendo ser dos tipos Matriz ou Único, Filial, Depósito, Outros e Principal."
+    },
+    "attributes" : [ "external" ],
+    "id" : "55"
+  }, {
+    "instances" : 0,
+    "union" : [ "40", "21" ],
+    "attributes" : [ "anonymous", "union" ],
+    "id" : "60"
+  }, {
+    "instances" : 0,
+    "union" : [ "14", "40", "25" ],
+    "attributes" : [ "anonymous", "union" ],
+    "id" : "61"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Deed",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Deed",
+      "pt" : "Escritura",
+      "en" : "Deed"
+    },
+    "comment" : {
+      "pt" : "Escritura Fiscal é uma obrigação das empresas para com as autoridades fiscais de modo a prestar contas sobre seus faturamentos, movimentações bem como impostos pagos junto ao FISCO."
+    },
+    "attributes" : [ "external" ],
+    "id" : "16",
+    "superClasses" : [ "15" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/TaxBook",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "TaxBook",
+      "pt" : "Livro Fiscal",
+      "en" : "Tax Book"
+    },
+    "comment" : {
+      "pt" : "Classe que Representa um Livro Fiscal de Escriturações e Obrigações Fiscais no qual um Estabelecimento deve cumprir. Através dos livros fiscais que o fisco audita todas as transações das empresas, conferindo todos os registros efetuados pela empresa, retificando-os ou ratificando-os conforme constatações."
+    },
+    "attributes" : [ "external" ],
+    "id" : "59"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/IPVA_TAXPAYER",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "IPVA_TAXPAYER",
+      "pt" : "IPVA TAXPAYER"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Contribuinte – Tipo Específico do tipo Contribuinte IPVA"
+    },
+    "attributes" : [ "external" ],
+    "id" : "18",
+    "superClasses" : [ "14" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/LegalRepresentant",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "LegalRepresentant",
+      "pt" : "Representante Legal",
+      "en" : "Legal Representant"
+    },
+    "comment" : {
+      "pt" : "Responsável Legalmente pelos atos e atividades realizadas por uma Empresa."
+    },
+    "attributes" : [ "external" ],
+    "id" : "64",
+    "superClasses" : [ "23" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/CANCELED",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "CANCELED",
+      "pt" : "CANCELADO",
+      "en" : "CANCELED"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Situação Cadastral - Representa o Status de Situação Cadastral: CANCELADO"
+    },
+    "attributes" : [ "external" ],
+    "id" : "52",
+    "superClasses" : [ "6" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/DOWN_PROCESS",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "DOWN_PROCESS",
+      "pt" : "PROCESSO DE BAIXA",
+      "en" : "DOWN PROCESS"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Situação Cadastral - Representa o Status de Situação Cadastral: EM PROCESSO DE BAIXA"
+    },
+    "attributes" : [ "external" ],
+    "id" : "5",
+    "superClasses" : [ "6" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Size_Company",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Size_Company",
+      "pt" : "Porte da Empresa",
+      "en" : "Size Company"
+    },
+    "comment" : {
+      "pt" : "Tamanho da Empresa, adotando-se a classificação de MEI para Empresas com capital inferior ou igual a R$81.000; ME para Empresas com capital entre R$360.00 e R$4.800.000; EMP para Empresas com capital superior a R$4.800.000 e até R$300.000.000; e EGP para Empresas com capital superior a R$300.000.000."
+    },
+    "attributes" : [ "external" ],
+    "id" : "93"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Legal_Obligations",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Legal_Obligations",
+      "pt" : "Obrigação Legal",
+      "en" : "Legal Obligation"
+    },
+    "comment" : {
+      "pt" : "Conjunto de questões fiscais, trabalhistas, contábeis e de registro que são impostas a uma empresa. Obrigações legais também compreendem a manutenção de alvarás, certidões, peças contábeis, alterações contratuais, independentemente da modificação que ocorre na empresa."
+    },
+    "attributes" : [ "external" ],
+    "id" : "80"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/CRAFT_DOWN",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "CRAFT_DOWN",
+      "pt" : "BAIXA DE OFÍCIO",
+      "en" : "CRAFT DOWN"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Situação Cadastral - Representa o Status de Situação Cadastral: BAIXA DE OFÍCIO"
+    },
+    "attributes" : [ "external" ],
+    "id" : "54",
+    "superClasses" : [ "6" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/FiscalSituation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "FiscalSituation",
+      "pt" : "Situação Fiscal",
+      "en" : "Fiscal Situation"
+    },
+    "comment" : {
+      "pt" : "Situação Fiscal de uma determinada Empresa, podendo estar Habilitado ou  Desabilitado."
+    },
+    "attributes" : [ "external" ],
+    "id" : "105"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/DOWN",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "DOWN",
+      "pt" : "BAIXA",
+      "en" : "DOWN"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Situação Cadastral - Representa o Status de Situação Cadastral: BAIXA"
+    },
+    "attributes" : [ "external" ],
+    "id" : "48",
+    "superClasses" : [ "6" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Periodicity",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Periodicity",
+      "pt" : "Periodicidade",
+      "en" : "Periodicity"
+    },
+    "comment" : {
+      "pt" : "Periodicidade no qual um Imposto é aplicado, sendo Mensal ou Anual."
+    },
+    "attributes" : [ "external" ],
+    "id" : "122"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/SUSPENDED",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "SUSPENDED",
+      "pt" : "SUSPENSO",
+      "en" : "SUSPENDED"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Situação Cadastral - Representa o Status de Situação Cadastral: SUSPENSO"
+    },
+    "attributes" : [ "external" ],
+    "id" : "57",
+    "superClasses" : [ "6" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/PaymentRegime",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "PaymentRegime",
+      "pt" : "Regime de Pagamento",
+      "en" : "Payment Regime"
+    },
+    "comment" : {
+      "pt" : "Regime de Pagamento da Empresa podendo ser:\n\n EXTRA CADASTRO;\n NORMAL;\n PEM;\n SUBST. TRIBUTARIA;\n ISENTO;\n SIMPLES NACIONAL;\n SIMEI;\n NÃO CONTRIBUINTE."
+    },
+    "attributes" : [ "external" ],
+    "id" : "102"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Partnership",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Partnership",
+      "pt" : "Sociedade",
+      "en" : "Partnership"
+    },
+    "comment" : {
+      "pt" : "Relação entre uma Empresa e um Sócio contendo informações de entrada/ saída do quadro de sócios."
+    },
+    "attributes" : [ "external" ],
+    "id" : "134"
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/Person",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "instances" : 0,
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "Person",
+      "pt" : "Pessoa",
+      "undefined" : "Person"
+    },
+    "subClasses" : [ "64" ],
+    "comment" : {
+      "pt" : "Representação de Pessoa Física identificada por um cpf.",
+      "undefined" : "A person."
+    },
+    "attributes" : [ "external" ],
+    "id" : "23",
+    "superClasses" : [ "21" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Partner",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Partner",
+      "pt" : "Sócio",
+      "en" : "Partner"
+    },
+    "comment" : {
+      "pt" : "Indivíduo que exerce função de Sócio em uma Empresa."
+    },
+    "attributes" : [ "external" ],
+    "id" : "25"
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "166",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Disabled_Event",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Disabled_Event",
+      "pt" : "Evento Desabilitação",
+      "en" : "Disabled Event"
+    },
+    "comment" : {
+      "pt" : "Representa a ocorrência de Desabilitação / Baixa de Estabelecimentos e suas respectivas informações de início e fim."
+    },
+    "attributes" : [ "external" ],
+    "id" : "155"
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "174",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "175",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "70",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "127",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "176",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#integer",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "177",
+    "label" : {
+      "IRI-based" : "integer"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "178",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "179",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "72",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "180",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/ACTIVE",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "ACTIVE",
+      "pt" : "ATIVO",
+      "en" : "ACTIVE"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Situação Cadastral - Representa o Status de Situação Cadastral: ATIVO"
+    },
+    "attributes" : [ "external" ],
+    "id" : "50",
+    "superClasses" : [ "6" ]
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#int",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "143",
+    "label" : {
+      "IRI-based" : "int"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "189",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "76",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "110",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "153",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "190",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "38",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "id" : "192",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Disabled_Registry",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Disabled_Registry",
+      "pt" : "Registro Desabilitado",
+      "en" : "Disabled Registry"
+    },
+    "comment" : {
+      "pt" : "Registro de Ocorrência de Desabilitação de uma Determinada Empresa. Armazena uma cópia das informações da Empresa bem como a data e hora de desabilitação."
+    },
+    "attributes" : [ "external" ],
+    "id" : "193"
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "163",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#int",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "194",
+    "label" : {
+      "IRI-based" : "int"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#double",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "132",
+    "label" : {
+      "IRI-based" : "double"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "195",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "161",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/Organization",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "instances" : 0,
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "Organization",
+      "pt" : "Organização",
+      "undefined" : "Organization"
+    },
+    "subClasses" : [ "40", "42" ],
+    "comment" : {
+      "pt" : "A classe Organização representa uma espécie de Agente correspondente a instituições sociais como empresas, sociedades e entidades do gênero.",
+      "undefined" : "An organization."
+    },
+    "attributes" : [ "external" ],
+    "id" : "20",
+    "superClasses" : [ "21" ]
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/ComplianceLevel",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "ComplianceLevel",
+      "pt" : "Nivel Cumprimento",
+      "en" : "Compliance Level"
+    },
+    "comment" : {
+      "pt" : "Nível de cumprimento das obrigações tributárias, com o objetivo de prover ao Governo recursos para a consecução das políticas públicas. Nesse sentido, a obtenção de melhores níveis de cumprimento precisa estar orientada à análise e à observação das conhecidas falhas de cumprimento: omissão e morosidade.",
+      "en" : "Level of compliance with tax obligations, with the objective of providing the Government with resources for the achievement of public policies. In this sense, the achievement of better levels of compliance must be oriented to the analysis and observation of the known failures of compliance: omission and delay."
+    },
+    "attributes" : [ "external" ],
+    "id" : "170"
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "205",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "213",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "214",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "id" : "168",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "215",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "id" : "95",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "219",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "222",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/FunctionalSituation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "FunctionalSituation",
+      "pt" : "Situação Funcional",
+      "en" : "Functional Situation"
+    },
+    "comment" : {
+      "pt" : "Situação Fiscal de uma determinada Empresa, podendo estar Habilitado ou  Desabilitado."
+    },
+    "attributes" : [ "external" ],
+    "id" : "26"
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#double",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "223",
+    "label" : {
+      "IRI-based" : "double"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Contribution_Type",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Contribution_Type",
+      "pt" : "Tipo de Contribuinte",
+      "en" : "Contribution Type"
+    },
+    "subClasses" : [ "14", "46" ],
+    "comment" : {
+      "pt" : "Tipo de Contribuinte – pode ser ou não contribuinte, caso seja será do tipo ICMS ou IPVA."
+    },
+    "attributes" : [ "external" ],
+    "id" : "44"
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "140",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/User",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "User",
+      "pt" : "Usuário",
+      "en" : "User"
+    },
+    "comment" : {
+      "pt" : "Responsável por inserção, alteração ou remoção de dados no Cadastro."
+    },
+    "attributes" : [ "external" ],
+    "id" : "124"
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "232",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#int",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "172",
+    "label" : {
+      "IRI-based" : "int"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "130",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "151",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "235",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "210",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "236",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "121",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "89",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2002/07/owl#Thing",
+    "baseIri" : "http://owl2vowl.de",
+    "id" : "83",
+    "label" : {
+      "undefined" : "Thing"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "11",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "185",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2002/07/owl#Thing",
+    "baseIri" : "http://owl2vowl.de",
+    "id" : "182",
+    "label" : {
+      "undefined" : "Thing"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Establishment",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Establishment",
+      "pt" : "Estabelecimento",
+      "en" : "Establishment"
+    },
+    "comment" : {
+      "pt" : "Unidade Física de uma determinada Empresa, podendo ser do tipo Filial ou Matriz situada em uma Localização. Estabelecimentos são identificados através de um CNPJ e por sua inscrição estadual."
+    },
+    "attributes" : [ "external" ],
+    "id" : "40",
+    "superClasses" : [ "20" ]
+  }, {
+    "iri" : "http://www.w3.org/2002/07/owl#Thing",
+    "baseIri" : "http://owl2vowl.de",
+    "id" : "1",
+    "label" : {
+      "undefined" : "Thing"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/FiscalUnit",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "FiscalUnit",
+      "pt" : "Unidade Fiscal",
+      "en" : "Fiscal Unit"
+    },
+    "comment" : {
+      "pt" : "Representa uma Unidade Regional responsável por realizar a fiscalização de Contribuintes em uma determinada região."
+    },
+    "attributes" : [ "external" ],
+    "id" : "42",
+    "superClasses" : [ "20" ]
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "id" : "200",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "id" : "208",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/SEFAZ_CadastralSituation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "SEFAZ_CadastralSituation",
+      "pt" : "Situação Cadastral SEFAZ",
+      "en" : "Cadastral Situation"
+    },
+    "subClasses" : [ "48", "50", "52", "54", "57", "27", "36", "5" ],
+    "comment" : {
+      "pt" : "Situação cadastral é a informação que espelha no CNPJ a condição cadastral da inscrição da entidade. As situações cadastrais, perante o CNPJ, enquadram-se em:\n\n• Ativo;\n• Baixa;\n• Baixa de Ofício;\n• Cancelado;\n• Em Processo de Suspensão;\n• Processo de Baixa;\n• Suspenso;\n• Suspenso de Ofício;",
+      "en" : "Cadastral status is the information that reflects in the CNPJ the registration condition of the entity's registration. The registration situations, before the CNPJ, fall into:\n\n• Active;\n• Downloaded;\n• Suspended;\n• Canceled;\n• Suspended from Office;\n• Discharge process;\n• Suspension process;\n• Low of Office;"
+    },
+    "attributes" : [ "external" ],
+    "id" : "6"
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "id" : "202",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "147",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "id" : "107",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "id" : "157",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#integer",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "245",
+    "label" : {
+      "IRI-based" : "integer"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "id" : "159",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#decimal",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "198",
+    "label" : {
+      "IRI-based" : "decimal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#decimal",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "226",
+    "label" : {
+      "IRI-based" : "decimal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "250",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#dateTime",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "261",
+    "label" : {
+      "IRI-based" : "dateTime"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "138",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "136",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#int",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "258",
+    "label" : {
+      "IRI-based" : "int"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "104",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Qualification",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Qualification",
+      "pt" : "Qualificação",
+      "en" : "Qualification"
+    },
+    "subClasses" : [ "8" ],
+    "comment" : {
+      "pt" : "Tipo de Qualificação / Relação entre um Sócio e um determinado Cargo exercido. Pode adotar as seguintes Qualificações:\n\nSÓCIO\nACIONISTA\nSÓCIO COMANDITARIO\nSÓCIO COMANDITADO\nSÓCIO DE INDUSTRIA\nSÓCIO CAPITALISTA\nSÓCIO OSTENSIVO\nSOCIEDADE DE COMANDO\nSOCIEDADE FILIADA\nEMPRESA LIDER\nEMPRESA CONSORCIADA\nSÓCIO/ESPÓLIO\nSÓCIO GERENTE\nGERENTE DELEGADO\nDIRETOR\nCONSELHEIRO DE ADMINISTRACAO\nADMINISTRADOR\nADMINISTRADOR DO GRUPO\nADMINISTRADOR DE SOCIEDADE FILIADA\nGERENTE\nPRESIDENTE\nRESPONSÁVEL\nADMINISTRADOR JUDICIAL - PF\nADMINISTRADOR JUDICIAL - PJ\nADMJ - PROFISSIONAL RESPONSÁVEL\nADMINISTRADOR JUDICIAL/GESTOR\nADMINISTRADOR DE FATO\nCONSELHEIRO DE ADMINISTRAÇÃO DE FATO\nGESTOR JUDICIAL\nPAI/REPRESENTANTE\nMAE/REPRESENTANTE\nCURADOR/REPRESENTANTE\nTUTOR/REPRESENTANTE\nPAI/ASSISTENTE\nMAE/ASSISTENTE\nCURADOR/ASSISTENTE\nTUTOR/ASSISTENTE\nPROCURADOR\nDELEGADO\nCOMISSARIO\nINVENTARIANTE\nLIQUIDANTE\nSINDICO\nINTERVENTOR\nREPRESENTANTE LEGAL (FILIAL EMP ESTRANG)\nTABELIÃO\nOFICIAL DE REGISTRO\nCÔNSUL HONORÁRIO\nCÔNSUL\nDIPLOMATA\nCANDIDATO A CARGO POLÍTICO ELETIVO\nEMPRESARIO"
+    },
+    "attributes" : [ "external" ],
+    "id" : "9"
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#double",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "165",
+    "label" : {
+      "IRI-based" : "double"
+    }
+  }, {
+    "instances" : 0,
+    "union" : [ "40", "21" ],
+    "attributes" : [ "anonymous", "union" ],
+    "id" : "109"
+  }, {
+    "instances" : 0,
+    "union" : [ "166", "174" ],
+    "attributes" : [ "anonymous", "union" ],
+    "id" : "100"
+  }, {
+    "instances" : 0,
+    "union" : [ "20", "6" ],
+    "attributes" : [ "anonymous", "union" ],
+    "id" : "253"
+  }, {
+    "instances" : 0,
+    "union" : [ "40", "21" ],
+    "attributes" : [ "anonymous", "union" ],
+    "id" : "112"
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "266",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "instances" : 0,
+    "union" : [ "20", "25" ],
+    "attributes" : [ "anonymous", "union" ],
+    "id" : "68"
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "267",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "270",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "272",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/NON_TAXPAYER",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "NON_TAXPAYER",
+      "pt" : "NÃO CONTRIBUINTE",
+      "en" : "NON TAXPAYER"
+    },
+    "comment" : {
+      "pt" : "Tipo Não Contribuinte – Que não exerce papel de contribuinte."
+    },
+    "attributes" : [ "external" ],
+    "id" : "46",
+    "superClasses" : [ "44" ]
+  }, {
+    "iri" : "http://www.w3.org/2001/XMLSchema#string",
+    "baseIri" : "http://www.w3.org/2001/XMLSchema",
+    "id" : "282",
+    "label" : {
+      "IRI-based" : "string"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Accountant",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Accountant",
+      "pt" : "Contador",
+      "en" : "Accountant"
+    },
+    "comment" : {
+      "pt" : "É o profissional da ciência contábil ou contabilidade responsável por lidar com toda a área financeira, econômica e patrimonial de uma pessoa jurídica ou pessoa física.",
+      "en" : "Accountant is the professional of accounting science or accounting responsible for dealing with the entire financial, economic and patrimonial area of a legal entity or individual."
+    },
+    "attributes" : [ "external" ],
+    "id" : "8",
+    "superClasses" : [ "9" ]
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "256",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/SUSPENSION_PROCESS",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "SUSPENSION_PROCESS",
+      "pt" : "EM PROCESSO DE SUSPENSÃO",
+      "en" : "SUSPENSION PROCESS"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Situação Cadastral - Representa o Status de Situação Cadastral: EM PROCESSO DE SUSPENSÃO"
+    },
+    "attributes" : [ "external" ],
+    "id" : "36",
+    "superClasses" : [ "6" ]
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "117",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "263",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "260",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "97",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "231",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2002/07/owl#Thing",
+    "baseIri" : "http://owl2vowl.de",
+    "id" : "247",
+    "label" : {
+      "undefined" : "Thing"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Reason_Cadastral_Situation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Reason_Cadastral_Situation",
+      "pt" : "Razão de Desabilitação da Situação Cadastral",
+      "en" : "Reason Disabled"
+    },
+    "comment" : {
+      "pt" : "Razão de Desabilitação de uma Empresa ou Estabelecimento inscrito no Cadastro de Contribuintes do ICMS.",
+      "en" : "Closure of the activities of the company or establishment and its impression of the Taxpayer registered in the ICMS Taxpayer Register."
+    },
+    "attributes" : [ "external" ],
+    "id" : "88"
+  }, {
+    "iri" : "http://www.w3.org/2002/07/owl#Thing",
+    "baseIri" : "http://owl2vowl.de",
+    "id" : "238",
+    "label" : {
+      "undefined" : "Thing"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "91",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "86",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/TAXPAYER",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "TAXPAYER",
+      "pt" : "CONTRIBUINTE",
+      "en" : "TAXPAYER"
+    },
+    "subClasses" : [ "13", "18" ],
+    "comment" : {
+      "pt" : "Contribuinte é o sujeito passivo de uma obrigação tributária. Em outros termos, é aquele que se sujeita, por previsão legal, ao pagamento de tributos ao fisco.\n\nNo Brasil, os contribuintes são registrados no Cadastro de Pessoas Físicas (CPF), se pessoas naturais, ou no Cadastro Nacional de Pessoas Jurídicas (CNPJ), se forem sociedades ou firmas individuais.",
+      "en" : "Taxpayer is the taxable person of a tax obligation. In other words, it is the one that is subject, by legal provision, to the payment of taxes to the tax authorities.\n\nIn Brazil, taxpayers are registered with the Individual Taxpayer Registry (CPF), if they are natural persons, or with the National Registry of Legal Entities (CNPJ), if they are individual companies or firms."
+    },
+    "attributes" : [ "external" ],
+    "id" : "14",
+    "superClasses" : [ "44" ]
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "221",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/Agent",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Agent",
+      "pt" : "Agente",
+      "undefined" : "Agent"
+    },
+    "subClasses" : [ "20", "23" ],
+    "comment" : {
+      "pt" : "Conceito Genérico para representar Organizações e Pessoas.",
+      "undefined" : "An agent (eg. person, group, software or physical artifact)."
+    },
+    "attributes" : [ "external" ],
+    "id" : "21"
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "66",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/ICMS_TAXPAYER",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "ICMS_TAXPAYER",
+      "pt" : "CONTRIBUINTE ICMS",
+      "en" : "ICMS TAXPAYER"
+    },
+    "comment" : {
+      "pt" : "Subclasse de Contribuinte – Tipo Específico do tipo Contribuinte ICMS"
+    },
+    "attributes" : [ "external" ],
+    "id" : "13",
+    "superClasses" : [ "14" ]
+  }, {
+    "iri" : "http://www.w3.org/2002/07/owl#Thing",
+    "baseIri" : "http://owl2vowl.de",
+    "id" : "119",
+    "label" : {
+      "undefined" : "Thing"
+    }
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/Tax",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "instances" : 0,
+    "label" : {
+      "IRI-based" : "Tax",
+      "pt" : "Imposto",
+      "en" : "Tax"
+    },
+    "comment" : {
+      "pt" : "Tributo cobrado a um Estabelecimento através do cumprimento de uma Obrigação Legal."
+    },
+    "attributes" : [ "external" ],
+    "id" : "81"
+  }, {
+    "iri" : "http://www.w3.org/2002/07/owl#Thing",
+    "baseIri" : "http://owl2vowl.de",
+    "id" : "217",
+    "label" : {
+      "undefined" : "Thing"
+    }
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#Literal",
+    "id" : "78",
+    "label" : {
+      "IRI-based" : "Literal",
+      "undefined" : "Literal"
+    }
+  } ],
+  "property" : [ {
+    "id" : "0",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "4",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "7",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "10",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "12",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "17",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "19",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "22",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "24",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "29",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "32",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "33",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "34",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "35",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "37",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "39",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "41",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "43",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "45",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "47",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "49",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "51",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "53",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "56",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "58",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "62",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "63",
+    "type" : "rdfs:SubClassOf"
+  }, {
+    "id" : "65",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "67",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "69",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "71",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "73",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "75",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "77",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "79",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "82",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "85",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "87",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "90",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "92",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "94",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "96",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "98",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "99",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "101",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "103",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "106",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "108",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "111",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "113",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "114",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "84",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "115",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "116",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "118",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "120",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "123",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "126",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "128",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "129",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "131",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "133",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "135",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "137",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "30",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "139",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "141",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "142",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "144",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "146",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "148",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "150",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "152",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "154",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "156",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "158",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "160",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "162",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "164",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "167",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "169",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "3",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "171",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "173",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "181",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "145",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "183",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "184",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "186",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "187",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "125",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "188",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "191",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "2",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "196",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "197",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "199",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "201",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "203",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "204",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "206",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "207",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "209",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "211",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "212",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "216",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "218",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "220",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "224",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "225",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "227",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "228",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "229",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "230",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "233",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "234",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "237",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "239",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "240",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "241",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "242",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "243",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "244",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "246",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "248",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "249",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "251",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "252",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "254",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "255",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "257",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "259",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "262",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "31",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "264",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "265",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "74",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "268",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "269",
+    "type" : "owl:someValuesFrom"
+  }, {
+    "id" : "271",
+    "type" : "owl:someValuesFrom"
+  }, {
+    "id" : "273",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "274",
+    "type" : "owl:allValuesFrom"
+  }, {
+    "id" : "275",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "276",
+    "type" : "owl:allValuesFrom"
+  }, {
+    "id" : "277",
+    "type" : "owl:disjointWith"
+  }, {
+    "id" : "278",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "279",
+    "type" : "owl:disjointWith"
+  }, {
+    "id" : "280",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "281",
+    "type" : "owl:someValuesFrom"
+  }, {
+    "id" : "283",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "284",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "285",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "286",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "149",
+    "type" : "owl:objectProperty"
+  }, {
+    "id" : "287",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "288",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "289",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "290",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "291",
+    "type" : "owl:datatypeProperty"
+  }, {
+    "id" : "292",
+    "type" : "owl:datatypeProperty"
+  } ],
+  "propertyAttribute" : [ {
+    "iri" : "http://www.w3.org/ns/org#hasUnit",
+    "inverse" : "2",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "1",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "hasUnit",
+      "en" : "has Unit",
+      "it" : "ha Unit",
+      "fr" : "possÃ¨de une UnitÃ©",
+      "es" : "contiene unidad"
+    },
+    "superproperty" : [ "3" ],
+    "domain" : "1",
+    "comment" : {
+      "ja" : "ä¾‹ã?ˆã?°ã€?ã‚ˆã‚Šå¤§ã??ã?ªçµ„ç¹”å†…ã?®éƒ¨å±€ã?ªã?©ã€?ã?“ã?®çµ„ç¹”ã?®ä¸€éƒ¨ã?§ã?‚ã‚‹å?˜ä½?ã‚’ç¤ºã?—ã?¾ã?™ã€‚",
+      "en" : "Indicates a unit which is part of this Organization, e.g. a Department within a larger FormalOrganization. Inverse of `org:unitOf`.",
+      "it" : "Indica un'unitÃ  che Ã¨ parte di questa Organization, come ad esempio un dipartimento facente parte di una piÃ¹ ampia FormalOrganization. Ãˆ l'inverso di `org:unitOf`.",
+      "fr" : "Indique une UnitÃ© qui fait partie d'une Organisation, par exemple un DÃ©partment au sein d'une Organisation Formelle plus large. Inverse de `org:unitOf`.",
+      "es" : "Unidad que es parte de la organizaciÃ³n, como, por ejemplo, un departamento incluido en una organizaciÃ³n formal mÃ¡s amplia."
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "0"
+  }, {
+    "range" : "6",
+    "domain" : "5",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "4"
+  }, {
+    "range" : "9",
+    "domain" : "8",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "7"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasCitySection",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "11",
+    "description" : {
+      "en" : "The section of the city where the address is located.  Often used in countries like England, India and Japan."
+    },
+    "label" : {
+      "IRI-based" : "hasCitySection",
+      "en" : "has City Section"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "10"
+  }, {
+    "range" : "14",
+    "domain" : "13",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "12"
+  }, {
+    "range" : "14",
+    "domain" : "18",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "17"
+  }, {
+    "range" : "21",
+    "domain" : "20",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "19"
+  }, {
+    "range" : "21",
+    "domain" : "23",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "22"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_functional_situation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "26",
+    "label" : {
+      "IRI-based" : "has_functional_situation",
+      "pt" : "tem situação funcional",
+      "en" : "has functional situation"
+    },
+    "domain" : "25",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "24"
+  }, {
+    "iri" : "http://www.w3.org/2002/07/owl#topObjectProperty",
+    "baseIri" : "http://www.w3.org/2002/07/owl",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "topObjectProperty"
+    },
+    "domain" : "1",
+    "subproperty" : [ "30", "31" ],
+    "attributes" : [ "external", "object" ],
+    "id" : "29"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/is_head_office_of_subsidiary",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "is_head_office_of_subsidiary",
+      "pt" : "é matriz da filial",
+      "en" : "is head office of subsidiary"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "asymmetric", "object", "transitive" ],
+    "id" : "32"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#subOrganizationOf",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "subOrganizationOf"
+    },
+    "domain" : "1",
+    "subproperty" : [ "2" ],
+    "attributes" : [ "external", "object" ],
+    "id" : "33"
+  }, {
+    "range" : "6",
+    "domain" : "27",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "34"
+  }, {
+    "range" : "6",
+    "domain" : "36",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "35"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasPhoneNumber",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "38",
+    "label" : {
+      "IRI-based" : "hasPhoneNumber",
+      "en" : "has Phone Number"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "37"
+  }, {
+    "range" : "20",
+    "domain" : "40",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "39"
+  }, {
+    "range" : "20",
+    "domain" : "42",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "41"
+  }, {
+    "range" : "44",
+    "domain" : "14",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "43"
+  }, {
+    "range" : "44",
+    "domain" : "46",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "45"
+  }, {
+    "range" : "6",
+    "domain" : "48",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "47"
+  }, {
+    "range" : "6",
+    "domain" : "50",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "49"
+  }, {
+    "range" : "6",
+    "domain" : "52",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "51"
+  }, {
+    "range" : "6",
+    "domain" : "54",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "53"
+  }, {
+    "range" : "6",
+    "domain" : "57",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "56"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_deed",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "16",
+    "label" : {
+      "IRI-based" : "has_deed",
+      "pt" : "tem escritura",
+      "en" : "has deed"
+    },
+    "domain" : "59",
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "58"
+  }, {
+    "range" : "15",
+    "domain" : "16",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "62"
+  }, {
+    "range" : "23",
+    "domain" : "64",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "63"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/hasAreaCode",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "66",
+    "label" : {
+      "IRI-based" : "hasAreaCode",
+      "en" : "has Area Code"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "65"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_establishment",
+    "inverse" : "30",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "40",
+    "label" : {
+      "IRI-based" : "has_establishment",
+      "pt" : "tem estabelecimento",
+      "en" : "has establishment"
+    },
+    "domain" : "68",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "67"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/cadastral_situation_date",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "70",
+    "label" : {
+      "IRI-based" : "cadastral_situation_date",
+      "pt" : "data situação cadastral",
+      "en" : "cadastral situation date"
+    },
+    "domain" : "6",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "69"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/acronyms",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "72",
+    "label" : {
+      "IRI-based" : "acronyms",
+      "pt" : "acrônimos",
+      "en" : "acronyms"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "71"
+  }, {
+    "iri" : "http://www.w3.org/ns/prov-o.owlused",
+    "baseIri" : "http://www.w3.org/ns",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "prov-o.owlused"
+    },
+    "domain" : "1",
+    "subproperty" : [ "74" ],
+    "attributes" : [ "external", "object" ],
+    "id" : "73"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasWebSite",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "76",
+    "label" : {
+      "IRI-based" : "hasWebSite",
+      "en" : "has Web Site"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "75"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasEmail",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "78",
+    "label" : {
+      "IRI-based" : "hasEmail"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "77"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_tax",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "81",
+    "label" : {
+      "IRI-based" : "has_tax",
+      "pt" : "tem imposto",
+      "en" : "has tax"
+    },
+    "domain" : "80",
+    "attributes" : [ "external", "object", "transitive" ],
+    "id" : "79"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_administrative_division",
+    "inverse" : "84",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "83",
+    "label" : {
+      "IRI-based" : "has_administrative_division",
+      "pt" : "tem divisão administrativa",
+      "en" : "has administrative division"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "object", "symmetric" ],
+    "id" : "82"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/AddressDataProperty",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "86",
+    "label" : {
+      "IRI-based" : "AddressDataProperty"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "85"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/discharge_date",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "89",
+    "label" : {
+      "IRI-based" : "discharge_date",
+      "pt" : "data da baixa",
+      "en" : "discharge date"
+    },
+    "domain" : "88",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "87"
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/givenName",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "range" : "91",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "givenName",
+      "undefined" : "Given name"
+    },
+    "domain" : "1",
+    "comment" : {
+      "undefined" : "The given name of some person."
+    },
+    "attributes" : [ "external", "datatype" ],
+    "id" : "90"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#linkedTo",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "20",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "linkedTo",
+      "pt" : "relaciona-se a",
+      "en" : "linked to",
+      "it" : "collegato a",
+      "fr" : "reliÃ© Ã ",
+      "es" : "estÃ¡ relacionado con"
+    },
+    "domain" : "20",
+    "comment" : {
+      "ja" : "2ã?¤ã?®çµ„ç¹”ã?®ä»»æ„?ã?®é–¢ä¿‚ã‚’ç¤ºã?—ã?¾ã?™ã€‚",
+      "en" : "Indicates an arbitrary relationship between two organizations. Specializations of this can be used to, for example, denote funding or supply chain relationships.",
+      "it" : "Indica una relazione arbitraria tra due organizzazioni. Ad esempio, specializzazioni di questa proprietÃ  possono essere usate per denotare relazioni particolari tipo il finanziamento o la fornitura.",
+      "fr" : "Indique une relation arbitraire entre deux Organisations. Des spÃ©cialisations peuvent Ãªtre utilisÃ©es pour, par exemple, qualifier une relation de fournisseur ou de financeur.",
+      "es" : "RelaciÃ³n arbitraria entre dos organizaciones. Las especializaciones de esta relaciÃ³n se pueden utilizar para denotar relaciones de financiaciÃ³n o suministro, entre otras."
+    },
+    "attributes" : [ "external", "object", "reflexive" ],
+    "id" : "92"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/faxNumber",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "95",
+    "label" : {
+      "IRI-based" : "faxNumber"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "94"
+  }, {
+    "iri" : "http://www.w3.org/2002/07/owl#topDataProperty",
+    "baseIri" : "http://www.w3.org/2002/07/owl",
+    "range" : "97",
+    "label" : {
+      "IRI-based" : "topDataProperty"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "96"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_economic_activity",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "83",
+    "label" : {
+      "IRI-based" : "has_economic_activity",
+      "pt" : "tem atividade econômica",
+      "en" : "has economic activity"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "object" ],
+    "id" : "98"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/constitution_date",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "100",
+    "label" : {
+      "IRI-based" : "constitution_date",
+      "pt" : "data de constituição",
+      "en" : "constitution date"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "99"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_payment_regime",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "102",
+    "label" : {
+      "IRI-based" : "has_payment_regime",
+      "pt" : "tem regime pagamento",
+      "en" : "has payment regime"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "101"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/situation_name",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "104",
+    "label" : {
+      "IRI-based" : "situation_name",
+      "pt" : "nome situação",
+      "en" : "situation name"
+    },
+    "domain" : "6",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "103"
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/firstName",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "range" : "107",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "firstName",
+      "undefined" : "firstName"
+    },
+    "domain" : "23",
+    "comment" : {
+      "undefined" : "The first name of a person."
+    },
+    "attributes" : [ "external", "datatype" ],
+    "id" : "106"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasPersonalEmail",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "110",
+    "label" : {
+      "IRI-based" : "hasPersonalEmail",
+      "en" : "has Personal Email"
+    },
+    "domain" : "109",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "108"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_address",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "28",
+    "label" : {
+      "IRI-based" : "has_address",
+      "pt" : "tem endereço",
+      "en" : "has address"
+    },
+    "domain" : "112",
+    "attributes" : [ "external", "asymmetric", "object", "transitive" ],
+    "id" : "111"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_tax_regime",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "83",
+    "label" : {
+      "IRI-based" : "has_tax_regime",
+      "pt" : "tem regime fiscal",
+      "en" : "has tax regime"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "113"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_head_office",
+    "inverse" : "32",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "has_head_office",
+      "pt" : "tem matriz",
+      "en" : "has head office"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "object", "transitive" ],
+    "id" : "114"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/is_administrative_division_of",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "20",
+    "label" : {
+      "IRI-based" : "is_administrative_division_of",
+      "pt" : "é divisão administrativa de",
+      "en" : "is administrative division of"
+    },
+    "domain" : "83",
+    "attributes" : [ "external", "object" ],
+    "id" : "84"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_legal_obligations",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "80",
+    "label" : {
+      "IRI-based" : "has_legal_obligations",
+      "pt" : "tem obrigação legal",
+      "en" : "has legal obligations"
+    },
+    "domain" : "40",
+    "attributes" : [ "external", "object", "transitive" ],
+    "id" : "115"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasStreetNumber",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "117",
+    "label" : {
+      "IRI-based" : "hasStreetNumber",
+      "en" : "has Street Number"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "116"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_contact",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "119",
+    "label" : {
+      "IRI-based" : "has_contact",
+      "pt" : "tem contato",
+      "en" : "has contact"
+    },
+    "domain" : "21",
+    "attributes" : [ "external", "asymmetric", "object", "transitive" ],
+    "id" : "118"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/discharge_reason",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "121",
+    "label" : {
+      "IRI-based" : "discharge_reason",
+      "pt" : "razão da baixa",
+      "en" : "discharge reason"
+    },
+    "domain" : "88",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "120"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/update",
+    "inverse" : "125",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "14",
+    "label" : {
+      "IRI-based" : "update",
+      "pt" : "atualiza",
+      "en" : "update"
+    },
+    "domain" : "124",
+    "attributes" : [ "irreflexive", "external", "asymmetric", "object" ],
+    "id" : "123"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/beginning_deed",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "127",
+    "label" : {
+      "IRI-based" : "beginning_deed",
+      "pt" : "data de inicio escritura",
+      "en" : "beginning_deed"
+    },
+    "domain" : "16",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "126"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_city",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "has_city",
+      "pt" : "tem cidade",
+      "en" : "has city"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "128"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/district",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "130",
+    "label" : {
+      "IRI-based" : "district",
+      "pt" : "bairro",
+      "en" : "district"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "129"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/percentage_participation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "132",
+    "label" : {
+      "IRI-based" : "percentage_participation",
+      "pt" : "porcentagem de participação",
+      "en" : "percentage participation"
+    },
+    "domain" : "25",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "131"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#changedBy",
+    "inverse" : "74",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "83",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "changedBy",
+      "en" : "changed by",
+      "it" : "cambiata da",
+      "fr" : "modifiÃ©e par",
+      "es" : "es modificado por"
+    },
+    "domain" : "20",
+    "comment" : {
+      "ja" : "ã?“ã?®çµ„ç¹”ã?®å¤‰æ›´ã?®ã??ã?£ã?‹ã?‘ã?¨ã?ªã?£ã?Ÿå‡ºæ?¥äº‹ã‚’ç¤ºã?—ã?¾ã?™ã€‚",
+      "en" : "Indicates a change event which resulted in a change to this organization. Depending on the event the organization may or may not have continued to exist after the event. Inverse of `org:originalOrganization`.",
+      "it" : "Indica un evento che ha contribuito al cambiamento di questa organizzazione. A seconda dell'evento, l'organizzazione potrebbe essere esistente dopo l'evento o aver cessato la propria esistenza. Ãˆ l'inverso di `org:originalOrganization`.",
+      "fr" : "Indique un Ã©vÃ¨nement qui a impliquÃ© un changement dans l'Organisation. Selon l'Ã©vÃ¨nement, l'Organisation a continuÃ© Ã  exister aprÃ¨s l'Ã©vÃ¨nement, ou pas. Inverse de `org:originalOrganization`.",
+      "es" : "Evento de cambio que resulta en una modificaciÃ³n en la organizaciÃ³n. Dependiendo del evento, la organizaciÃ³n puede dejar de existir tras el cambio. Es la relaciÃ³n inversa de `org:originalOrganization`."
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "133"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/regime_name",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "136",
+    "label" : {
+      "IRI-based" : "regime_name",
+      "pt" : "nome do regime",
+      "en" : "regime name"
+    },
+    "domain" : "102",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "135"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/state_registration",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "138",
+    "label" : {
+      "IRI-based" : "state_registration",
+      "pt" : "inscrição estadual",
+      "en" : "state registration"
+    },
+    "domain" : "61",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "137"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/is_establishment_of",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "25",
+    "label" : {
+      "IRI-based" : "is_establishment_of",
+      "en" : "is stablishment"
+    },
+    "superproperty" : [ "29" ],
+    "domain" : "40",
+    "comment" : {
+      "pt" : "é estabelecimento de"
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "30"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/establishment_type",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "140",
+    "label" : {
+      "IRI-based" : "establishment_type",
+      "pt" : "tipo de estabelecimento",
+      "en" : "establishment type"
+    },
+    "domain" : "40",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "139"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_user",
+    "inverse" : "125",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "124",
+    "label" : {
+      "IRI-based" : "has_user",
+      "pt" : "tem usuário",
+      "en" : "has user"
+    },
+    "domain" : "14",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "141"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasUnitNumber",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "143",
+    "label" : {
+      "IRI-based" : "hasUnitNumber",
+      "en" : "has Unit Number"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "142"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#hasMembership",
+    "inverse" : "145",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "119",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "hasMembership",
+      "en" : "membership",
+      "it" : "appartenenza",
+      "fr" : "engagement",
+      "es" : "tiene membresÃ­a"
+    },
+    "domain" : "21",
+    "comment" : {
+      "ja" : "ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã?Œæ‹…ã?†æ§‹æˆ?å“¡é–¢ä¿‚ã‚’ç¤ºã?—ã?¾ã?™ã€‚",
+      "en" : "Indicates a membership relationship that the Agent plays. Inverse of `org:member`.",
+      "it" : "Indica una relazione di appartenenza che coinvolge un Agent. Ãˆ l'inverso di `org:member`.",
+      "fr" : "Indique pour cet Agent un engagement dans une Organisation. Inverse de `org:member`.",
+      "es" : "RelaciÃ³n de pertenencia o afiliaciÃ³n a una organizaciÃ³n en la que el agente desempeÃ±a un cargo o funciÃ³n. Es la relaciÃ³n inversa de `org:member`."
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "144"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#location",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "147",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "location",
+      "en" : "location",
+      "it" : "luogo",
+      "fr" : "localisation",
+      "es" : "estÃ¡ ubicado en"
+    },
+    "domain" : "23",
+    "comment" : {
+      "ja" : "ä¾‹ã?ˆã?°ã€?å†…éƒ¨é…?é€?ç›®çš„ã?®ãƒ¡ãƒ¼ãƒ«ãƒ»ã‚¹ãƒˆãƒƒãƒ—ï¼ˆMail Stopï¼‰ã?ªã?©ã?®ã€?çµ„ç¹”å†…ã?®äººã?®ä½?ç½®è¨˜è¿°ã‚’æ??ä¾›ã?—ã?¾ã?™ã€‚",
+      "en" : "Gives a location description for a person within the organization, for example a _Mail Stop_ for internal posting purposes.",
+      "it" : "Indica la descrizione del luogo presso cui Ã¨ possibile reperire una persona dell'organizzazione.",
+      "fr" : "Indique la description de l'endroit ou est basÃ© une personne de l'Organisation, par exemple pour des besoins de messagerie interne (Bureau 42).",
+      "es" : "Lugar o ubicaciÃ³n exacta de una persona en una organizaciÃ³n con el objetivo de facilitar, por ejemplo, la entrega de correo."
+    },
+    "attributes" : [ "external", "datatype" ],
+    "id" : "146"
+  }, {
+    "iri" : "http://www.w3.org/ns/prov-o.owlwasGeneratedBy",
+    "baseIri" : "http://www.w3.org/ns",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "prov-o.owlwasGeneratedBy"
+    },
+    "domain" : "1",
+    "subproperty" : [ "149" ],
+    "attributes" : [ "external", "object" ],
+    "id" : "148"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/end_deed",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "151",
+    "label" : {
+      "IRI-based" : "end_deed",
+      "pt" : "data final da escritura",
+      "en" : "end deed"
+    },
+    "domain" : "16",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "150"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasCountryCode",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "153",
+    "label" : {
+      "IRI-based" : "hasCountryCode",
+      "en" : "has Country Code"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "152"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/excluded_by",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "124",
+    "label" : {
+      "IRI-based" : "excluded_by",
+      "pt" : "excluso por",
+      "en" : "excluded by"
+    },
+    "domain" : "155",
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "154"
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/familyName",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "range" : "157",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "familyName",
+      "undefined" : "familyName"
+    },
+    "domain" : "23",
+    "comment" : {
+      "undefined" : "The family name of some person."
+    },
+    "attributes" : [ "external", "datatype" ],
+    "id" : "156"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/street_type",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "159",
+    "label" : {
+      "IRI-based" : "street_type"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "functional", "datatype" ],
+    "id" : "158"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/reason",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "161",
+    "label" : {
+      "IRI-based" : "reason",
+      "pt" : "razão",
+      "en" : "reason"
+    },
+    "domain" : "155",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "160"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasBuilding",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "163",
+    "description" : {
+      "en" : "The building where the address is located.  Often used in countries like England, India and Japan."
+    },
+    "label" : {
+      "IRI-based" : "hasBuilding",
+      "en" : "has Building"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "162"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/share_capital_value",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "165",
+    "label" : {
+      "IRI-based" : "share_capital_value",
+      "pt" : "valor capital social",
+      "en" : "share capital value"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "164"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/mailbox_code",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "168",
+    "label" : {
+      "IRI-based" : "mailbox_code",
+      "en" : "mailbox code"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "167"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_compliance_level",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "170",
+    "label" : {
+      "IRI-based" : "has_compliance_level",
+      "pt" : "tem nivel cumprimento",
+      "en" : "has compliance level"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "169"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#hasSubOrganization",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "hasSubOrganization"
+    },
+    "domain" : "1",
+    "subproperty" : [ "0" ],
+    "attributes" : [ "external", "object" ],
+    "id" : "3"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/division_number",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "172",
+    "label" : {
+      "IRI-based" : "division_number",
+      "pt" : "divisão administrativa",
+      "en" : "division number"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "171"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_type_of_society",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "83",
+    "label" : {
+      "IRI-based" : "has_type_of_society",
+      "pt" : "tem tipo de sociedade",
+      "en" : "has society type"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "object", "transitive" ],
+    "id" : "173"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_consumer_unit",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "182",
+    "label" : {
+      "IRI-based" : "has_consumer_unit",
+      "pt" : "tem unidade consumidora",
+      "en" : "has consumer unit"
+    },
+    "domain" : "40",
+    "attributes" : [ "external", "object", "symmetric" ],
+    "id" : "181"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#member",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "21",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "member",
+      "en" : "member",
+      "it" : "membro",
+      "fr" : "membre",
+      "es" : "es condiciÃ³n de miembro sobre agente"
+    },
+    "domain" : "119",
+    "comment" : {
+      "ja" : "æ§‹æˆ?å“¡é–¢ä¿‚ã?«å?«ã?¾ã‚Œã?¦ã?„ã‚‹äººï¼ˆã?¾ã?Ÿã?¯ã€?çµ„ç¹”ã‚’å?«ã‚“ã?§ã?„ã‚‹ä»–ã?®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆï¼‰ã‚’ç¤ºã?—ã?¾ã?™ã€‚",
+      "en" : "Indicates the Person (or other Agent including Organization) involved in the Membership relationship. Inverse of `org:hasMembership`",
+      "it" : "Indica la Person (o un altro Agent) coinvolto in una relazione di Membership. Ãˆ l'inverso di `org:hasMembership`.",
+      "fr" : "Indique une personne (ou tout autre Agent, y compris une Organisation) impliquÃ© dans la relation d'Engagement. Inverse de `org:hasMembership`",
+      "es" : "Persona (u otro agente, incluyendo una organizaciÃ³n) que participa en la relaciÃ³n de membresÃ­a. Es la relaciÃ³n inversa de `org:hasMembership`."
+    },
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "145"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/stored_in_establishment",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "40",
+    "label" : {
+      "IRI-based" : "stored_in_establishment"
+    },
+    "domain" : "59",
+    "comment" : {
+      "pt" : "armazenado em estabelecimento",
+      "en" : "stored in establishment"
+    },
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "183"
+  }, {
+    "iri" : "http://sefaz.ma.gov.br/fiscalSituation",
+    "baseIri" : "http://sefaz.ma.gov.br",
+    "range" : "185",
+    "label" : {
+      "IRI-based" : "fiscalSituation",
+      "undefined" : "fiscal situation"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "184"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_establishment_type",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "182",
+    "label" : {
+      "IRI-based" : "has_establishment_type",
+      "pt" : "tem tipo de estabelecimento",
+      "en" : "has establishment type"
+    },
+    "domain" : "40",
+    "attributes" : [ "external", "asymmetric", "object", "transitive" ],
+    "id" : "186"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_fiscal_unit",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "42",
+    "label" : {
+      "IRI-based" : "has_fiscal_unit",
+      "pt" : "tem unidades fiscal",
+      "en" : "has fiscal unit"
+    },
+    "domain" : "40",
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "187"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/updated_by",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "124",
+    "label" : {
+      "IRI-based" : "updated_by",
+      "pt" : "atualizado por",
+      "en" : "updated by"
+    },
+    "domain" : "14",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "125"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#memberOf",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "20",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "memberOf",
+      "en" : "member of",
+      "it" : "membro di",
+      "fr" : "membre de",
+      "es" : "es miembro de"
+    },
+    "domain" : "21",
+    "comment" : {
+      "ja" : "ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆï¼ˆäººã?¾ã?Ÿã?¯ä»–ã?®çµ„ç¹”ï¼‰ã?Œçµ„ç¹”ã?®ãƒ¡ãƒ³ãƒ?ãƒ¼ã?§ã?‚ã‚‹ã?“ã?¨ã‚’ç¤ºã?—ã?¾ã?™ã€‚ã?Ÿã? ã?—ã€?ã??ã?®æ§‹æˆ?å“¡ã?®æœ¬è³ªã‚„æ‹…ã?†å½¹å‰²ã?¯ç¤ºã?—ã?¾ã?›ã‚“ã€‚ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ¼å??ã?®é?¸æŠžã?¯ã€?ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãƒ¼ã‚’æ­£å¼?ã?ªæ§‹æˆ?å“¡é…?ç½®ã?®ã?¿ã?«åˆ¶é™?ã?™ã‚‹ã?“ã?¨ã?Œç›®çš„ã?§ã?¯ã?ªã?„ã?“ã?¨ã?«æ³¨æ„?ã?—ã?¦ã??ã? ã?•ã?„ã€‚æ‰€å±žã‚„çµ„ç¹”ã?¸ã?®ã??ã?®ä»–ã?®é–¢ä¸Žã?ªã?©ã?®é–¢é€£ã?™ã‚‹æ¦‚å¿µã‚’ã‚«ãƒ?ãƒ¼ã?™ã‚‹ã?“ã?¨ã‚‚æ„?å›³ã?•ã‚Œã?¦ã?„ã?¾ã?™ã€‚æ‹¡å¼µã?«ã‚ˆã‚Šã€?ã?“ã?®é–¢ä¿‚ã‚’ç‰¹æ®ŠåŒ–ã?—ã€?çµ„ç¹”å†…ã?®ç‰¹å®šã?®å½¹å‰²ã‚„ã‚ˆã‚Šãƒ‹ãƒ¥ã‚¢ãƒ³ã‚¹ã‚’å?«ã‚“ã? çµ„ç¹”ã?¨ã?®é–¢ä¿‚ã‚’ç¤ºã?™ã?“ã?¨ã?Œã?§ã??ã?¾ã?™ã€‚",
+      "en" : "Indicates that a person is a member of the Organization with no indication of the nature of that membership or the role played. Note that the choice of property name is not meant to limit the property to only formal membership arrangements, it is also indended to cover related concepts such as affilliation or other involvement in the organization. Extensions can specialize this relationship to indicate particular roles within the organization or more nuanced relationships to the organization. Has an optional inverse, `org:hasmember`.",
+      "it" : "Indica che una persona Ã¨ membro di una Organization senza una precisa indicazione sulla natura di questa appartenenza e sul suo ruolo. Si noti che la scelta del nome di questa proprietÃ  non intende limitarla alla sola  rappresentazione formalmente di un'appartenenza. La proprietÃ  puÃ² coprire anche altri coinvolgimenti nell'organizzazione. Questa proprietÃ  puÃ² essere specializzata per indicare ruoli all'interno organizzazione o relazioni di diverse tipologie. Ha `org:hasmember` come proprietÃ  inversa opzionale.",
+      "fr" : "Indique qu'une personne est membre de l'Organisation sans prÃ©cision sur la nature de cet engagement ou du rÃ´le jouÃ©. Notez que le choix du nom de cette propriÃ©tÃ© ne vise pas Ã  la limiter aux seuls engagements formels, elle peut Ã©galement couvrir des concepts reliÃ©s comme l'affiliation ou le bÃ©nÃ©volat. Des extensions peuvent spÃ©cialiser cette relation pour indiquer des rÃ´les particuliers au sein de l'Organisation or des relations plus nuancÃ©es avec elle. PossÃ¨de une propriÃ©tÃ© inverse optionnelle, `org:hasmember`.",
+      "es" : "Persona que pertenece a la organizaciÃ³n o es miembro de la misma, sin que conste la naturaleza de dicha pertenencia o el papel que desempeÃ±a. Se debe tener en cuenta que la elecciÃ³n de una denominaciÃ³n para esta propiedad no significa que la propiedad estÃ© limitada a ciertos tipos de pertenencia formales, sino que pretende cubrir conceptos relacionados como el de afiliaciÃ³n u otras formas de participaciÃ³n en la organizaciÃ³n. Se puede hacer uso de extensiones para especializar esta relaciÃ³n de forma que incluya tipos especÃ­ficos de pertenencia a las organizaciones o relaciones especiales con la organizaciÃ³n."
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "188"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/city_code",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "177",
+    "label" : {
+      "IRI-based" : "city_code",
+      "pt" : "código do município",
+      "en" : "city code"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "191"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#unitOf",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "1",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "unitOf",
+      "en" : "unit Of",
+      "it" : "unitÃ  di",
+      "fr" : "unitÃ© de",
+      "es" : "es unidad de"
+    },
+    "superproperty" : [ "33" ],
+    "domain" : "1",
+    "comment" : {
+      "ja" : "ä¾‹ã?ˆã?°ã€?ã‚ˆã‚Šå¤§ã??ã?ªçµ„ç¹”å†…ã?®éƒ¨å±€ã?ªã?©ã€?ã?“ã?®å?˜ä½?ã?Œã??ã?®ä¸€éƒ¨åˆ†ã?§ã?‚ã‚‹çµ„ç¹”ã‚’ç¤ºã?—ã?¾ã?™ã€‚",
+      "en" : "Indicates an Organization of which this Unit is a part, e.g. a Department within a larger FormalOrganization. This is the inverse of `org:hasUnit`.",
+      "it" : "Indica un Organization di cui questa Unit fa parte, come ad esempio un dipartimento all'interno di una piÃ¹ vasta FormalOrganization. Ãˆ l'inverso di `org:hasUnit`.",
+      "fr" : "Indique l'Organisation dont cette Organisation ou UnitÃ© fait partie, par exemple un DÃ©partment au sein d'une Organisation Formelle plus large. Inverse de `org:hasUnit`.",
+      "es" : "OrganizaciÃ³n de la que es parte esta unidad, por ejemplo, un departamento incluido en una organizaciÃ³n formal mÃ¡s amplia."
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "2"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#resultingOrganization",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "20",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "resultingOrganization",
+      "en" : "resulted in",
+      "it" : "risultato in",
+      "fr" : "a donnÃ© naissance Ã ",
+      "es" : "resulta en"
+    },
+    "domain" : "83",
+    "comment" : {
+      "ja" : "å‡ºæ?¥äº‹ã?®çµ?æžœã€?ä½œæˆ?ã€?å¤‰æ›´ã?•ã‚Œã?Ÿçµ„ç¹”ã‚’ç¤ºã?—ã?¾ã?™ã€‚",
+      "en" : "Indicates an organization which was created or changed as a result of the event. Inverse of `org:resultedFrom`.",
+      "it" : "Indica l'organizzazione che Ã¨ stata creata o mutata a seguito dell'evento. Ãˆ l'inverso di `org:resultedFrom`.",
+      "fr" : "Indique une organisation qui a Ã©tÃ© crÃ©Ã©e ou a Ã©tÃ© modifiÃ©e Ã  la suite d'un Ã‰vÃ¨nement de changement. Inverse de `org:resultedFrom`.",
+      "es" : "OrganizaciÃ³n que ha sido creada o modificada tras un evento especÃ­fico.Â  Es la relaciÃ³n inversa de `org:resultedFrom`."
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "196"
+  }, {
+    "iri" : "http://www.w3.org/2003/01/geo/wgs84_pos#long",
+    "baseIri" : "http://www.w3.org/2003/01/geo/wgs84_pos",
+    "range" : "198",
+    "label" : {
+      "IRI-based" : "long",
+      "en" : "longitude"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "197"
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/lastName",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "range" : "200",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "lastName",
+      "undefined" : "lastName"
+    },
+    "domain" : "23",
+    "comment" : {
+      "undefined" : "The last name of a person."
+    },
+    "attributes" : [ "external", "datatype" ],
+    "id" : "199"
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/birthday",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "range" : "202",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "birthday",
+      "undefined" : "birthday"
+    },
+    "domain" : "21",
+    "comment" : {
+      "undefined" : "The birthday of this Agent, represented in mm-dd string form, eg. '12-31'."
+    },
+    "attributes" : [ "external", "functional", "datatype" ],
+    "id" : "201"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_cadastral_situation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "6",
+    "label" : {
+      "IRI-based" : "has_cadastral_situation",
+      "pt" : "tem situação cadastral",
+      "en" : "has cadastral situation"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "203"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/liquid_closing_date",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "205",
+    "label" : {
+      "IRI-based" : "liquid_closing_date"
+    },
+    "domain" : "20",
+    "comment" : {
+      "pt" : "data de fechamento líquido",
+      "en" : "liquid closing date"
+    },
+    "attributes" : [ "external", "datatype" ],
+    "id" : "204"
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/member",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "range" : "21",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "member",
+      "undefined" : "member"
+    },
+    "domain" : "119",
+    "comment" : {
+      "undefined" : "Indicates a member of a Group"
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "206"
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/gender",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "range" : "208",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "gender",
+      "undefined" : "gender"
+    },
+    "domain" : "21",
+    "comment" : {
+      "undefined" : "The gender of this Agent (typically but not necessarily 'male' or 'female')."
+    },
+    "attributes" : [ "external", "functional", "datatype" ],
+    "id" : "207"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/ddd",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "210",
+    "label" : {
+      "IRI-based" : "ddd"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "209"
+  }, {
+    "iri" : "http://rs.tdwg.org/ontology/voc/Person#deathdate",
+    "baseIri" : "http://rs.tdwg.org/ontology/voc/Person",
+    "range" : "178",
+    "label" : {
+      "IRI-based" : "deathdate"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "211"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/included_by",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "124",
+    "label" : {
+      "IRI-based" : "included_by",
+      "pt" : "incluso por",
+      "en" : "included by"
+    },
+    "domain" : "155",
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "212"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_relation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "25",
+    "label" : {
+      "IRI-based" : "has_relation",
+      "pt" : "tem relação",
+      "en" : "has relation"
+    },
+    "domain" : "217",
+    "attributes" : [ "external", "object", "symmetric" ],
+    "id" : "216"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/license_number",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "213",
+    "label" : {
+      "IRI-based" : "license_number",
+      "pt" : "número da licença",
+      "en" : "license number"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "218"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/dddFax",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "221",
+    "label" : {
+      "IRI-based" : "dddFax"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "220"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/reference",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "195",
+    "label" : {
+      "IRI-based" : "reference",
+      "pt" : "referência",
+      "en" : "reference"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "224"
+  }, {
+    "iri" : "http://www.w3.org/2003/01/geo/wgs84_pos#lat",
+    "baseIri" : "http://www.w3.org/2003/01/geo/wgs84_pos",
+    "range" : "226",
+    "label" : {
+      "IRI-based" : "lat",
+      "en" : "lattitude"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "225"
+  }, {
+    "iri" : "http://www.w3.org/ns/prov-o.owlwasDerivedFrom",
+    "baseIri" : "http://www.w3.org/ns",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "prov-o.owlwasDerivedFrom"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "object" ],
+    "id" : "227"
+  }, {
+    "iri" : "http://id.loc.gov/ontologies/bibframe/code",
+    "baseIri" : "http://id.loc.gov/ontologies/bibframe",
+    "range" : "192",
+    "annotations" : {
+      "modified" : [ {
+        "identifier" : "modified",
+        "language" : "undefined",
+        "value" : "2016-04-21 (New)",
+        "type" : "label"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "code",
+      "undefined" : "Code"
+    },
+    "domain" : "1",
+    "comment" : {
+      "undefined" : "String of characters that serves as a code representing information."
+    },
+    "attributes" : [ "external", "datatype" ],
+    "id" : "228"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/inclusion_date",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "219",
+    "label" : {
+      "IRI-based" : "inclusion_date",
+      "pt" : "data de inclusão",
+      "en" : "inclusion date"
+    },
+    "domain" : "14",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "229"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasStreet",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "231",
+    "label" : {
+      "IRI-based" : "hasStreet",
+      "en" : "has Street"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "230"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#role",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "1",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "role",
+      "en" : "role",
+      "it" : "ruolo",
+      "fr" : "rÃ´le",
+      "es" : "desempeÃ±a la actividad de"
+    },
+    "domain" : "1",
+    "comment" : {
+      "ja" : "ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã?Œçµ„ç¹”ã?¨ã?®æ§‹æˆ?å“¡é–¢ä¿‚ã?«ã?Šã?„ã?¦æ‹…ã?†å½¹å‰²ã‚’ç¤ºã?—ã?¾ã?™ã€‚ãƒ?ã‚¹ãƒˆã?®ä¿?æŒ?è€…ã?Œæ‹…ã?†å½¹å‰²ã‚’ç¤ºã?™ã?Ÿã‚?ã?«org:Postã?§ç”¨ã?„ã‚‹ã?“ã?¨ã‚‚ã?§ã??ã?¾ã?™ã€‚",
+      "en" : "Indicates the Role that the Agent plays in a Membership relationship with an Organization.",
+      "it" : "Indica il Role che un Agent ricopre in una relazione di Membership con una Organization",
+      "fr" : "Indique le RÃ´le de l'Agent dans son Engagement avec l'Organisation.",
+      "es" : "Actividad que el agente desempeÃ±a en una relaciÃ³n de pertenencia a una organizaciÃ³n."
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "233"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/hasLocation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "215",
+    "description" : {
+      "en" : "Closet street intersection for the organization."
+    },
+    "label" : {
+      "IRI-based" : "hasLocation",
+      "en" : "has Location"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "234"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_nacionality",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "238",
+    "label" : {
+      "IRI-based" : "has_nacionality",
+      "pt" : "tem nacionalidade",
+      "en" : "has nacionality"
+    },
+    "domain" : "14",
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "237"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_qualification_type",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "9",
+    "label" : {
+      "IRI-based" : "has_qualification_type",
+      "pt" : "tem tipo de relação",
+      "en" : "has relation type"
+    },
+    "domain" : "25",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "239"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_register_source",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "124",
+    "label" : {
+      "IRI-based" : "has_register_source",
+      "pt" : "tem_fonte_cadastro",
+      "en" : "has register source"
+    },
+    "domain" : "14",
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "240"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/accountant_crc",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "180",
+    "label" : {
+      "IRI-based" : "accountant_crc",
+      "pt" : "crc do contador",
+      "en" : "accountant crc"
+    },
+    "domain" : "8",
+    "attributes" : [ "external", "functional", "datatype" ],
+    "id" : "241"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/cpf",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "236",
+    "label" : {
+      "IRI-based" : "cpf",
+      "en" : "cpf"
+    },
+    "domain" : "23",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "242"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasAreaCode",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "194",
+    "label" : {
+      "IRI-based" : "hasAreaCode"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "243"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_legal_representant",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "64",
+    "label" : {
+      "IRI-based" : "has_legal_representant",
+      "pt" : "tem representante legal",
+      "en" : "has legal representative"
+    },
+    "domain" : "14",
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "244"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_situation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "247",
+    "label" : {
+      "IRI-based" : "has_situation",
+      "pt" : "tem situacao",
+      "en" : "has situation"
+    },
+    "domain" : "80",
+    "attributes" : [ "external", "functional", "object" ],
+    "id" : "246"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/cnpj",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "176",
+    "label" : {
+      "IRI-based" : "cnpj",
+      "pt" : "cnpj",
+      "en" : "cnpj"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "248"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/start_participation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "250",
+    "label" : {
+      "IRI-based" : "start_participation",
+      "pt" : "inicio da participação",
+      "en" : "start_participation"
+    },
+    "domain" : "25",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "249"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasPostalBox",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "190",
+    "description" : {
+      "en" : "An address can have a postal box associated with it."
+    },
+    "label" : {
+      "IRI-based" : "hasPostalBox",
+      "en" : "has Postal Box"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "251"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_discharge",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "88",
+    "label" : {
+      "IRI-based" : "has_discharge",
+      "pt" : "tem baixa",
+      "en" : "has discharge"
+    },
+    "domain" : "253",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "252"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/estimated_value",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "223",
+    "label" : {
+      "IRI-based" : "estimated_value",
+      "pt" : "valor estimado",
+      "en" : "estimated value"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "254"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasContactDataProperty",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "256",
+    "label" : {
+      "IRI-based" : "hasContactDataProperty"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "255"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/regime_code",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "258",
+    "label" : {
+      "IRI-based" : "regime_code",
+      "pt" : "código do regime",
+      "en" : "regime code"
+    },
+    "domain" : "102",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "257"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/telephoneDataProperty",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "260",
+    "label" : {
+      "IRI-based" : "telephoneDataProperty"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "259"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/street_name",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "263",
+    "label" : {
+      "IRI-based" : "street_name",
+      "pt" : "nome da rua",
+      "en" : "street name"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "262"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_periodicity",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "122",
+    "label" : {
+      "IRI-based" : "has_periodicity",
+      "pt" : "tem periodicidade",
+      "en" : "has periodicity"
+    },
+    "superproperty" : [ "29" ],
+    "domain" : "81",
+    "attributes" : [ "external", "object" ],
+    "id" : "31"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_reason_disabled",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "88",
+    "label" : {
+      "IRI-based" : "has_reason_disabled",
+      "pt" : "tem razão desabilitado",
+      "en" : "has reason disabled"
+    },
+    "domain" : "155",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "264"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_reason_disabled_tax_situation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "88",
+    "label" : {
+      "IRI-based" : "has_reason_disabled_tax_situation",
+      "pt" : "tem razão desabilitado situação fiscal",
+      "en" : "has reason disabled tax situation"
+    },
+    "domain" : "105",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "265"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#originalOrganization",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "20",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "originalOrganization",
+      "en" : "original organization",
+      "it" : "organizzazione originale",
+      "fr" : "organisation originelle",
+      "es" : "es organizaciÃ³n original"
+    },
+    "superproperty" : [ "73" ],
+    "domain" : "83",
+    "comment" : {
+      "ja" : "å¤‰æ›´ã?®ã??ã?£ã?‹ã?‘ã?¨ã?ªã?£ã?Ÿå‡ºæ?¥äº‹ä»¥å‰?ã?«å­˜åœ¨ã?—ã?Ÿ1ã?¤ä»¥ä¸Šã?®çµ„ç¹”ã‚’ç¤ºã?—ã?¾ã?™ã€‚å‡ºæ?¥äº‹ã?«ã‚ˆã?£ã?¦ã€?å‡ºæ?¥äº‹ã?®å¾Œã?«ã??ã‚Œã‚‰ã?¯å­˜åœ¨ã?—ç¶šã?‘ã?Ÿã?‹ã‚‚ã€?å­˜åœ¨ã?—ç¶šã?‘ã?ªã?‹ã?£ã?Ÿã?‹ã‚‚ã?—ã‚Œã?¾ã?›ã‚“ã€‚",
+      "en" : "Indicates one or more organizations that existed before the change event. Depending on the event they may or may not have continued to exist after the event. Inverse of `org:changedBy`.",
+      "it" : "Indica una o piÃ¹ organizzazioni pregresse rispetto a un evento di cambiamento. A seconda dell'evento, queste organizzazioni potrebbero essere esistenti dopo l'evento o  aver cessato la loro esistenza. Ãˆ l'inverso di `org:changedBy`.",
+      "fr" : "Indique une ou plusieurs organisations qui ont existÃ© avant un Ã©vÃ¨nement de changement. Selon l'Ã©vÃ¨nement, ces organisations ont pu continuer Ã  exister ou non. Inverse de `org:changedBy`. ",
+      "es" : "Una o mÃ¡s organizaciones que existÃ­an antes de que sucediera el cambio en la organizaciÃ³n. Dependiendo del tipo de cambio, dichas organizaciones pueden haber dejado de existir o no. Es la relaciÃ³n inversa de `org:changedBy`."
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "74"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasPostalCode",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "189",
+    "label" : {
+      "IRI-based" : "hasPostalCode",
+      "en" : "has Postal Code"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "268"
+  }, {
+    "iri" : "http://www.w3.org/2006/vcard/ns#postal-code",
+    "baseIri" : "http://www.w3.org/2006/vcard/ns",
+    "range" : "270",
+    "label" : {
+      "IRI-based" : "postal-code"
+    },
+    "domain" : "28",
+    "attributes" : [ "external", "datatype", "someValues" ],
+    "id" : "269"
+  }, {
+    "iri" : "http://www.w3.org/2000/01/rdf-schema#label",
+    "baseIri" : "http://www.w3.org/2000/01/rdf-schema",
+    "range" : "272",
+    "label" : {
+      "IRI-based" : "label"
+    },
+    "domain" : "28",
+    "attributes" : [ "external", "datatype", "someValues" ],
+    "id" : "271"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_fiscal_situation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "105",
+    "label" : {
+      "IRI-based" : "has_fiscal_situation",
+      "pt" : "tem situação fiscal",
+      "en" : "has fiscal situation"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "273"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_tax",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "81",
+    "label" : {
+      "IRI-based" : "has_tax",
+      "pt" : "tem imposto",
+      "en" : "has tax"
+    },
+    "domain" : "80",
+    "attributes" : [ "external", "object", "allValues", "transitive" ],
+    "id" : "274"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_uf",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "1",
+    "label" : {
+      "IRI-based" : "has_uf"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "object" ],
+    "id" : "275"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/updated_by",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "124",
+    "label" : {
+      "IRI-based" : "updated_by",
+      "pt" : "atualizado por",
+      "en" : "updated by"
+    },
+    "domain" : "14",
+    "attributes" : [ "external", "asymmetric", "object", "allValues" ],
+    "id" : "276"
+  }, {
+    "range" : "20",
+    "domain" : "15",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "277"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_representant",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "238",
+    "label" : {
+      "IRI-based" : "has_representant",
+      "pt" : "tem representante",
+      "en" : "has representant"
+    },
+    "domain" : "14",
+    "attributes" : [ "external", "asymmetric", "functional", "object" ],
+    "id" : "278"
+  }, {
+    "range" : "23",
+    "domain" : "20",
+    "attributes" : [ "anonymous", "object" ],
+    "id" : "279"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/observation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "214",
+    "label" : {
+      "IRI-based" : "observation",
+      "pt" : "observacao",
+      "en" : "observation"
+    },
+    "domain" : "155",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "280"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/address_number",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "282",
+    "label" : {
+      "IRI-based" : "address_number"
+    },
+    "domain" : "28",
+    "attributes" : [ "external", "datatype", "someValues" ],
+    "id" : "281"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/end_date",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "235",
+    "label" : {
+      "IRI-based" : "end_date",
+      "pt" : "data fim",
+      "en" : "end date"
+    },
+    "domain" : "80",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "283"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/has_tax_book",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "59",
+    "label" : {
+      "IRI-based" : "has_tax_book",
+      "pt" : "tem livro fiscal",
+      "en" : "has fiscal book"
+    },
+    "domain" : "25",
+    "attributes" : [ "external", "asymmetric", "object" ],
+    "id" : "284"
+  }, {
+    "iri" : "http://ontology.eil.utoronto.ca/icontact.owl/hasWorkEmail",
+    "baseIri" : "http://ontology.eil.utoronto.ca/icontact.owl",
+    "range" : "179",
+    "label" : {
+      "IRI-based" : "hasWorkEmail",
+      "en" : "has Work Email"
+    },
+    "domain" : "60",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "285"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/commercial_name",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "175",
+    "label" : {
+      "IRI-based" : "commercial_name",
+      "pt" : "nome comercial",
+      "en" : "commercial name"
+    },
+    "domain" : "20",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "286"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#resultedFrom",
+    "inverse" : "196",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "83",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://www.w3.org/ns/org",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "resultedFrom",
+      "en" : "resulted from",
+      "it" : "risultato da",
+      "fr" : "issue de",
+      "es" : "es el resultado de"
+    },
+    "superproperty" : [ "148" ],
+    "domain" : "20",
+    "comment" : {
+      "ja" : "ã?“ã?®çµ„ç¹”ã?«ã?ªã?£ã?Ÿï¼ˆå°Žã?„ã?Ÿã€?ä½œæˆ?ã?•ã‚Œã?Ÿï¼‰ã??ã?£ã?‹ã?‘ã?¨ã?ªã?£ã?Ÿå‡ºæ?¥äº‹ã‚’ç¤ºã?—ã?¾ã?™ã€‚",
+      "en" : "Indicates an event which resulted in this organization. Inverse of `org:resultingOrganization`.",
+      "it" : "Indica l'evento che ha permesso all'organizzazione di instaurarsi. Ãˆ l'inverso di `org:resultingOrganization`.",
+      "fr" : "Indique un Ã©vÃ¨nement dont est issue l'Organisation. Inverse de `org:resultingOrganization`.",
+      "es" : "Evento que tiene como resultado la creaciÃ³n de una organizaciÃ³n."
+    },
+    "attributes" : [ "external", "object" ],
+    "id" : "149"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/start_date",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "261",
+    "label" : {
+      "IRI-based" : "start_date",
+      "pt" : "data inicio",
+      "en" : "start date"
+    },
+    "domain" : "80",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "287"
+  }, {
+    "iri" : "http://xmlns.com/foaf/spec/name",
+    "baseIri" : "http://xmlns.com/foaf/spec",
+    "range" : "266",
+    "annotations" : {
+      "isDefinedBy" : [ {
+        "identifier" : "isDefinedBy",
+        "language" : "undefined",
+        "value" : "http://xmlns.com/foaf/spec/",
+        "type" : "iri"
+      } ]
+    },
+    "label" : {
+      "IRI-based" : "name",
+      "undefined" : "name"
+    },
+    "domain" : "1",
+    "comment" : {
+      "undefined" : "A name for some thing."
+    },
+    "attributes" : [ "external", "datatype" ],
+    "id" : "288"
+  }, {
+    "iri" : "http://www.w3.org/ns/org#identifier",
+    "baseIri" : "http://www.w3.org/ns/org",
+    "range" : "267",
+    "label" : {
+      "IRI-based" : "identifier"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "289"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/end_participation",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "232",
+    "label" : {
+      "IRI-based" : "end_participation",
+      "pt" : "end participation"
+    },
+    "domain" : "25",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "290"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/identity_number",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "222",
+    "label" : {
+      "IRI-based" : "identity_number",
+      "pt" : "número de identidade",
+      "en" : "identity number"
+    },
+    "domain" : "23",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "291"
+  }, {
+    "iri" : "http://www.sefaz.ma.gov.br/uf_code",
+    "baseIri" : "http://www.sefaz.ma.gov.br",
+    "range" : "245",
+    "label" : {
+      "IRI-based" : "uf_code"
+    },
+    "domain" : "1",
+    "attributes" : [ "external", "datatype" ],
+    "id" : "292"
+  } ]
+}
