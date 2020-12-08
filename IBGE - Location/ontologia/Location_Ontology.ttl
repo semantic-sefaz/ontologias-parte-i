@@ -13,14 +13,8 @@
 @base <http://www.sefaz.ma.gov.br/IBGE/Location/ontology/> .
 
 <http://www.sefaz.ma.gov.br/IBGE/Location/ontology/> rdf:type owl:Ontology ;
-                                                      <http://purl.org/dc/terms/contributor> "Dave Beckett" ,
-                                                                                             "Nikki Rogers" ,
-                                                                                             "Participants in W3C's Semantic Web Deployment Working Group." ;
-                                                      <http://purl.org/dc/terms/creator> "Alistair Miles" ,
-                                                                                         "Sean Bechhofer" ;
-                                                      <http://purl.org/dc/terms/description> "An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', other types of controlled vocabulary, and also concept schemes embedded in glossaries and terminologies."@en ;
-                                                      <http://purl.org/dc/terms/title> "SKOS Vocabulary"@en ;
-                                                      rdfs:comment "Cadastral Ontology of SEFAZ Taxpayers (SEFAZ-MA) and Open Data of Companies of the Federal Revenue of Brazil (RFB)"@en ,
+                                                      
+                                                      rdfs:comment "Location Ontology"@en ,
                                                                    """Equipe SEFAZ/MA
 
 Roberval Gomes Mariano 
@@ -164,7 +158,8 @@ skos:scopeNote rdf:type owl:AnnotationProperty ;
 foaf:name rdf:type owl:AnnotationProperty ;
           rdfs:range rdfs:Literal ,
                      xsd:string ;
-          rdfs:domain owl:Thing .
+          rdfs:domain owl:Thing ,
+                      foaf:Person .
 
 
 #################################################################
@@ -331,6 +326,7 @@ vcard:country-name rdf:type owl:DatatypeProperty ;
 ###  http://www.w3.org/2006/vcard/ns#postal-code
 vcard:postal-code rdf:type owl:DatatypeProperty ,
                            owl:FunctionalProperty ;
+                  rdfs:domain loc:Locality ;
                   rdfs:range xsd:string .
 
 
@@ -420,6 +416,10 @@ loc:Locality rdf:type owl:Class ;
                              [ rdf:type owl:Restriction ;
                                owl:onProperty rdfs:label ;
                                owl:someValuesFrom xsd:string
+                             ] ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty vcard:postal-code ;
+                               owl:someValuesFrom xsd:string
                              ] .
 
 
@@ -454,6 +454,7 @@ loc:Mesoregion rdf:type owl:Class ;
                                  owl:onProperty rdfs:label ;
                                  owl:someValuesFrom xsd:string
                                ] ;
+               rdfs:comment "Mesoregião de uma detrminada Localização"@pt ;
                rdfs:label "Mesoregion"@en ,
                           "Mesoregião"@pt .
 
@@ -473,6 +474,7 @@ loc:Microregion rdf:type owl:Class ;
                                   owl:onProperty rdfs:label ;
                                   owl:someValuesFrom xsd:string
                                 ] ;
+                rdfs:comment "Microregião de uma detrminada Localização"@pt ;
                 rdfs:label "Microregion"@en ,
                            "Microregião"@pt .
 
@@ -667,37 +669,39 @@ skos:topConceptOf rdf:type owl:NamedIndividual .
 #    Annotations
 #################################################################
 
-loc:City rdfs:label "Município"@pt ,
-                     "City"@en ,
-                     "Municipio"@pt ,
-                     "Cidade"@pt .
+loc:City rdfs:label "City"@en ,
+                     "Municipio"@pt ;
+          rdfs:comment "Nome da Cidade de acordo com a Localização.."@pt ;
+          rdfs:label "Cidade"@pt .
 
 
-loc:Country rdfs:label "País"@pt ,
+loc:Country rdfs:comment "Nome do País de acordo com a Localização.."@pt ;
+            rdfs:label "País"@pt ,
                        "Country"@en .
 
 
-loc:District rdfs:label "District"@en ,
-                        "Bairro"@pt .
+loc:District rdfs:label "District"@en ;
+             rdfs:comment "Bairro / Distrito de uma determinada Localização identificado em quase todos os casos pelo CEP."@pt ;
+             rdfs:label "Bairro"@pt .
 
 
-loc:Federative_Unit rdfs:label "UF"@pt ,
-                               "State"@pt ,
-                               "Unidade Federativa"@pt ,
-                               "Estado"@pt .
+loc:Federative_Unit rdfs:label "UF"@pt ;
+                    rdfs:comment "Unidade Federativa de uma Localidade."@pt ;
+                    rdfs:label "Estado"@pt ,
+                               "State"@en .
 
 
-loc:Locality rdfs:label "Logradouro"@pt ;
-             rdfs:comment "A locality can be a street, avenue, court, etc."@en ;
-             rdfs:label "Locality"@en ;
+loc:Locality rdfs:comment "A locality can be a street, avenue, court, etc."@en ;
+             rdfs:label "Logradouro"@pt ,
+                        "Locality"@en ;
              rdfs:comment "Um logradouro pode ser uma rua, avenida, quadra, etc."@pt .
 
 
 loc:Location rdfs:label "Location"@en ,
                         "Localização"@pt ;
-             rdfs:comment "Class that represents the concept of a geographical location."@en ;
-             rdfs:label "Local"@pt ;
-             rdfs:comment "Classe que representa o conceito de uma localização geográfica."@pt .
+             rdfs:comment "Class that represents the concept of a geographical location."@en ,
+                          "Classe que representa o conceito de uma localização geográfica."@pt ;
+             rdfs:label "Local"@pt .
 
 
 loc:code rdfs:label "código"@pt ,
@@ -740,8 +744,8 @@ skos:example rdfs:isDefinedBy <http://www.w3.org/2004/02/skos/core> ;
              skos:definition "An example of the use of a concept."@en .
 
 
-skos:hiddenLabel rdfs:comment "The range of skos:hiddenLabel is the class of RDF plain literals."@en ;
-                 skos:definition "A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations."@en ;
+skos:hiddenLabel skos:definition "A lexical label for a resource that should be hidden when generating visual displays of the resource, but should still be accessible to free text search operations."@en ;
+                 rdfs:comment "The range of skos:hiddenLabel is the class of RDF plain literals."@en ;
                  rdfs:label "hidden label"@en ;
                  rdfs:comment "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties."@en ;
                  rdfs:isDefinedBy <http://www.w3.org/2004/02/skos/core> .

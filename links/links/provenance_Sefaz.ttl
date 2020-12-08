@@ -1,0 +1,14 @@
+
+@prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix sfz: <http://www.sefaz.ma.gov.br/ontology/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+<http://www.sefaz.ma.gov.br/ontology/Graph/SEFAZ-Cadastral_Situation-2020-09-11> a sd:NamedGraph;
+																sd:name <http://www.sefaz.ma.gov.br/ontology/Graph/SEFAZ-Cadastral_Situation-2020-09-11>;
+																prov:generatedAtTime "2020-09-11T16:52:29"^^xsd:dateTime;
+																sfz:source_recorded "2020-09-11T16:52:29"^^xsd:dateTime;
+																sfz:type_view sfz:MATERIALIZED;
+																rdfs:label "SEFAZ Cadastral Situation".
