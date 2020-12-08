@@ -1,0 +1,1657 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix sefazma: <http://www.sefaz.ma.gov.br/ontology/> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix : <http://www.sefaz.ma.gov.br/ontology/> .
+@base <http://www.sefaz.ma.gov.br/ontology/> .
+
+<#TriplesMapOrganization>
+    rr:logicalTable [ rr:sqlQuery """SELECT org.RJU_RUC_JURIDICO, org.RJU_RAZON_SOCIAL, org.RJU_SIGLAS, org.RJU_FEC_INCORPORACION, RJU_FEC_ACTUALIZACION, org.RJU_TAB_COD_UNIDAD, org.RJU_TUS_COD_USUARIO, RJU_TIP_SOCIEDAD, org.RJU_DATA_ULT_ALT, 
+    CONCAT('0',SUBSTR(RGE_CGC_CPF,0,8)) CNPJ 
+    FROM TULIOSEMANTIC.RUC_JURIDICOS org, TULIOSEMANTIC.RUC_GENERAL geral
+    WHERE org.RJU_RUC_JURIDICO = geral.RGE_RUC AND geral.RGE_TIP_PERSONA = 2 AND (org.RJU_RUC_JURIDICO, CONCAT('0',SUBSTR(RGE_CGC_CPF,0,8))) = ANY
+    (
+        SELECT MIN(RGE_RUC),CONCAT('0',SUBSTR(RGE_CGC_CPF,0,8)) FROM TULIOSEMANTIC.RUC_GENERAL
+        GROUP BY(CONCAT('0',SUBSTR(RGE_CGC_CPF,0,8)))
+        HAVING (COUNT(*) > 1)
+    )""" ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}/";
+        rr:class foaf:Organization;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, sefazma:company_name;
+        rr:objectMap [ rr:column "RJU_RAZON_SOCIAL"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:root_cnpj, sefazma:cnpj;
+        rr:objectMap [ rr:column "CNPJ"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:state_registration;
+        rr:objectMap [ rr:column "RJU_RUC_JURIDICO"; rr:datatype xsd:integer];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:acronyms;
+        rr:objectMap [ rr:column "RJU_SIGLAS"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:update_date;
+        rr:objectMap [ rr:column "RJU_FEC_ACTUALIZACION"; rr:datatype xsd:date];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:fiscal_unit_code;
+        rr:objectMap [ rr:column "RJU_TAB_COD_UNIDAD"; rr:datatype xsd:decimal];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_legal_nature;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Legal_Nature/{RJU_TIP_SOCIEDAD}/"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_user;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{RJU_RUC_JURIDICO}-{RJU_TUS_COD_USUARIO}/"; ];
+    ].
+
+<#hasPartnership>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE WHEN LENGTH(RRL_RUC_REPRESENTANTE) > 12 THEN CONCAT(CONCAT(CONCAT(CONCAT(CONCAT('0',SUBSTR(RGE_CGC_CPF,0,8)),'-'),CONCAT('0',RRP_RUC_PROFESIONAL)),'-'),RRL_NOM_REPRESENTANTE) ELSE TO_CHAR(CONCAT(CONCAT(CONCAT(CONCAT(SUBSTR(RGE_CGC_CPF,0,8),'-'),RRP_RUC_PROFESIONAL),'-'),RRL_NOM_REPRESENTANTE)) END AS identidade, CONCAT('0',SUBSTR(RGE_CGC_CPF,0,8)) CNPJ, RRP_FECHA_INICIO_PARTICIPACION FROM TULIOSEMANTIC.RUC_JURIDICOS org, TULIOSEMANTIC.RUC_GENERAL geral, TULIOSEMANTIC.RUC_RELACION_PROFESIONAL rel, TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES rep
+    WHERE org.RJU_RUC_JURIDICO = geral.RGE_RUC AND (RRP_RUC_CONTRIBUYENTE, SUBSTR(RGE_CGC_CPF,0,8)) = ANY
+    (
+        SELECT MIN(RGE_RUC), SUBSTR(RGE_CGC_CPF,0,8) CNPJ_CPF FROM TULIOSEMANTIC.RUC_GENERAL
+        GROUP BY(SUBSTR(RGE_CGC_CPF,0,8))
+        HAVING (COUNT(*) > 1)
+    ) AND RRP_RUC_PROFESIONAL = rep.RRL_RUC_REPRESENTANTE AND RRP_RUC_CONTRIBUYENTE = RGE_RUC""" ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}/";
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_partnership;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Partnership/{identidade}/"; ];
+    ].
+
+<#TriplesMapEstablishmenthasEconomicActivity>
+    rr:logicalTable [ rr:sqlQuery """SELECT est.RES_RUC_ESTABLECIMIENTO RUC_ESTABELECIMENTO, RES_NOM_ESTABLECIMIENTO nome_est, cnae.RCF_RGE_RUC RUC_CNAE, RCF_TCF_CODIGO_CNAE CODIGO FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est, TULIOSEMANTIC.RUC_CNAE_FISCAL cnae WHERE cnae.RCF_RGE_RUC = est.RES_RUC_ESTABLECIMIENTO"""; ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{nome_est}-{RUC_ESTABELECIMENTO}/";
+        rr:class sefazma:Establishment;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_economic_activity;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Economic_Activity/{CODIGO}/"; ];
+    ].
+
+<#TriplesMapEstablishment>
+    rr:logicalTable [ rr:sqlQuery """    
+    SELECT jur.RJU_ARE_UTI_ESTABLECIMIENTOS, est.RES_RUC_ESTABLECIMIENTO, RES_NOM_ESTABLECIMIENTO nome_est, jur.RJU_NOMBRE_COMERCIAL comercial, CONCAT('0',geral.RGE_CGC_CPF) CNPJ, jur.RJU_VAL_CAP_SOCIALES capital,
+    CASE RES_TIP_ESTABLECIMIENTO WHEN 1 THEN 'MATRIZ_OU_UNICO'
+                    WHEN 2 THEN 'FILIAL'
+                    WHEN 3 THEN 'DEPOSITO'
+                    WHEN 4 THEN 'OUTROS'
+                    WHEN 5 THEN 'PRINCIPAL'
+                    END as tipo_estabelecimento,
+    CASE  
+        WHEN jur.RJU_VAL_CAP_SOCIALES < 81001 THEN 'MEI'
+                    WHEN jur.RJU_VAL_CAP_SOCIALES > 81000 AND jur.RJU_VAL_CAP_SOCIALES < 3600001 THEN 'ME'
+                    WHEN jur.RJU_VAL_CAP_SOCIALES > 360000 THEN 'EPP'
+                END as PORTE,
+    CASE WHEN jur.RJU_ARE_UTI_ESTABLECIMIENTOS IS NULL THEN 0
+                    ELSE jur.RJU_ARE_UTI_ESTABLECIMIENTOS
+                    END as area,
+    est.RES_LATITUDE, est.RES_LONGITUDE, est.RES_TUS_COD_USUARIO, jur.RJU_FEC_CONSTITUCION constitution, jur.RJU_FEC_CIERRE_LIQUID AS liquido, jur.RJU_FEC_CIERRE_FISCAL, jur.RJU_NUM_REG_MERCANTIL mercantil, jur.RJU_LICENCIA licenca, RES_COR_ELECTRONICO, CONCAT(CONCAT(RES_DDD_FAX,'-'),RES_FAX) as fax, CONCAT(CONCAT(RES_DDD_TELEFONO,'-'),RES_TELEFONO) as telefone,
+    CASE RGE_TIPO_CADASTRO WHEN 1 THEN 'CONTRIBUINTE_ICMS'
+                    WHEN 2 THEN 'CONTRIBUINTE_IPVA'
+                    WHEN 3 THEN 'NÃO_CONTRIBUINTE'
+                END as contribuinte,
+    TCO_COD_CONDICION, TCO_NOM_CONDICION,
+    CASE RGE_NIVELCUMPRIMENTO WHEN 1 THEN 'BOM'
+                    WHEN 2 THEN 'REGULAR'
+                    WHEN 3 THEN 'MAU'
+                END as nivel_cumprimento,
+    CASE WHEN RES_NUM_APTO_OFIC IS NULL THEN 'VAZIO' ELSE RES_NUM_APTO_OFIC END AS complemento,
+    CASE WHEN RES_CIUDAD IS NULL THEN 'VAZIO' ELSE RES_CIUDAD END AS cidade,
+    CASE WHEN RES_REFERENCIA IS NULL THEN 'VAZIO' ELSE RES_REFERENCIA END AS referencia,
+    CASE WHEN RES_URBANIZACION IS NULL THEN 'VAZIO' ELSE RES_URBANIZACION END AS bairro,
+    RES_TAB_COD_UNIDAD, RES_TTL_TIP_LOGRADORO,RES_DIRECCION,RES_NUMERO,RES_NUM_APTO_OFIC,RES_REFERENCIA FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est, TULIOSEMANTIC.RUC_JURIDICOS jur, TULIOSEMANTIC.RUC_GENERAL geral, TULIOSEMANTIC.TAB_COND_CONTRIBUYENTE WHERE jur.RJU_RUC_JURIDICO = geral.RGE_RUC AND jur.RJU_RUC_JURIDICO = est.RES_RUC_ESTABLECIMIENTO AND RGE_RUC_CONDICION = TCO_COD_CONDICION""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{nome_est}-{RES_RUC_ESTABLECIMIENTO}/";
+        rr:class sefazma:Establishment;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome_est"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:cnpj, sefazma:full_cnpj;
+        rr:objectMap [ rr:column "CNPJ"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:trade_name;
+        rr:objectMap [ rr:column "comercial"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:state_registration;
+        rr:objectMap [ rr:column "RES_RUC_ESTABLECIMIENTO" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:establishment_area;
+        rr:objectMap [ rr:column "area" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:constitution_date;
+        rr:objectMap [ rr:column "constitution"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:liquid_closing_date;
+        rr:objectMap [ rr:column "liquido"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:merchant_regime_code;
+        rr:objectMap [ rr:column "mercantil"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:license_number;
+        rr:objectMap [ rr:column "licenca"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:closing_date_of_fiscal_year;
+        rr:objectMap [ rr:column "RJU_FEC_CIERRE_FISCAL"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate vcard:email;
+        rr:objectMap [ rr:column "RES_COR_ELECTRONICO"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:phone_number;
+        rr:objectMap [ rr:column "telefone"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:faxNumber;
+        rr:objectMap [ rr:column "fax"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:share_capital;
+        rr:objectMap [ rr:column "capital"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_establishment_type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment_Type/{tipo_estabelecimento}/"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_size;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Size_Company/{PORTE}/"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_user;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{RES_RUC_ESTABLECIMIENTO}-{RES_TUS_COD_USUARIO}/"; ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_address;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Address/{RES_TTL_TIP_LOGRADORO}-{RES_DIRECCION}-{RES_NUMERO}-{complemento}-{referencia}-{bairro}-{cidade}/"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_contribution_type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/{contribuinte}/" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_payment_regime;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Payment_Regime/{TCO_NOM_CONDICION}/" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_compliance_level;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Compliance_Level/{nivel_cumprimento}/" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_fiscal_unit;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Fiscal_Unit/{RES_TAB_COD_UNIDAD}/"; ];
+    ].
+
+
+<#SizesCompanies>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE WHEN jur.RJU_VAL_CAP_SOCIALES < 81001 THEN 'MEI'
+                    WHEN jur.RJU_VAL_CAP_SOCIALES > 81000 AND jur.RJU_VAL_CAP_SOCIALES < 3600001 THEN 'ME'
+                    WHEN jur.RJU_VAL_CAP_SOCIALES > 3600000 THEN 'EPP'
+                END as PORTE, RJU_VAL_CAP_SOCIALES
+    FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est, TULIOSEMANTIC.RUC_JURIDICOS jur WHERE jur.RJU_RUC_JURIDICO = est.RES_RUC_ESTABLECIMIENTO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Size_Company/{PORTE}/";
+        rr:class sefazma:Size_Company;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "PORTE"; ]
+    ].
+
+<#EstablishmentType>
+    rr:logicalTable [ rr:sqlQuery """SELECT RES_RUC_ESTABLECIMIENTO, RES_TIP_ESTABLECIMIENTO, 
+    CASE RES_TIP_ESTABLECIMIENTO WHEN 1 THEN 'MATRIZ_OU_UNICO'
+                    WHEN 2 THEN 'FILIAL'
+                    WHEN 3 THEN 'DEPOSITO'
+                    WHEN 4 THEN 'OUTROS'
+                    WHEN 5 THEN 'PRINCIPAL'
+                    END as tipo_estabelecimento
+    FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est, TULIOSEMANTIC.RUC_JURIDICOS jur WHERE jur.RJU_RUC_JURIDICO = est.RES_RUC_ESTABLECIMIENTO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment_Type/{tipo_estabelecimento}/";
+        rr:class sefazma:Establishment_Type;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "tipo_estabelecimento"; ]
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:establishment_type_code;
+        rr:objectMap [ rr:column "RES_TIP_ESTABLECIMIENTO"; ]
+    ].
+
+<#OrganizationhasEstablishment>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT org.RJU_RUC_JURIDICO ruc_jur, CONCAT('0',SUBSTR(geral.RGE_CGC_CPF,0,8)) CNPJ, est.RES_RUC_ESTABLECIMIENTO AS ESTA, est.RES_NOM_ESTABLECIMIENTO nome_est FROM TULIOSEMANTIC.RUC_JURIDICOS org, TULIOSEMANTIC.RUC_GENERAL geral, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est
+    WHERE org.RJU_RUC_JURIDICO = geral.RGE_RUC AND org.RJU_RUC_JURIDICO = est.RES_RUC_ESTABLECIMIENTO AND geral.RGE_TIP_PERSONA = 2"""];
+
+    rr:subjectMap [
+      rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}/";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_establishment;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{nome_est}-{ESTA}/";
+        ]
+    ].
+
+<#TriplesMapHeadquarter>
+    rr:logicalTable [ rr:sqlQuery """SELECT CONCAT('0',SUBSTR(geral.RGE_CGC_CPF, 0,8)) CNP, est.RES_RUC_ESTABLECIMIENTO, est.RES_TIP_ESTABLECIMIENTO, RES_NOM_ESTABLECIMIENTO
+    FROM TULIOSEMANTIC.RUC_JURIDICOS jur, TULIOSEMANTIC.RUC_GENERAL geral, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est
+    WHERE jur.RJU_RUC_JURIDICO = geral.RGE_RUC AND jur.RJU_RUC_JURIDICO = est.RES_RUC_ESTABLECIMIENTO AND est.RES_TIP_ESTABLECIMIENTO = 1""" ];
+    
+    rr:subjectMap [
+      rr:template "http://xmlns.com/foaf/0.1/Organization/{CNP}/";
+    ];
+
+     rr:predicateObjectMap [
+        rr:predicate sefazma:has_headquarters;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RES_RUC_ESTABLECIMIENTO}/";
+        ]
+    ].
+
+<#TriplesMapDepot>
+    rr:logicalTable [ rr:sqlQuery """SELECT CONCAT('0',SUBSTR(geral.RGE_CGC_CPF, 0,8)) CNP, est.RES_RUC_ESTABLECIMIENTO, est.RES_TIP_ESTABLECIMIENTO, RES_NOM_ESTABLECIMIENTO
+    FROM TULIOSEMANTIC.RUC_JURIDICOS jur, TULIOSEMANTIC.RUC_GENERAL geral, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est
+    WHERE jur.RJU_RUC_JURIDICO = geral.RGE_RUC AND jur.RJU_RUC_JURIDICO = est.RES_RUC_ESTABLECIMIENTO AND est.RES_TIP_ESTABLECIMIENTO = 3""" ];
+    
+    rr:subjectMap [
+      rr:template "http://xmlns.com/foaf/0.1/Organization/{CNP}/";
+    ];
+
+     rr:predicateObjectMap [
+        rr:predicate sefazma:has_depot;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RES_RUC_ESTABLECIMIENTO}/";
+        ]
+    ].
+
+
+<#TriplesMapSubsidiary>
+    rr:logicalTable [ rr:sqlQuery """SELECT CONCAT('0',SUBSTR(geral.RGE_CGC_CPF, 0,8)) CNP, est.RES_RUC_ESTABLECIMIENTO, est.RES_TIP_ESTABLECIMIENTO, RES_NOM_ESTABLECIMIENTO FROM TULIOSEMANTIC.RUC_JURIDICOS jur, TULIOSEMANTIC.RUC_GENERAL geral, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est
+    WHERE jur.RJU_RUC_JURIDICO = geral.RGE_RUC AND jur.RJU_RUC_JURIDICO = est.RES_RUC_ESTABLECIMIENTO AND est.RES_TIP_ESTABLECIMIENTO = 2""" ];
+    
+    rr:subjectMap [
+      rr:template "http://xmlns.com/foaf/0.1/Organization/{CNP}/";
+    ];
+
+     rr:predicateObjectMap [
+        rr:predicate sefazma:has_subsidiary;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RES_RUC_ESTABLECIMIENTO}/";
+        ]
+    ].
+
+<#EsthasLegalRepresentantPF>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT RRL_RUC_REPRESENTANTE, RRL_NOM_REPRESENTANTE, RES_RUC_ESTABLECIMIENTO, RES_NOM_ESTABLECIMIENTO FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est, TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES rep, TULIOSEMANTIC.RUC_RELACION_PROFESIONAL rel WHERE rel.RRP_RUC_CONTRIBUYENTE = est.RES_RUC_ESTABLECIMIENTO AND rel.RRP_RUC_PROFESIONAL = rep.RRL_RUC_REPRESENTANTE AND LENGTH(RRL_RUC_REPRESENTANTE) < 13"""];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RES_RUC_ESTABLECIMIENTO}/";
+      rr:class sefazma:Establishment;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_legal_representant;
+        rr:objectMap [
+            rr:template "http://xmlns.com/foaf/0.1/Person/{RRL_RUC_REPRESENTANTE}-{RRL_NOM_REPRESENTANTE}/"
+        ];
+    ].
+
+<#EsthasLegalRepresentantPJ>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('0',RRL_RUC_REPRESENTANTE) AS identidade, RES_RUC_ESTABLECIMIENTO, RRL_NOM_REPRESENTANTE, RES_NOM_ESTABLECIMIENTO FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est, TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES rep, TULIOSEMANTIC.RUC_RELACION_PROFESIONAL rel WHERE rel.RRP_RUC_CONTRIBUYENTE = est.RES_RUC_ESTABLECIMIENTO AND rel.RRP_RUC_PROFESIONAL = rep.RRL_RUC_REPRESENTANTE AND LENGTH(RRL_RUC_REPRESENTANTE) > 12"""];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RES_RUC_ESTABLECIMIENTO}/";
+      rr:class sefazma:Establishment;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_legal_representant;
+        rr:objectMap [
+            rr:template "http://xmlns.com/foaf/0.1/Agent/{identidade}-{RRL_NOM_REPRESENTANTE}/"
+        ];
+    ].
+
+<#AddressEstablishment>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT CASE RES_TES_COD_ESTADO 
+                        WHEN 'AC' THEN 'ACRE'
+                        WHEN 'AL' THEN 'ALAGOAS'
+                        WHEN 'AP' THEN 'AMAPA'
+                        WHEN 'AM' THEN 'AMAZONAS'
+                        WHEN 'BA' THEN 'BAHIA'
+                        WHEN 'CE' THEN 'CEARA'
+                        WHEN 'ES' THEN 'ESPIRITO_SANTO'
+                        WHEN 'GO' THEN 'GOIAS'
+                        WHEN 'MA' THEN 'MARANHAO'
+                        WHEN 'MT' THEN 'MATO_GROSSO'
+                        WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
+                        WHEN 'MG' THEN 'MINAS_GERAIS'
+                        WHEN 'PA' THEN 'PARA'
+                        WHEN 'PB' THEN 'PARAIBA'
+                        WHEN 'PR' THEN 'PARANA'
+                        WHEN 'PE' THEN 'PERNAMBUCO'
+                        WHEN 'PI' THEN 'PIAUI'
+                        WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
+                        WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
+                        WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
+                        WHEN 'RO' THEN 'RONDONIA'
+                        WHEN 'RR' THEN 'RORAIMA'
+                        WHEN 'SC' THEN 'SANTA_CATARINA'
+                        WHEN 'SP' THEN 'SAO_PAULO'
+                        WHEN 'SE' THEN 'SERGIPE'
+                        WHEN 'TO' THEN 'TOCANTINS'
+                        WHEN 'DF' THEN 'DISTRITO_FEDERAL'
+                        ELSE NULL
+                END as uf,
+    CASE WHEN RES_NUM_APTO_OFIC IS NULL THEN 'VAZIO' ELSE RES_NUM_APTO_OFIC END AS complemento,
+    CASE WHEN RES_CIUDAD IS NULL THEN 'VAZIO' ELSE RES_CIUDAD END AS municipio,
+    CASE WHEN RES_REFERENCIA IS NULL THEN 'VAZIO' ELSE RES_REFERENCIA END AS referencia,
+    CASE WHEN RES_URBANIZACION IS NULL THEN 'VAZIO' ELSE RES_URBANIZACION END as bairro, CASE WHEN RES_DIRECCION IS NULL THEN 'VAZIO' ELSE RES_DIRECCION END as logradouro, RES_RUC_ESTABLECIMIENTO, RES_TTL_TIP_LOGRADORO, RES_DIRECCION, RES_NUMERO, RES_NUM_APTO_OFIC, RES_REFERENCIA, RES_ZONA_CAJ_POSTAL, RES_ZONA_POSTAL, RES_COR_ELECTRONICO, RES_TES_COD_ESTADO, RES_LATITUDE, RES_LONGITUDE, CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(RES_TTL_TIP_LOGRADORO,'-'),RES_DIRECCION),'-'),RES_NUMERO),'-'),RES_NUM_APTO_OFIC),'-'),RES_REFERENCIA),'-'),RES_URBANIZACION) AS nome_endereco FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS"""];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Address/{RES_TTL_TIP_LOGRADORO}-{RES_DIRECCION}-{RES_NUMERO}-{complemento}-{referencia}-{bairro}-{municipio}/";
+      rr:class sefazma:Address;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome_endereco"; ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:address_code;
+        rr:objectMap [ rr:column "RES_RUC_ESTABLECIMIENTO"; ]
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:address_number;
+        rr:objectMap [ rr:column "RES_NUMERO"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:address_complement;
+        rr:objectMap [ rr:column "RES_NUM_APTO_OFIC"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:reference;
+        rr:objectMap [ rr:column "RES_REFERENCIA"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:postal_code_zone;
+        rr:objectMap [ rr:column "RES_ZONA_CAJ_POSTAL"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate vcard:postal-code;
+        rr:objectMap [ rr:column "RES_ZONA_POSTAL"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate geo:lat;
+        rr:objectMap [ rr:column "RES_LATITUDE" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate geo:long;
+        rr:objectMap [ rr:column "RES_LONGITUDE" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_federative_unit;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Federative_Unit/{uf}/"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_city;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/City/{municipio}-{uf}/"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_district;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/District/{bairro}-{municipio}/"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_locality;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Locality/{logradouro}-{bairro}/"
+        ];
+    ].
+   
+<#City>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT CASE RES_TES_COD_ESTADO 
+                        WHEN 'AC' THEN 'ACRE'
+                        WHEN 'AL' THEN 'ALAGOAS'
+                        WHEN 'AP' THEN 'AMAPA'
+                        WHEN 'AM' THEN 'AMAZONAS'
+                        WHEN 'BA' THEN 'BAHIA'
+                        WHEN 'CE' THEN 'CEARA'
+                        WHEN 'ES' THEN 'ESPIRITO_SANTO'
+                        WHEN 'GO' THEN 'GOIAS'
+                        WHEN 'MA' THEN 'MARANHAO'
+                        WHEN 'MT' THEN 'MATO_GROSSO'
+                        WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
+                        WHEN 'MG' THEN 'MINAS_GERAIS'
+                        WHEN 'PA' THEN 'PARA'
+                        WHEN 'PB' THEN 'PARAIBA'
+                        WHEN 'PR' THEN 'PARANA'
+                        WHEN 'PE' THEN 'PERNAMBUCO'
+                        WHEN 'PI' THEN 'PIAUI'
+                        WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
+                        WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
+                        WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
+                        WHEN 'RO' THEN 'RONDONIA'
+                        WHEN 'RR' THEN 'RORAIMA'
+                        WHEN 'SC' THEN 'SANTA_CATARINA'
+                        WHEN 'SP' THEN 'SAO_PAULO'
+                        WHEN 'SE' THEN 'SERGIPE'
+                        WHEN 'TO' THEN 'TOCANTINS'
+                        WHEN 'DF' THEN 'DISTRITO_FEDERAL'
+                        ELSE NULL
+                END as uf, CASE WHEN RES_CIUDAD IS NULL THEN 'VAZIO' ELSE RES_CIUDAD END AS municipio, RES_TMU_COD_MUNICIPIO FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS"""
+    ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/City/{municipio}-{uf}/";
+      rr:class sefazma:City;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, sefazma:city_name;
+        rr:objectMap [ rr:column "municipio"; rr:datatype xsd:string; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:city_code;
+        rr:objectMap [ rr:column "RES_TMU_COD_MUNICIPIO"; rr:datatype xsd:integer; ];
+    ].
+
+<#CityLegalRepresentant>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT CASE WHEN RRL_CIUDAD IS NULL THEN 'VAZIO' ELSE RRL_CIUDAD END AS municipio, CASE RRL_TES_COD_ESTADO 
+                        WHEN 'AC' THEN 'ACRE'
+                        WHEN 'AL' THEN 'ALAGOAS'
+                        WHEN 'AP' THEN 'AMAPA'
+                        WHEN 'AM' THEN 'AMAZONAS'
+                        WHEN 'BA' THEN 'BAHIA'
+                        WHEN 'CE' THEN 'CEARA'
+                        WHEN 'ES' THEN 'ESPIRITO_SANTO'
+                        WHEN 'GO' THEN 'GOIAS'
+                        WHEN 'MA' THEN 'MARANHAO'
+                        WHEN 'MT' THEN 'MATO_GROSSO'
+                        WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
+                        WHEN 'MG' THEN 'MINAS_GERAIS'
+                        WHEN 'PA' THEN 'PARA'
+                        WHEN 'PB' THEN 'PARAIBA'
+                        WHEN 'PR' THEN 'PARANA'
+                        WHEN 'PE' THEN 'PERNAMBUCO'
+                        WHEN 'PI' THEN 'PIAUI'
+                        WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
+                        WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
+                        WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
+                        WHEN 'RO' THEN 'RONDONIA'
+                        WHEN 'RR' THEN 'RORAIMA'
+                        WHEN 'SC' THEN 'SANTA_CATARINA'
+                        WHEN 'SP' THEN 'SAO_PAULO'
+                        WHEN 'SE' THEN 'SERGIPE'
+                        WHEN 'TO' THEN 'TOCANTINS'
+                        WHEN 'DF' THEN 'DISTRITO_FEDERAL'
+                        ELSE NULL
+                END as uf, RRL_CIUDAD, RRL_TMU_COD_MUNICIPIO FROM TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES"""
+    ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/City/{municipio}-{uf}/";
+      rr:class sefazma:City;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, sefazma:city_name;
+        rr:objectMap [ rr:column "municipio"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:city_code;
+        rr:objectMap [ rr:column "RRL_TMU_COD_MUNICIPIO"; ];
+    ].
+
+<#StateEstablishment>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT CASE RES_TES_COD_ESTADO 
+                        WHEN 'AC' THEN 'ACRE'
+                        WHEN 'AL' THEN 'ALAGOAS'
+                        WHEN 'AP' THEN 'AMAPA'
+                        WHEN 'AM' THEN 'AMAZONAS'
+                        WHEN 'BA' THEN 'BAHIA'
+                        WHEN 'CE' THEN 'CEARA'
+                        WHEN 'ES' THEN 'ESPIRITO_SANTO'
+                        WHEN 'GO' THEN 'GOIAS'
+                        WHEN 'MA' THEN 'MARANHAO'
+                        WHEN 'MT' THEN 'MATO_GROSSO'
+                        WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
+                        WHEN 'MG' THEN 'MINAS_GERAIS'
+                        WHEN 'PA' THEN 'PARA'
+                        WHEN 'PB' THEN 'PARAIBA'
+                        WHEN 'PR' THEN 'PARANA'
+                        WHEN 'PE' THEN 'PERNAMBUCO'
+                        WHEN 'PI' THEN 'PIAUI'
+                        WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
+                        WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
+                        WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
+                        WHEN 'RO' THEN 'RONDONIA'
+                        WHEN 'RR' THEN 'RORAIMA'
+                        WHEN 'SC' THEN 'SANTA_CATARINA'
+                        WHEN 'SP' THEN 'SAO_PAULO'
+                        WHEN 'SE' THEN 'SERGIPE'
+                        WHEN 'TO' THEN 'TOCANTINS'
+                        WHEN 'DF' THEN 'DISTRITO_FEDERAL'
+                        ELSE NULL
+                END as estado, RES_TES_COD_ESTADO FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS""" 
+    ];
+     rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Federative_Unit/{estado}/";
+      rr:class sefazma:Federative_Unit;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "estado"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:abbreviation_UF;
+        rr:objectMap [ rr:column "RES_TES_COD_ESTADO"; ];
+    ].
+
+<#StateLegalRepresentant>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT CASE RRL_TES_COD_ESTADO 
+                        WHEN 'AC' THEN 'ACRE'
+                        WHEN 'AL' THEN 'ALAGOAS'
+                        WHEN 'AP' THEN 'AMAPA'
+                        WHEN 'AM' THEN 'AMAZONAS'
+                        WHEN 'BA' THEN 'BAHIA'
+                        WHEN 'CE' THEN 'CEARA'
+                        WHEN 'ES' THEN 'ESPIRITO_SANTO'
+                        WHEN 'GO' THEN 'GOIAS'
+                        WHEN 'MA' THEN 'MARANHAO'
+                        WHEN 'MT' THEN 'MATO_GROSSO'
+                        WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
+                        WHEN 'MG' THEN 'MINAS_GERAIS'
+                        WHEN 'PA' THEN 'PARA'
+                        WHEN 'PB' THEN 'PARAIBA'
+                        WHEN 'PR' THEN 'PARANA'
+                        WHEN 'PE' THEN 'PERNAMBUCO'
+                        WHEN 'PI' THEN 'PIAUI'
+                        WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
+                        WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
+                        WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
+                        WHEN 'RO' THEN 'RONDONIA'
+                        WHEN 'RR' THEN 'RORAIMA'
+                        WHEN 'SC' THEN 'SANTA_CATARINA'
+                        WHEN 'SP' THEN 'SAO_PAULO'
+                        WHEN 'SE' THEN 'SERGIPE'
+                        WHEN 'TO' THEN 'TOCANTINS'
+                        WHEN 'DF' THEN 'DISTRITO_FEDERAL'
+                        ELSE NULL
+                END as estado, RRL_TES_COD_ESTADO FROM TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES""" 
+    ];
+     rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Federative_Unit/{estado}/";
+      rr:class sefazma:Federative_Unit;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "estado"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:abbreviation_UF;
+        rr:objectMap [ rr:column "RRL_TES_COD_ESTADO"; ];
+    ].
+
+<#DistrictEstablishment>
+    rr:logicalTable [
+        rr:sqlQuery """SELECT CASE WHEN RES_URBANIZACION IS NULL THEN 'VAZIO' ELSE RES_URBANIZACION END as bairro,
+        CASE WHEN RES_CIUDAD IS NULL THEN 'VAZIO' ELSE RES_CIUDAD END as municipio FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS""";
+    ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/District/{bairro}-{municipio}/";
+        rr:class sefazma:District;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [
+            rr:column "bairro";
+            rr:datatype xsd:string
+        ];
+    ].
+
+<#DistrictLegalRepresentant>
+    rr:logicalTable [
+        rr:sqlQuery """SELECT CASE WHEN RRL_URBANIZACION IS NULL THEN 'VAZIO' ELSE RRL_URBANIZACION END as bairro, CASE WHEN RRL_CIUDAD IS NULL THEN 'VAZIO' ELSE RRL_CIUDAD END as municipio FROM TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES""";
+    ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/District/{bairro}-{municipio}/";
+        rr:class sefazma:District;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [
+            rr:column "bairro";
+            rr:datatype xsd:string
+        ];
+    ].
+
+<#LocalityEstablishment>
+    rr:logicalTable [
+        rr:sqlQuery """SELECT CASE WHEN RES_DIRECCION IS NULL THEN 'VAZIO' ELSE RES_DIRECCION END as logradouro, RES_TTL_TIP_LOGRADORO, CASE WHEN RES_URBANIZACION IS NULL THEN 'VAZIO' ELSE RES_URBANIZACION END as bairro FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS""";
+    ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Locality/{logradouro}-{bairro}/";
+        rr:class sefazma:Locality;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, sefazma:street_name;
+        rr:objectMap [
+            rr:column "logradouro";
+            rr:datatype xsd:string
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:locality_type;
+        rr:objectMap [
+            rr:column "RES_TTL_TIP_LOGRADORO";
+            rr:datatype xsd:string
+        ];
+    ].
+
+<#LocalityLegalRepresentant>
+    rr:logicalTable [
+        rr:sqlQuery """SELECT CASE WHEN RRL_DIRECCION IS NULL THEN 'VAZIO' ELSE RRL_DIRECCION END as logradouro, RRL_TTL_TIP_LOGRADOURO, CASE WHEN RRL_URBANIZACION IS NULL THEN 'VAZIO' ELSE RRL_URBANIZACION END as bairro FROM TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES""";
+    ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Locality/{logradouro}-{bairro}/";
+        rr:class sefazma:Locality;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, sefazma:street_name;
+        rr:objectMap [
+            rr:column "logradouro";
+            rr:datatype xsd:string
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:locality_type;
+        rr:objectMap [
+            rr:column "RRL_TTL_TIP_LOGRADOURO";
+            rr:datatype xsd:string
+        ];
+    ].
+
+<#Qualification>
+    rr:logicalTable [
+      rr:sqlQuery """SELECT TGE_COD_TIP_TABLA, TRANSLATE (TGE_NOMBRE_DESCRIPCION,
+                  'ŠŽšžŸÁÇÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕËÜÏÖÑÝåáçéíóúàèìòùâêîôûãõëüïöñýÿ',
+                  'SZszYACEIOUAEIOUAEIOUAOEUIONYaaceiouaeiouaeiouaoeuionyy') 
+                  As CONVERTIDO FROM TULIOSEMANTIC.TAB_GENERICA WHERE TGE_TIP_TABLA = 34"""
+    ];
+    
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Qualification/{CONVERTIDO}/";
+      rr:class sefazma:Qualification;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "CONVERTIDO"; rr:datatype xsd:string];
+
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:qualification_code;
+        rr:objectMap [ rr:column "TGE_COD_TIP_TABLA"; rr:datatype xsd:long];
+    ].
+
+<#Discharge>
+    rr:logicalTable [
+      rr:sqlQuery """SELECT DISTINCT TGE_COD_TIP_TABLA, TGE_NOMBRE_DESCRIPCION, RJU_FEC_BAJA DATA_BAIXA FROM TULIOSEMANTIC.TAB_GENERICA, TULIOSEMANTIC.RUC_JURIDICOS, TULIOSEMANTIC.RUC_GENERAL 
+WHERE TGE_TIP_TABLA = 12 AND RJU_RUC_JURIDICO = RGE_RUC AND (TGE_COD_TIP_TABLA > 0 AND (TGE_COD_TIP_TABLA = RGE_TIP_BAJA OR TGE_COD_TIP_TABLA = RJU_MOTIVO_BAJA OR TGE_COD_TIP_TABLA = RJU_TIP_BAJA))"""
+    ];
+    
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Reason_Cadastral_Situation/{TGE_COD_TIP_TABLA}-{DATA_BAIXA}/";
+      rr:class sefazma:Reason_Cadastral_Situation;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "TGE_NOMBRE_DESCRIPCION"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:reason_situation_code;
+        rr:objectMap [ rr:column "TGE_COD_TIP_TABLA"; rr:datatype xsd:long];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:reason_situation_date;
+        rr:objectMap [ rr:column "DATA_BAIXA"; rr:datatype xsd:date];
+    ].
+
+<#TriplesMapEstablishmentCadastralSituation>
+    rr:logicalTable [ rr:sqlQuery """SELECT est.RES_RUC_ESTABLECIMIENTO RUC, TSC_NOM_SITUACION, sit.TSC_COD_SITUACION SITUATION, RGE_CGC_CPF, RGE_DATA_SIT_CADASTRAL,
+    CASE RGE_TSC_SIT_CADASTRAL WHEN 1 THEN 'ATIVO'
+                    WHEN 2 THEN 'BAIXADO'
+                    WHEN 3 THEN 'SUSPENSO'
+                    WHEN 4 THEN 'CANCELADO'
+                    WHEN 5 THEN 'PROCESSO DE BAIXA'
+                    WHEN 6 THEN 'SUSPENSO POR OFICIO'
+                    WHEN 7 THEN 'PROCESSO DE SUSPENSAO'                 
+                    WHEN 8 THEN 'BAIXA DE OFICIO'
+                END as situacao, RES_NOM_ESTABLECIMIENTO 
+    FROM TULIOSEMANTIC.RUC_GENERAL geral, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est, TULIOSEMANTIC.B$_TAB_SIT_CADASTRAL_ sit WHERE RGE_TSC_SIT_CADASTRAL = sit.TSC_COD_SITUACION AND est.RES_RUC_ESTABLECIMIENTO = geral.RGE_RUC""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RUC}/";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_cadastral_situation;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Cadastral_Situation/{situacao}-{RGE_CGC_CPF}-{RGE_DATA_SIT_CADASTRAL}/"; ];
+    ].
+
+
+<#TriplesMapFiscalSituation>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE RGE_TCO_CONDICION_PAGO WHEN 1 THEN 'HABILITADO'
+                    WHEN 2 THEN 'DESABILITADO'
+                END as situacao, RGE_TCO_CONDICION_PAGO
+    FROM TULIOSEMANTIC.RUC_GENERAL geral""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Fiscal_Situation/{situacao}/";
+        rr:class sefazma:Fiscal_Situation;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "situacao"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:fiscal_situation_code;
+        rr:objectMap [ rr:column "RGE_TCO_CONDICION_PAGO"; ];
+    ].
+
+<#TriplesMapComplianceLevel>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE RGE_NIVELCUMPRIMENTO WHEN 1 THEN 'BOM'
+                    WHEN 2 THEN 'REGULAR'
+                    WHEN 3 THEN 'MAU'
+                END as nivel_cumprimento 
+    FROM TULIOSEMANTIC.RUC_GENERAL geral""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Compliance_Level/{nivel_cumprimento}/";
+        rr:class sefazma:Compliance_Level;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nivel_cumprimento"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:compliance_level_code;
+        rr:objectMap [ rr:column "nivel_cumprimento"; ];
+    ].
+
+<#TriplesMapEstablishmentFiscalSituation>
+    rr:logicalTable [ rr:sqlQuery """SELECT est.RES_RUC_ESTABLECIMIENTO RUC, RGE_CGC_CPF,
+    CASE RGE_TCO_CONDICION_PAGO WHEN 1 THEN 'HABILITADO'
+                    WHEN 2 THEN 'DESABILITADO'
+                END as situacao, RES_NOM_ESTABLECIMIENTO 
+    FROM TULIOSEMANTIC.RUC_GENERAL geral, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est WHERE est.RES_RUC_ESTABLECIMIENTO = geral.RGE_RUC""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RUC}/";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_fiscal_situation;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Fiscal_Situation/{situacao}/"; ];
+    ].
+
+<#hasDischarge>
+    rr:logicalTable [
+      rr:sqlQuery """SELECT DISTINCT TSC_COD_SITUACION, generica.TGE_COD_TIP_TABLA CODIGO_TABELA, TSC_NOM_SITUACION, RGE_CGC_CPF, RGE_DATA_SIT_CADASTRAL, RJU_FEC_BAJA DATA_BAIXA FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est, TULIOSEMANTIC.RUC_JURIDICOS jur, TULIOSEMANTIC.B$_TAB_SIT_CADASTRAL_ sit, TULIOSEMANTIC.TAB_GENERICA generica, TULIOSEMANTIC.RUC_GENERAL WHERE est.RES_RUC_ESTABLECIMIENTO = jur.RJU_RUC_JURIDICO AND RGE_TSC_SIT_CADASTRAL = sit.TSC_COD_SITUACION AND ((jur.RJU_MOTIVO_BAJA = TGE_COD_TIP_TABLA) OR (RJU_TIP_BAJA = TGE_COD_TIP_TABLA)) AND TGE_TIP_TABLA = 12 AND sit.TSC_COD_SITUACION > 1"""
+    ];
+
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Cadastral_Situation/{TSC_NOM_SITUACION}-{RGE_CGC_CPF}-{RGE_DATA_SIT_CADASTRAL}/";
+      rr:class sefazma:Cadastral_Situation;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_reason_situation;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Reason_Cadastral_Situation/{CODIGO_TABELA}-{DATA_BAIXA}/"; ];
+    ].
+
+<#TriplesMapCadastral_Situation>
+    rr:logicalTable [ rr:sqlQuery """SELECT TSC_COD_SITUACION, TSC_NOM_SITUACION, TSC_IND_BAJA, RGE_DATA_SIT_CADASTRAL, CASE RGE_TSC_SIT_CADASTRAL WHEN 1 THEN 'ATIVO'
+                    WHEN 2 THEN 'BAIXADO'
+                    WHEN 3 THEN 'SUSPENSO'
+                    WHEN 4 THEN 'CANCELADO'
+                    WHEN 5 THEN 'PROCESSO DE BAIXA'
+                    WHEN 6 THEN 'SUSPENSO POR OFICIO'
+                    WHEN 7 THEN 'PROCESSO DE SUSPENSAO'                 
+                    WHEN 8 THEN 'BAIXA DE OFICIO'
+                END as situacao,
+                CASE RGE_TSC_SIT_CADASTRAL WHEN 1 THEN 'ACTIVE'
+                    WHEN 2 THEN 'DOWN'
+                    WHEN 3 THEN 'SUSPENDED'
+                    WHEN 4 THEN 'CANCELED'
+                    WHEN 5 THEN 'DOWN_PROCESS'
+                    WHEN 6 THEN 'SUSPENDED_FROM_OFFICE'
+                    WHEN 7 THEN 'SUSPENSION_PROCESS'
+                    WHEN 8 THEN 'CRAFT_DOWN'
+                END as type_situacao, RGE_CGC_CPF
+    FROM TULIOSEMANTIC.B$_TAB_SIT_CADASTRAL_, TULIOSEMANTIC.RUC_GENERAL geral WHERE geral.RGE_TSC_SIT_CADASTRAL = TSC_COD_SITUACION""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Cadastral_Situation/{situacao}-{RGE_CGC_CPF}-{RGE_DATA_SIT_CADASTRAL}/";
+    ];
+
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "situacao" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdf:type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/ontology/{type_situacao}/" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:situation_code;
+        rr:objectMap [ rr:column "TSC_COD_SITUACION" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:situation_name;
+        rr:objectMap [ rr:column "TSC_NOM_SITUACION" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:discharge_status;
+        rr:objectMap [ rr:column "TSC_IND_BAJA" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:cadastral_situation_date;
+        rr:objectMap [ rr:column "RGE_DATA_SIT_CADASTRAL" ];
+    ].
+
+
+<#TriplesMapTax>
+    rr:logicalTable [ rr:sqlQuery """SELECT ROB_RUC_OBLIGACION, ROB_TIM_COD_IMPUESTO, ROB_PERIODICIDAD_OBLIG, 
+    CASE ROB_PERIODICIDAD_OBLIG WHEN 1 THEN 'Anual'
+                    WHEN 2 THEN 'Mensal'
+                    ELSE 'Outros'
+    END as periodicidade FROM TULIOSEMANTIC.RUC_OBLIGACIONES""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Tax/{ROB_TIM_COD_IMPUESTO}/";
+        rr:class sefazma:Tax;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_periodicity;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/{periodicidade}-{ROB_PERIODICIDAD_OBLIG}/"; ];
+    ].
+
+<#TriplesMapLegal_Obligations>
+    rr:logicalTable [ rr:sqlQuery """SELECT ROB_RUC_OBLIGACION, ROB_TIM_COD_IMPUESTO, ROB_FEC_INIC_OBLIG, ROB_FEC_FIN_OBLIG, ROB_ESTADO_OBLIG, ROB_TUS_COD_USUARIO, ROB_TAB_COD_UNIDAD FROM TULIOSEMANTIC.RUC_OBLIGACIONES, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS WHERE ROB_RUC_OBLIGACION = RES_RUC_ESTABLECIMIENTO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Legal_Obligations/{ROB_RUC_OBLIGACION}-{ROB_ESTADO_OBLIG}-{ROB_FEC_INIC_OBLIG}/";
+        rr:class sefazma:Legal_Obligations;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:rdfs:label;
+        rr:objectMap [ rr:column "ROB_RUC_OBLIGACION" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:state_registration;
+        rr:objectMap [ rr:column "ROB_RUC_OBLIGACION" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:tax_code;
+        rr:objectMap [ rr:column "ROB_TIM_COD_IMPUESTO" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:start_legal_obligations_date;
+        rr:objectMap [ rr:column "ROB_FEC_INIC_OBLIG" ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:end_legal_obligations_date;
+        rr:objectMap [ rr:column "ROB_FEC_FIN_OBLIG" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_tax;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Tax/{ROB_TIM_COD_IMPUESTO}/"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_user;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{ROB_RUC_OBLIGACION}-{ROB_TUS_COD_USUARIO}/"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_fiscal_unit;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Legal_Obligations/{ROB_TAB_COD_UNIDAD}/"; ];
+    ].
+
+<#TriplesMapObligationsCadastralSituation>
+    rr:logicalTable [ rr:sqlQuery """SELECT ROB_RUC_OBLIGACION, TSC_COD_SITUACION SITUATION, TSC_NOM_SITUACION, ROB_ESTADO_OBLIG, ROB_FEC_INIC_OBLIG, RGE_CGC_CPF, RGE_DATA_SIT_CADASTRAL,
+    CASE ROB_ESTADO_OBLIG WHEN 1 THEN 'ATIVO'
+                    WHEN 2 THEN 'BAIXADO'
+                    WHEN 3 THEN 'SUSPENSO'
+                    WHEN 4 THEN 'CANCELADO'
+                    WHEN 5 THEN 'PROCESSO DE BAIXA'
+                    WHEN 6 THEN 'SUSPENSO POR OFICIO'
+                    WHEN 7 THEN 'PROCESSO DE SUSPENSAO'                 
+                    WHEN 8 THEN 'BAIXA DE OFICIO'
+                    ELSE 'ATIVO'
+                    END as situacao
+    FROM TULIOSEMANTIC.RUC_OBLIGACIONES obl, TULIOSEMANTIC.B$_TAB_SIT_CADASTRAL_ sit, TULIOSEMANTIC.RUC_GENERAL geral WHERE geral.RGE_TSC_SIT_CADASTRAL = ROB_ESTADO_OBLIG AND ROB_RUC_OBLIGACION = RGE_RUC AND ROB_ESTADO_OBLIG = TSC_COD_SITUACION""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Legal_Obligations/{ROB_RUC_OBLIGACION}-{ROB_ESTADO_OBLIG}-{ROB_FEC_INIC_OBLIG}/";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_obligation_situation;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Cadastral_Situation/{situacao}-{RGE_CGC_CPF}-{RGE_DATA_SIT_CADASTRAL}/"; ];
+    ].
+
+<#TriplesMapEstablishmentObligations>
+    rr:logicalTable [ rr:sqlQuery """SELECT obl.ROB_RUC_OBLIGACION RUC, ROB_ESTADO_OBLIG, ROB_FEC_INIC_OBLIG, est.RES_RUC_ESTABLECIMIENTO, RES_NOM_ESTABLECIMIENTO FROM TULIOSEMANTIC.RUC_OBLIGACIONES obl, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est WHERE obl.ROB_RUC_OBLIGACION = est.RES_RUC_ESTABLECIMIENTO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RES_RUC_ESTABLECIMIENTO}/";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_legal_obligations;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Legal_Obligations/{RUC}-{ROB_ESTADO_OBLIG}-{ROB_FEC_INIC_OBLIG}/"; ];
+    ].
+
+<#EstablishmentisDisabled>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT TRD_RUC, RES_RUC_ESTABLECIMIENTO, RES_NOM_ESTABLECIMIENTO FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS, TULIOSEMANTIC.RUC_DESABILITADOS, TULIOSEMANTIC.RUC_JURIDICOS WHERE TRD_RUC = RES_RUC_ESTABLECIMIENTO AND RES_RUC_ESTABLECIMIENTO = RJU_RUC_JURIDICO"""];
+     rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RES_RUC_ESTABLECIMIENTO}/";
+    ];
+    rr:predicateObjectMap [
+        rr:predicate owl:sameAs;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Disabled_Event/{TRD_RUC}/"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:is_disabled;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Disabled_Event/{TRD_RUC}/"
+        ];
+    ].
+
+<#TriplesMapDisabled_Registry>
+    rr:logicalTable [ rr:sqlQuery """SELECT TRD_RUC, TRD_OBS, TRD_DT_INICIO, TRD_DT_FIM, CONCAT(CONCAT(RES_NOM_ESTABLECIMIENTO,'-'),TRD_RUC) AS identidade, TRD_USR_INCLUSAO, TRD_USR_EXCLUSAO FROM TULIOSEMANTIC.RUC_DESABILITADOS, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est WHERE TRD_RUC = RES_RUC_ESTABLECIMIENTO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Disabled_Registry/{TRD_RUC}-{TRD_DT_INICIO}-{TRD_DT_FIM}/";
+        rr:class sefazma:Disabled_Registry;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "identidade"; rr:datatype xsd:string ];
+    ];
+     rr:predicateObjectMap [
+        rr:predicate sefazma:state_registration;
+        rr:objectMap [ rr:column "TRD_RUC"; ];
+    ];
+   
+    rr:predicateObjectMap [
+        rr:predicate sefazma:disabled_observation;
+        rr:objectMap [ rr:column "TRD_OBS"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:start_date_disabled;
+        rr:objectMap [ rr:column "TRD_DT_INICIO"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:end_date_disabled;
+        rr:objectMap [ rr:column "TRD_DT_FIM"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:included_by;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{TRD_RUC}-{TRD_USR_INCLUSAO}/"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:excluded_by;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{TRD_RUC}-{TRD_USR_EXCLUSAO}/"; ];
+    ].
+
+<#TriplesMapDisabled_Event>
+    rr:logicalTable [ rr:sqlQuery """SELECT TRD_RUC, TRD_DT_INICIO, TRD_DT_FIM, CONCAT(CONCAT(RES_NOM_ESTABLECIMIENTO,'-'),TRD_RUC) AS identidade FROM TULIOSEMANTIC.RUC_DESABILITADOS, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS WHERE TRD_RUC = RES_RUC_ESTABLECIMIENTO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Disabled_Event/{TRD_RUC}/";
+        rr:class sefazma:Disabled_Event;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "identidade"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_disabled_registry;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Disabled_Registry/{TRD_RUC}-{TRD_DT_INICIO}-{TRD_DT_FIM}/"; ];
+    ].
+
+<#TriplesMapDisabled_EventReason>
+    rr:logicalTable [ rr:sqlQuery """SELECT TRD_RUC, TRD_MOTIVO, TRD_DT_INICIO, TRD_DT_FIM, TGE_COD_TIP_TABLA CODIGO_TABELA, RJU_FEC_BAJA DATA_BAIXA FROM TULIOSEMANTIC.RUC_DESABILITADOS dis, TULIOSEMANTIC.TAB_GENERICA, TULIOSEMANTIC.RUC_JURIDICOS jur WHERE TGE_COD_TIP_TABLA = dis.TRD_MOTIVO AND TGE_TIP_TABLA = 47 AND jur.RJU_RUC_JURIDICO = TRD_RUC""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Disabled_Event/{TRD_RUC}/";
+        rr:class sefazma:Disabled_Event;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_reason_situation;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Reason_Cadastral_Situation/{CODIGO_TABELA}-{DATA_BAIXA}/" ];
+    ].
+
+<#TriplesMapTaxpayerType>
+    rr:logicalTable [ 
+    rr:sqlQuery """SELECT CASE RGE_TIPO_CADASTRO WHEN 1 THEN 'CONTRIBUINTE_ICMS'
+                    WHEN 2 THEN 'CONTRIBUINTE_IPVA'
+                    WHEN 3 THEN 'NÃO_CONTRIBUINTE'
+                END as contribuinte,
+                CASE RGE_TIPO_CADASTRO WHEN 1 THEN 'ICMS_TAXPAYER'
+                    WHEN 2 THEN 'IPVA_TAXPAYER'
+                    WHEN 3 THEN 'NON_TAXPAYER'
+                END as type, RGE_TIPO_CADASTRO, RGE_CGC_CPF FROM TULIOSEMANTIC.RUC_GENERAL""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/{contribuinte}/";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "contribuinte" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:taxpayer_type_code;
+        rr:objectMap [ rr:column "RGE_TIPO_CADASTRO" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdf:type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/ontology/{type}/"; ];
+    ].
+
+<#TriplesMapRegimeType>
+    rr:logicalTable [ rr:sqlQuery """SELECT TCO_COD_CONDICION, TCO_NOM_CONDICION FROM TULIOSEMANTIC.TAB_COND_CONTRIBUYENTE""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Payment_Regime/{TCO_NOM_CONDICION}/";
+        rr:class sefazma:Payment_Regime;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "TCO_NOM_CONDICION" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:regime_code;
+        rr:objectMap [ rr:column "TCO_COD_CONDICION" ];
+    ].
+
+<#TriplesMapPartnershipPerson>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT TRANSLATE (RRP_CARGO_SOCIO, 'ŠŽšžŸÁÇÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕËÜÏÖÑÝåáçéíóúàèìòùâêîôûãõëüïöñýÿ','SZszYACEIOUAEIOUAEIOUAOEUIONYaaceiouaeiouaeiouaoeuionyy') as CONVERTIDO, RRP_RUC_PROFESIONAL, rel.RRP_PERCENTUAL_PARTICIPACION percentual, RRP_CARGO_SOCIO, RRP_FECHA_INICIO_PARTICIPACION, RRP_TUS_COD_USUARIO, CONCAT(CONCAT(CONCAT(CONCAT(SUBSTR(RGE_CGC_CPF,0,8),'-'),RRP_RUC_PROFESIONAL),'-'),RRL_NOM_REPRESENTANTE) identidade, RRL_RUC_REPRESENTANTE, RRP_RUC_CONTRIBUYENTE, RRL_NOM_REPRESENTANTE, RRP_TAB_COD_UNIDAD, 
+    CASE WHEN RRP_FECHA_FIN_PARTICIPACION IS NOT NULL THEN RRP_FECHA_FIN_PARTICIPACION ELSE TO_DATE('01/01/01', 'MM/DD/YYYY') END AS fim_participacao 
+    FROM TULIOSEMANTIC.RUC_JURIDICOS, TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES rep, TULIOSEMANTIC.RUC_RELACION_PROFESIONAL rel, TULIOSEMANTIC.RUC_GENERAL WHERE RRP_RUC_PROFESIONAL = rep.RRL_RUC_REPRESENTANTE AND RRP_RUC_CONTRIBUYENTE = RGE_RUC AND LENGTH(RRP_RUC_PROFESIONAL) < 13""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Partnership/{identidade}/";
+        rr:class sefazma:Partnership;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:percentage_participation;
+        rr:objectMap [ rr:column "percentual"; rr:datatype xsd:decimal ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:start_date_participation;
+        rr:objectMap [ rr:column "RRP_FECHA_INICIO_PARTICIPACION"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:end_date_participation;
+        rr:objectMap [ rr:column "fim_participacao"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "identidade"; rr:datatype xsd:string];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_partner,sefazma:has_professional;
+        rr:objectMap [  rr:template "http://xmlns.com/foaf/0.1/Person/{RRL_RUC_REPRESENTANTE}-{RRL_NOM_REPRESENTANTE}/"; ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:partner_qualification;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Qualification/{CONVERTIDO}/" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_user;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{RRP_RUC_PROFESIONAL}-{RRP_TUS_COD_USUARIO}/"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_fiscal_unit;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Legal_Obligations/{RRP_TAB_COD_UNIDAD}/"; ];
+    ].
+
+<#TriplesMapPartnershipOrganization>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT TRANSLATE (RRP_CARGO_SOCIO, 'ŠŽšžŸÁÇÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕËÜÏÖÑÝåáçéíóúàèìòùâêîôûãõëüïöñýÿ','SZszYACEIOUAEIOUAEIOUAOEUIONYaaceiouaeiouaeiouaoeuionyy') as CONVERTIDO, rel.RRP_PERCENTUAL_PARTICIPACION percentual, RRP_CARGO_SOCIO, RRP_FECHA_INICIO_PARTICIPACION, RRP_TUS_COD_USUARIO, CONCAT(CONCAT(CONCAT(CONCAT(CONCAT('0',SUBSTR(RGE_CGC_CPF,0,8)),'-'),CONCAT('0',RRP_RUC_PROFESIONAL)),'-'),RRL_NOM_REPRESENTANTE) identidade, CASE WHEN LENGTH(RRL_RUC_REPRESENTANTE) > 12 THEN CONCAT('0',RRL_RUC_REPRESENTANTE) ELSE TO_CHAR(RRL_RUC_REPRESENTANTE) END AS identidade2, RRP_RUC_CONTRIBUYENTE, RRL_RUC_REPRESENTANTE, RRL_NOM_REPRESENTANTE, RRP_TAB_COD_UNIDAD, 
+    CASE WHEN RRP_FECHA_FIN_PARTICIPACION IS NOT NULL THEN RRP_FECHA_FIN_PARTICIPACION ELSE TO_DATE('01/01/01', 'MM/DD/YYYY') END AS fim_participacao, RRP_FEC_ACTUALIZACION 
+    FROM TULIOSEMANTIC.RUC_JURIDICOS, TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES rep, TULIOSEMANTIC.RUC_RELACION_PROFESIONAL rel, TULIOSEMANTIC.RUC_GENERAL WHERE RRP_RUC_PROFESIONAL = rep.RRL_RUC_REPRESENTANTE AND RRP_RUC_CONTRIBUYENTE = RGE_RUC AND RRP_CARGO_SOCIO IS NOT NULL AND LENGTH(RRP_RUC_PROFESIONAL) > 12""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Partnership/{identidade}/";
+        rr:class sefazma:Partnership;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:percentage_participation;
+        rr:objectMap [ rr:column "percentual"; rr:datatype xsd:decimal ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:start_date_participation;
+        rr:objectMap [ rr:column "RRP_FECHA_INICIO_PARTICIPACION"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:end_date_participation;
+        rr:objectMap [ rr:column "fim_participacao"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "identidade"; rr:datatype xsd:string];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_partner;
+        rr:objectMap [  rr:template "http://xmlns.com/foaf/0.1/Agent/{identidade2}-{RRL_NOM_REPRESENTANTE}/"; ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:partner_qualification;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Qualification/{CONVERTIDO}/" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_user;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{RRL_RUC_REPRESENTANTE}-{RRP_TUS_COD_USUARIO}/"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_fiscal_unit;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Legal_Obligations/{RRP_TAB_COD_UNIDAD}/"; ];
+    ].
+
+<#TriplesMapLegalRepresentantPF>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT LENGTH(RRL_RUC_REPRESENTANTE) tamanho, RRL_NOM_REPRESENTANTE, RRL_RUC_REPRESENTANTE, RRL_COR_ELECTRONICO, CONCAT(CONCAT(RRL_DDD_FAX,'-'),RRL_FAX) as fax, CONCAT(CONCAT(RRL_DDD_TELEFONO,'-'),RRL_TELEFONO) as telefone, RRL_FEC_ACTUALIZACION, RRL_TMU_COD_MUNICIPIO, RRL_TAB_COD_UNIDAD, RRL_TUS_COD_USUARIO,
+    CASE WHEN RRL_NUM_APTO_OFIC IS NULL THEN 'VAZIO' ELSE RRL_NUM_APTO_OFIC END AS complemento,
+    CASE WHEN RRL_CIUDAD IS NULL THEN 'VAZIO' ELSE RRL_CIUDAD END AS municipio,
+    CASE WHEN RRL_REFERENCIA IS NULL THEN 'VAZIO' ELSE RRL_REFERENCIA END AS referencia,
+    RRL_TTL_TIP_LOGRADOURO,RRL_DIRECCION,RRL_NUMERO,RRL_NUM_APTO_OFIC,RRL_REFERENCIA,RRL_URBANIZACION FROM TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES rep WHERE LENGTH(RRL_RUC_REPRESENTANTE) < 13""" ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/0.1/Person/{RRL_RUC_REPRESENTANTE}-{RRL_NOM_REPRESENTANTE}/";
+        rr:class foaf:Person, foaf:Agent;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:ruc_professional, sefazma:cpf;
+        rr:objectMap [ rr:column "RRL_RUC_REPRESENTANTE"; rr:datatype xsd:integer ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:name, rdfs:label;
+        rr:objectMap [ rr:column "RRL_NOM_REPRESENTANTE"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate vcard:email;
+        rr:objectMap [ rr:column "RRL_COR_ELECTRONICO"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:phone_number;
+        rr:objectMap [ rr:column "telefone"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:faxNumber;
+        rr:objectMap [ rr:column "fax"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_address;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Address/{RRL_TTL_TIP_LOGRADOURO}-{RRL_DIRECCION}-{RRL_NUMERO}-{complemento}-{referencia}-{RRL_URBANIZACION}-{municipio}/"
+        ];
+    ].
+
+<#TriplesMapLegalRepresentantPJ>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT LENGTH(RRL_RUC_REPRESENTANTE) tamanho, RRL_NOM_REPRESENTANTE, RRL_COR_ELECTRONICO, CONCAT(CONCAT(RRL_DDD_FAX,'-'),RRL_FAX) as fax, CONCAT(CONCAT(RRL_DDD_TELEFONO,'-'),RRL_TELEFONO) as telefone, RRL_FEC_ACTUALIZACION, RRL_TMU_COD_MUNICIPIO, RRL_TAB_COD_UNIDAD, RRL_TUS_COD_USUARIO, 
+    CASE WHEN RRL_CIUDAD IS NULL THEN 'VAZIO' ELSE RRL_CIUDAD END AS municipio,
+    CASE WHEN RRL_NUM_APTO_OFIC IS NULL THEN 'VAZIO' ELSE RRL_NUM_APTO_OFIC END AS complemento,
+    CASE WHEN RRL_REFERENCIA IS NULL THEN 'VAZIO' ELSE RRL_REFERENCIA END AS referencia,
+    CASE WHEN LENGTH(RRL_RUC_REPRESENTANTE) > 12 THEN CONCAT('0',RRL_RUC_REPRESENTANTE) ELSE TO_CHAR(RRL_RUC_REPRESENTANTE) END AS identidade, RRL_RUC_REPRESENTANTE,
+    RRL_TTL_TIP_LOGRADOURO,RRL_DIRECCION,RRL_NUMERO,RRL_NUM_APTO_OFIC,RRL_REFERENCIA,RRL_URBANIZACION FROM TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES rep WHERE LENGTH(RRL_RUC_REPRESENTANTE) > 12""" ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/0.1/Agent/{identidade}-{RRL_NOM_REPRESENTANTE}/";
+        rr:class foaf:Agent;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:ruc_professional, sefazma:cnpj, sefazma:full_cnpj;
+        rr:objectMap [ rr:column "identidade"; rr:datatype xsd:integer ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:name, rdfs:label;
+        rr:objectMap [ rr:column "RRL_NOM_REPRESENTANTE"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate vcard:email;
+        rr:objectMap [ rr:column "RRL_COR_ELECTRONICO"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:phone_number;
+        rr:objectMap [ rr:column "telefone"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:faxNumber;
+        rr:objectMap [ rr:column "fax"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_address;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Address/{RRL_TTL_TIP_LOGRADOURO}-{RRL_DIRECCION}-{RRL_NUMERO}-{complemento}-{referencia}-{RRL_URBANIZACION}-{municipio}/"
+        ];
+    ].
+
+<#AddressLegalRepresentant>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT CASE WHEN LENGTH(RRL_RUC_REPRESENTANTE) > 12 THEN CONCAT('0',RRL_RUC_REPRESENTANTE) ELSE TO_CHAR(RRL_RUC_REPRESENTANTE) END AS identidade, CASE WHEN RRL_CIUDAD IS NULL THEN 'VAZIO' ELSE RRL_CIUDAD END as municipio, CASE RRL_TES_COD_ESTADO 
+                        WHEN 'AC' THEN 'ACRE'
+                        WHEN 'AL' THEN 'ALAGOAS'
+                        WHEN 'AP' THEN 'AMAPA'
+                        WHEN 'AM' THEN 'AMAZONAS'
+                        WHEN 'BA' THEN 'BAHIA'
+                        WHEN 'CE' THEN 'CEARA'
+                        WHEN 'ES' THEN 'ESPIRITO_SANTO'
+                        WHEN 'GO' THEN 'GOIAS'
+                        WHEN 'MA' THEN 'MARANHAO'
+                        WHEN 'MT' THEN 'MATO_GROSSO'
+                        WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
+                        WHEN 'MG' THEN 'MINAS_GERAIS'
+                        WHEN 'PA' THEN 'PARA'
+                        WHEN 'PB' THEN 'PARAIBA'
+                        WHEN 'PR' THEN 'PARANA'
+                        WHEN 'PE' THEN 'PERNAMBUCO'
+                        WHEN 'PI' THEN 'PIAUI'
+                        WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
+                        WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
+                        WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
+                        WHEN 'RO' THEN 'RONDONIA'
+                        WHEN 'RR' THEN 'RORAIMA'
+                        WHEN 'SC' THEN 'SANTA_CATARINA'
+                        WHEN 'SP' THEN 'SAO_PAULO'
+                        WHEN 'SE' THEN 'SERGIPE'
+                        WHEN 'TO' THEN 'TOCANTINS'
+                        WHEN 'DF' THEN 'DISTRITO_FEDERAL'
+                        ELSE NULL
+                END as uf,
+    CASE WHEN RRL_NUM_APTO_OFIC IS NULL THEN 'VAZIO' ELSE RRL_NUM_APTO_OFIC END AS complemento,
+    CASE WHEN RRL_REFERENCIA IS NULL THEN 'VAZIO' ELSE RRL_REFERENCIA END AS referencia,
+    CASE WHEN RRL_URBANIZACION IS NULL THEN 'VAZIO' ELSE RRL_URBANIZACION END as bairro, CASE WHEN RRL_DIRECCION IS NULL THEN 'VAZIO' ELSE RRL_DIRECCION END as logradouro, RRL_TTL_TIP_LOGRADOURO, RRL_NUMERO, RRL_NUM_APTO_OFIC, RRL_REFERENCIA, RRL_URBANIZACION, RRL_CIUDAD, RRL_UF, RRL_TES_COD_ESTADO, RRL_ZONA_POSTAL, RRL_ZONA_CAJ_POSTAL, RRL_DIRECCION,
+    CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(RRL_TTL_TIP_LOGRADOURO,'-'),RRL_DIRECCION),'-'),RRL_NUMERO),'-'),RRL_NUM_APTO_OFIC),'-'),RRL_REFERENCIA),'-'),RRL_URBANIZACION) AS nome_endereco FROM TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES"""];
+     rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Address/{RRL_TTL_TIP_LOGRADOURO}-{RRL_DIRECCION}-{RRL_NUMERO}-{complemento}-{referencia}-{bairro}-{municipio}/";
+      rr:class sefazma:Address;
+    ];
+
+    rr:predicateObjectMap [
+      rr:predicate rdfs:label;
+      rr:objectMap [ rr:column "nome_endereco"; ];
+    ];
+
+    rr:predicateObjectMap [
+      rr:predicate sefazma:address_code;
+      rr:objectMap [ rr:column "identidade"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:address_number;
+        rr:objectMap [ rr:column "RRL_NUMERO"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:address_complement;
+        rr:objectMap [ rr:column "RRL_NUM_APTO_OFIC"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:reference;
+        rr:objectMap [ rr:column "RRL_REFERENCIA"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:postal_code_zone;
+        rr:objectMap [ rr:column "RRL_ZONA_CAJ_POSTAL"; ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate vcard:postal-code;
+        rr:objectMap [ rr:column "RRL_ZONA_POSTAL"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_federative_unit;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Federative_Unit/{uf}/"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_city;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/City/{municipio}-{uf}/"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_district;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/District/{bairro}-{municipio}/"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_locality;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Locality/{logradouro}-{bairro}/"
+        ];
+    ].
+
+<#TriplesMapEconomicActivity>
+    rr:logicalTable [ rr:sqlQuery """SELECT cnae.RCF_RGE_RUC, cnae.RCF_TCF_CODIGO_CNAE CODIGO_CNAE, jur.RJU_FEC_CIERRE_FISCAL FROM TULIOSEMANTIC.RUC_CNAE_FISCAL cnae, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est, TULIOSEMANTIC.RUC_JURIDICOS jur WHERE jur.RJU_RUC_JURIDICO = cnae.RCF_RGE_RUC AND jur.RJU_RUC_JURIDICO = est.RES_RUC_ESTABLECIMIENTO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Economic_Activity/{CODIGO_CNAE}/";
+        rr:class sefazma:Economic_Activity;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:cnae, sefazma:raw_cnae;
+        rr:objectMap [ rr:column "CODIGO_CNAE"; ];
+    ].
+
+<#TriplesMapEconomicActivityRealization>
+    rr:logicalTable [ rr:sqlQuery """SELECT est.RES_RUC_ESTABLECIMIENTO, est.RES_NOM_ESTABLECIMIENTO, cnae.RCF_RGE_RUC, cnae.RCF_TCF_CODIGO_CNAE CODIGO, jur.RJU_FEC_INI_ACT_ECON INICIO_ATIVIDADE_ECONOMICA, 
+CONCAT(CONCAT(RES_NOM_ESTABLECIMIENTO,'-'),RES_RUC_ESTABLECIMIENTO) AS identidade FROM TULIOSEMANTIC.RUC_CNAE_FISCAL cnae, TULIOSEMANTIC.RUC_JURIDICOS jur, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est 
+WHERE jur.RJU_RUC_JURIDICO = est.RES_RUC_ESTABLECIMIENTO AND est.RES_RUC_ESTABLECIMIENTO = cnae.RCF_RGE_RUC""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Economic_Activity_Realization/{RES_RUC_ESTABLECIMIENTO}-{CODIGO}/";
+        rr:class sefazma:Economic_Activity_Realization;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "identidade"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:activity_start_date;
+        rr:objectMap [ rr:column "INICIO_ATIVIDADE_ECONOMICA"; rr:datatype xsd:dateTime ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate sefazma:performed_activity;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Economic_Activity/{CODIGO}/"; ];
+    ].
+
+<#hasEconomicActivityRealization>
+    rr:logicalTable [ rr:sqlQuery """SELECT cnae.RCF_RGE_RUC, cnae.RCF_TCF_CODIGO_CNAE CODIGO, est.RES_RUC_ESTABLECIMIENTO, RES_NOM_ESTABLECIMIENTO FROM TULIOSEMANTIC.RUC_CNAE_FISCAL cnae, TULIOSEMANTIC.RUC_ESTABLECIMIENTOS est WHERE est.RES_RUC_ESTABLECIMIENTO = cnae.RCF_RGE_RUC""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Establishment/{RES_NOM_ESTABLECIMIENTO}-{RES_RUC_ESTABLECIMIENTO}/";
+        rr:class sefazma:Establishment;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:has_economic_activity_realization;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Economic_Activity_Realization/{RES_RUC_ESTABLECIMIENTO}-{CODIGO}/" ];
+    ].
+   
+<#LegalNature>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT TNC_COD_NATURALEZA, TNC_NOM_NATURALEZA FROM TULIOSEMANTIC.TAB_NAT_CONTRIBUYENTE, TULIOSEMANTIC.RUC_JURIDICOS WHERE RJU_TIP_SOCIEDAD = TNC_COD_NATURALEZA"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Legal_Nature/{TNC_COD_NATURALEZA}/";
+      rr:class sefazma:Legal_Nature;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "TNC_NOM_NATURALEZA"; ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate sefazma:legal_nature_code;
+        rr:objectMap [ rr:column "TNC_COD_NATURALEZA"; ]
+    ].
+
+<#UsuarioEstabelecimento>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('USUARIO-',RES_TUS_COD_USUARIO) as nome_usuario, RES_RUC_ESTABLECIMIENTO, RES_TUS_COD_USUARIO FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{RES_RUC_ESTABLECIMIENTO}-{RES_TUS_COD_USUARIO}/";
+      rr:class sefazma:User;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:user_name;
+        rr:objectMap [ rr:column "nome_usuario"; rr:datatype xsd:string; ]
+    ].
+
+<#UsuarioGeral>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('USUARIO-',RGE_TUS_COD_USUARIO) as nome_usuario, RGE_RUC, RGE_TUS_COD_USUARIO FROM TULIOSEMANTIC.RUC_GENERAL"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{RGE_RUC}-{RGE_TUS_COD_USUARIO}/";
+      rr:class sefazma:User;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:user_name;
+        rr:objectMap [ rr:column "nome_usuario"; rr:datatype xsd:string; ]
+    ].
+
+<#UsuarioJuridicos>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('USUARIO-',RJU_TUS_COD_USUARIO) as nome_usuario, RJU_RUC_JURIDICO, RJU_TUS_COD_USUARIO FROM TULIOSEMANTIC.RUC_JURIDICOS"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{RJU_RUC_JURIDICO}-{RJU_TUS_COD_USUARIO}/";
+      rr:class sefazma:User;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:user_name;
+        rr:objectMap [ rr:column "nome_usuario"; rr:datatype xsd:string; ]
+    ].
+
+<#UsuarioObrigacaoLegal>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('USUARIO-',ROB_TUS_COD_USUARIO) as nome_usuario, ROB_TUS_COD_USUARIO, ROB_RUC_OBLIGACION FROM TULIOSEMANTIC.RUC_OBLIGACIONES"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{ROB_RUC_OBLIGACION}-{ROB_TUS_COD_USUARIO}/";
+      rr:class sefazma:User;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:user_name;
+        rr:objectMap [ rr:column "nome_usuario"; rr:datatype xsd:string;]
+    ].
+
+<#UsuarioRelacaoProfissional>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('USUARIO-',RRP_TUS_COD_USUARIO) as nome_usuario, RRP_TUS_COD_USUARIO, RRP_RUC_CONTRIBUYENTE FROM TULIOSEMANTIC.RUC_RELACION_PROFESIONAL"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{RRP_RUC_CONTRIBUYENTE}-{RRP_TUS_COD_USUARIO}/";
+      rr:class sefazma:User;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:user_name;
+        rr:objectMap [ rr:column "nome_usuario"; rr:datatype xsd:string;]
+    ].
+
+<#UsuarioRepresentanteLegal>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('USUARIO-',RRL_TUS_COD_USUARIO) AS nome_usuario, RRL_TUS_COD_USUARIO, CASE WHEN LENGTH(RRL_RUC_REPRESENTANTE) > 12 THEN CONCAT('0',RRL_RUC_REPRESENTANTE) ELSE TO_CHAR(RRL_RUC_REPRESENTANTE) END AS identidade FROM TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/User/{identidade}-{RRL_TUS_COD_USUARIO}/";
+      rr:class sefazma:User;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:user_name;
+        rr:objectMap [ rr:column "nome_usuario"; rr:datatype xsd:string; ]
+    ].
+
+<#UnidadeEstabelecimento>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('UNIDADE-',RES_TAB_COD_UNIDAD) as nome_unidade, RES_TAB_COD_UNIDAD FROM TULIOSEMANTIC.RUC_ESTABLECIMIENTOS"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Fiscal_Unit/{RES_TAB_COD_UNIDAD}/";
+      rr:class sefazma:User;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:fiscal_unit_name;
+        rr:objectMap [ rr:column "nome_unidade"; rr:datatype xsd:string; ]
+    ].
+
+<#UnidadeGeral>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('UNIDADE-',RGE_TAB_COD_UNIDAD) as nome_unidade, RGE_TAB_COD_UNIDAD FROM TULIOSEMANTIC.RUC_GENERAL"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Fiscal_Unit/{RGE_TAB_COD_UNIDAD}/";
+      rr:class sefazma:Fiscal_Unit;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:fiscal_unit_name;
+        rr:objectMap [ rr:column "nome_unidade"; rr:datatype xsd:string; ]
+    ].
+
+<#UnidadeJuridicos>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('UNIDADE-',RJU_TAB_COD_UNIDAD) as nome_unidade, RJU_TAB_COD_UNIDAD FROM TULIOSEMANTIC.RUC_JURIDICOS"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Fiscal_Unit/{RJU_TAB_COD_UNIDAD}/";
+      rr:class sefazma:Fiscal_Unit;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:fiscal_unit_name;
+        rr:objectMap [ rr:column "nome_unidade"; rr:datatype xsd:string;]
+    ].
+
+<#UnidadeObrigacaoLegal>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('UNIDADE-',ROB_TAB_COD_UNIDAD) as nome_unidade, ROB_TAB_COD_UNIDAD FROM TULIOSEMANTIC.RUC_OBLIGACIONES"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Fiscal_Unit/{ROB_TAB_COD_UNIDAD}/";
+      rr:class sefazma:Fiscal_Unit;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:fiscal_unit_name;
+        rr:objectMap [ rr:column "nome_unidade"; rr:datatype xsd:string;]
+    ].
+
+<#UnidadeRelacaoProfissional>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('UNIDADE-',RRP_TAB_COD_UNIDAD) as nome_unidade, RRP_TAB_COD_UNIDAD FROM TULIOSEMANTIC.RUC_RELACION_PROFESIONAL"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Fiscal_Unit/{RRP_TAB_COD_UNIDAD}/";
+      rr:class sefazma:Fiscal_Unit;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:fiscal_unit_name;
+        rr:objectMap [ rr:column "nome_unidade"; rr:datatype xsd:string; ]
+    ].
+
+<#UnidadeRepresentanteLegal>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT CONCAT('UNIDADE-',RRL_TAB_COD_UNIDAD) as nome_unidade, RRL_TAB_COD_UNIDAD FROM TULIOSEMANTIC.RUC_REPRESENTANTES_LEGALES"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/Cadastral_Situation/resource/Fiscal_Unit/{RRL_TAB_COD_UNIDAD}/";
+      rr:class sefazma:Fiscal_Unit;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label,sefazma:fiscal_unit_name;
+        rr:objectMap [ rr:column "nome_unidade"; rr:datatype xsd:string; ]
+    ].

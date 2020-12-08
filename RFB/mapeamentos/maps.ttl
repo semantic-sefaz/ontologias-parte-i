@@ -1,0 +1,1236 @@
+#./ontop materialize -p config.properties -m maps.ttl -t ../../ontologias/RFB_Ontology.ttl -o RFB_instances.ttl -f turtle
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix rr: <http://www.w3.org/ns/r2rml#>.
+@prefix ex: <http://example.com/ns#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix dc: <http://purl.org/dc/elements/1.1/>.
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rfb: <http://www.sefaz.ma.gov.br/ontology/> .
+@prefix cnae: <http://www.sefaz.ma.gov.br/ontology/> .
+@prefix map:<http://sistemas.sefaz.ma.gov.br/maps/RFB/2020-04-01> .
+@prefix rfb_resource: <http://www.sefaz.ma.gov.br/RFB/resource/> .
+
+
+
+
+
+
+#Organization
+map:Organization a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(cnpj,0,9) as root_cnpj,cnpj , REPLACE(regexp_replace(nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri, REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,razao_social, CASE WHEN opc_simples = '' OR opc_simples = '0' THEN 'NAO_OPTANTE'
+					WHEN opc_simples = '5' OR opc_simples = '7' THEN 'OPTANTE'
+					WHEN opc_simples = '6' OR opc_simples = '8' THEN 'EXCLUIDO'
+				END as opc_simples, 
+				CASE opc_mei WHEN 'S' THEN 'true'
+					WHEN 'N' THEN 'false'
+					ELSE NULL
+				END as opc_mei, q.id_uri as id_qualif, n.id_uri as id_nat
+			FROM public.empresas INNER JOIN qualificacao_socio q ON qualif_resp::int = q."CÓDIGO" INNER JOIN natureza_juridica n ON cod_nat_juridica::int = n.id WHERE empresas.matriz_filial = '1' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
+		rr:class foaf:Organization,foaf:Agent;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:root_cnpj,rfb:cnpj,rfb:person_identifier;
+		rr:objectMap [
+			rr:column '"root_cnpj"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:company_name, rdfs:label;
+		rr:objectMap [
+			rr:column '"razao_social"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:is_MEI;
+		rr:objectMap [
+			rr:column '"opc_mei"';
+			rr:datatype xsd:boolean
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_legal_nature;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Legal_Nature/{id_nat}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:representant_qualification;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Qualification/{id_qualif}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_headquarters,rfb:has_establishment;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Establishment/{cnpj}-{nome_uri}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:option_simples;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Option_SIMPLES/{opc_simples}-{root_cnpj}";
+		];
+	].
+
+map:Organization_partner a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(cnpj_cpf_socio,0,9) as root_cnpj, REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri, nome_socio FROM public.socios WHERE tipo_socio = '1' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
+		rr:class foaf:Organization,foaf:Agent;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:root_cnpj,rfb:cnpj,rfb:person_identifier;
+		rr:objectMap [
+			rr:column '"root_cnpj"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:company_name, rdfs:label;
+		rr:objectMap [
+			rr:column '"nome_socio"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+#foaf:Person
+
+map:Person a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT regexp_replace(cnpj_cpf_socio, '[^0-9]', '_', 'g') as uri_cpf,cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as uri_nome,nome_socio FROM public.socios WHERE tipo_socio = '2' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Person/{uri_cpf}-{uri_nome}";
+		rr:class foaf:Person,foaf:Agent;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:cpf,rfb:person_identifier;
+		rr:objectMap [
+			rr:column '"cnpj_cpf_socio"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate foaf:name,rdfs:label;
+		rr:objectMap [
+			rr:column '"nome_socio"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+map:Person_represen a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT regexp_replace(cpf_repres, '[^0-9]', '_', 'g') as uri_cpf,cpf_repres,
+				REPLACE(regexp_replace(nome_repres, '[^a-zA-Z ]', '', 'g'),' ','_') as uri_nome, 
+				CASE nome_repres WHEN '' THEN NULL ELSE nome_repres END as nome_repres 
+			FROM public.socios WHERE cpf_repres != '' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Person/{uri_cpf}-{uri_nome}";
+		rr:class foaf:Person,foaf:Agent;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:cpf,rfb:person_identifier;
+		rr:objectMap [
+			rr:column '"cpf_repres"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate foaf:name,rdfs:label;
+		rr:objectMap [
+			rr:column '"nome_repres"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+#rfb:is_foreign
+
+map:is_foreign a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT DISTINCT CONCAT('_','-',REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_')) as uri_nome, nome_socio FROM public.socios WHERE tipo_socio = '3' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Agent/{uri_nome}";
+		rr:class foaf:Agent;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"nome_socio"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:is_foreign;
+		rr:objectMap [
+			rr:constant "true";
+			rr:datatype xsd:boolean
+		];
+	].
+
+
+#has_special_situation@Organization
+map:Organization_has_special_situation a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(cnpj,0,9) as root_cnpj , REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri, CASE data_sit_especial WHEN '00000000' THEN '0000_00_00' ELSE to_char(data_sit_especial::date,'YYYY_MM_DD') END as data_sit_especial
+			FROM public.empresas WHERE empresas.matriz_filial = '1' AND sit_especial != '' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_special_situation;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Special_Situation/{root_cnpj}-{data_sit_especial}";
+		];
+	].
+
+#has_subsidiary@Organization
+map:has_subsidiary a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(e.cnpj,0,9) as root_cnpj_e, f.cnpj as cnpj_f , REPLACE(regexp_replace(e.razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri_e, REPLACE(regexp_replace(f.nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri_f
+			FROM public.empresas e INNER JOIN public.empresas f ON SUBSTRING(e.cnpj,0,9) = SUBSTRING(f.cnpj,0,9) WHERE e.matriz_filial = '1' AND f.matriz_filial = '2'  
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj_e}-{razao_uri_e}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_subsidiary,rfb:has_establishment;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Establishment/{cnpj_f}-{razao_uri_f}";
+		];
+	].
+
+#has_partnership@Organization
+map:has_partnership_fisic a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri,regexp_replace(cnpj_cpf_socio, '[^0-9]', '_', 'g') as cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO"  WHERE tipo_socio = '2' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_partnership;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Parternship/{id_uri}-{root_cnpj}-{cnpj_cpf_socio}-{nome_socio}";
+		];
+	].
+
+
+map:has_partnership_juri a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri, SUBSTRING(cnpj_cpf_socio,0,9) as cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO"  WHERE tipo_socio = '1' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_partnership;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Parternship/{id_uri}-{root_cnpj}-{cnpj_cpf_socio}-{nome_socio}";
+		];
+	].
+
+map:has_partnership_extrang a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri, CONCAT('_','-',REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_')) as uri_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO"  WHERE tipo_socio = '3' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_partnership;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Parternship/{id_uri}-{root_cnpj}-{uri_socio}";
+		];
+	].
+
+
+
+
+#Partnership
+map:Partnership_fisic a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT CASE data_entrada WHEN '00000000' THEN NULL ELSE data_entrada::date END as data_entrada,SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,CONCAT(q."DESCRIÇÃO",': ',nome_socio) as descricao,q.id_uri as id_uri,regexp_replace(cnpj_cpf_socio, '[^0-9]', '_', 'g') as cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO"  WHERE tipo_socio = '2' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Parternship/{id_uri}-{root_cnpj}-{cnpj_cpf_socio}-{nome_socio}";
+			rr:class rfb:Partnership
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:partnership_start_date;
+		rr:objectMap [
+			rr:column '"data_entrada"';
+			rr:datatype xsd:date
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"descricao"';
+			
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:partner_qualification;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Qualification/{id_uri}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_partner ;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Person/{cnpj_cpf_socio}-{nome_socio}";
+		];
+	].
+
+map:Partnership_juri a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT CASE data_entrada WHEN '00000000' THEN NULL ELSE data_entrada::date END as data_entrada,CONCAT(q."DESCRIÇÃO",': ',nome_socio) as descricao,r.id_uri as rep_quali,REPLACE(regexp_replace(nome_repres, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_rep,regexp_replace(cpf_repres, '[^0-9]', '_', 'g') as cpf_rep, SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri, SUBSTRING(cnpj_cpf_socio,0,9) as cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO" INNER JOIN qualificacao_socio r ON s.cod_qualif_repres::int = r."CÓDIGO"  WHERE tipo_socio = '1' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Parternship/{id_uri}-{root_cnpj}-{cnpj_cpf_socio}-{nome_socio}";
+			rr:class rfb:Partnership
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_partner ;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{cnpj_cpf_socio}-{nome_socio}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"descricao"';
+			
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:partnership_start_date;
+		rr:objectMap [
+			rr:column '"data_entrada"';
+			rr:datatype xsd:date
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_representant;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Person/{cpf_rep}-{nome_rep}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:partner_qualification;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Qualification/{id_uri}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:representant_qualification;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Qualification/{rep_quali}";
+		];
+	].
+
+
+
+map:Partnership_estrang a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT DISTINCT CASE data_entrada WHEN '00000000' THEN NULL ELSE data_entrada::date END as data_entrada,CONCAT(q."DESCRIÇÃO",': ',nome_socio) as descricao,r.id_uri as rep_quali,REPLACE(regexp_replace(nome_repres, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_rep,regexp_replace(cpf_repres, '[^0-9]', '_', 'g') as cpf_rep, SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri, CONCAT('_','-',REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_')) as uri_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO" INNER JOIN qualificacao_socio r ON s.cod_qualif_repres::int = r."CÓDIGO"  WHERE tipo_socio = '3' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Parternship/{id_uri}-{root_cnpj}-{uri_socio}";
+			rr:class rfb:Partnership
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_partner ;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Agent/{uri_socio}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"descricao"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:partnership_start_date;
+		rr:objectMap [
+			rr:column '"data_entrada"';
+			rr:datatype xsd:date
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_representant;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Person/{cpf_rep}-{nome_rep}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:partner_qualification;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Qualification/{id_uri}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:representant_qualification;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Qualification/{rep_quali}";
+		];
+	].
+
+
+#Qualification
+map:Qualification a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT id_uri,"CÓDIGO","DESCRIÇÃO" FROM qualificacao_socio
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Qualification/{id_uri}";
+		rr:class rfb:Qualification;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"DESCRIÇÃO"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:code_qualification, rfb:code;
+		rr:objectMap [
+			rr:column '"CÓDIGO"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+
+
+#Option_SIMPLES
+map:Option_SIMPLES a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(cnpj,0,9) as root_cnpj, opc_simples as simples_type,CASE WHEN opc_simples = '' OR opc_simples = '0' THEN 'NAO_OPTANTE'
+					WHEN opc_simples = '5' OR opc_simples = '7' THEN 'OPTANTE'
+					WHEN opc_simples = '6' OR opc_simples = '8' THEN 'EXCLUIDO'
+				END as opc_simples,
+				CASE data_opc_simples WHEN '' THEN NULL
+					WHEN '00000000' THEN NULL
+					ELSE data_opc_simples::date
+				END as data_opc_simples,
+				CASE data_exc_simples WHEN '' THEN NULL
+					WHEN '00000000' THEN NULL
+					ELSE data_exc_simples::date
+				END as data_exc_simples
+			FROM public.empresas WHERE empresas.matriz_filial = '1' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Option_SIMPLES/{opc_simples}-{root_cnpj}";
+		rr:class rfb:Option_SIMPLES;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:type_SIMPLES_option;
+		rr:objectMap [
+			rr:column '"simples_type"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:date_option_for_SIMPLES;
+		rr:objectMap [
+			rr:column '"data_opc_simples"';
+			rr:datatype xsd:date
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:date_exclusion_for_SIMPLES;
+		rr:objectMap [
+			rr:column '"data_exc_simples"';
+			rr:datatype xsd:date
+		];
+	].
+
+
+map:Option_SIMPLES_SubClass a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(cnpj,0,9) as root_cnpj,CASE WHEN opc_simples = '' OR opc_simples = '0' THEN 'NAO_OPTANTE'
+					WHEN opc_simples = '5' OR opc_simples = '7' THEN 'OPTANTE'
+					WHEN opc_simples = '6' OR opc_simples = '8' THEN 'EXCLUIDO'
+				END as opc_simples, 
+				CASE WHEN opc_simples = '' OR opc_simples = '0' THEN 'Not_Optant'
+					WHEN opc_simples = '5' OR opc_simples = '7' THEN 'Optant'
+					WHEN opc_simples = '6' OR opc_simples = '8' THEN 'Excluded'
+				END as class_simples
+			FROM public.empresas WHERE empresas.matriz_filial = '1' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Option_SIMPLES/{opc_simples}-{root_cnpj}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdf:type;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/ontology/Option_SIMPLES/SIMPLES_{class_simples}";
+		];
+	].
+
+
+
+
+#Special_Situation
+map:Special_Situation a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT SUBSTRING(cnpj,0,9) as root_cnpj,CASE data_sit_especial WHEN '00000000' THEN NULL ELSE to_char(data_sit_especial::date,'YYYY_MM_DD') END as data_sit_especial, CASE data_sit_especial WHEN '00000000' THEN NULL ELSE data_sit_especial::date END as data_sit, sit_especial
+			FROM public.empresas WHERE empresas.matriz_filial = '1' AND sit_especial != '' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Special_Situation/{root_cnpj}-{data_sit_especial}";
+		rr:class rfb:Special_Situation;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:special_situation_start_date;
+		rr:objectMap [
+			rr:column '"data_sit"';
+			rr:datatype xsd:date
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:special_situation_description,rdfs:label;
+		rr:objectMap [
+			rr:column '"sit_especial"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+
+#Legal_Nature
+map:Legal_Nature a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT codigo,id_uri,natureza_jurica FROM natureza_juridica
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Legal_Nature/{id_uri}";
+		rr:class rfb:Legal_Nature;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:legal_nature_code,rfb:code;
+		rr:objectMap [
+			rr:column '"codigo"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"natureza_jurica"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+
+
+
+#Reason_Cadastral_Situation
+map:Reason_Cadastral_Situation a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT id_uri,"Descrição","Código" FROM motivos_situacao
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Reason_Cadastral_Situation/{id_uri}";
+		rr:class rfb:Reason_Cadastral_Situation;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"Descrição"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:reason_situation_code;
+		rr:objectMap [
+			rr:column '"Código"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+
+
+
+
+
+
+
+
+
+#Establishment
+map:Establishment a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT cnpj,REPLACE(regexp_replace(nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri,razao_social,
+				CASE nome_fantasia WHEN '' THEN NULL
+					ELSE nome_fantasia
+				END as nome_fantasia,
+				CASE porte WHEN '05' THEN 'DEMAIS'
+					WHEN '01' THEN 'MICRO_EMPRESA'
+					WHEN '00' THEN 'NAO_INFORMADO'
+					WHEN '03' THEN 'PEQUENO_PORTE'
+				END as porte,
+				CASE data_situacao WHEN '00000000' THEN NULL ELSE to_char(data_situacao::date,'YYYY_MM_DD') END as data_situacao,
+				CASE situacao WHEN '01' THEN 'NULA'
+					WHEN '02' THEN 'ATIVA'
+					WHEN '03' THEN 'SUSPENSA'
+					WHEN '04' THEN 'INAPTA'
+					WHEN '08' THEN 'BAIXADA'
+				END as situacao,
+				CASE email WHEN '' THEN NULL
+					ELSE email
+				END as email,
+				CASE capital_social WHEN 0 THEN NULL
+					ELSE capital_social
+				END as capital_social,
+				CASE matriz_filial WHEN '1' THEN 'MATRIZ'
+					ELSE 'FILIAL'
+				END as matriz_filial,
+				cnae_fiscal, CASE data_inicio_ativ WHEN '00000000' THEN NULL ELSE data_inicio_ativ::date END as data_inicio_ativ, MD5(CONCAT(nm_cidade_exterior,cod_pais,nome_pais,tipo_logradouro,logradouro,numero,complemento,bairro,cep,uf,cod_municipio,municipio)) as id_endereco,
+				CASE CONCAT(ddd_1,telefone_1) WHEN '' THEN NULL ELSE CONCAT('(',ddd_1,') ',telefone_1) END as phone_1,
+				CASE CONCAT(ddd_2,telefone_2) WHEN '' THEN NULL ELSE CONCAT('(',ddd_2,') ',telefone_2) END as phone_2,
+				CASE CONCAT(ddd_fax,num_fax) WHEN '' THEN NULL ELSE CONCAT('(',ddd_fax,') ',num_fax) END as fax
+			FROM public.empresas 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Establishment/{cnpj}-{nome_uri}";
+		rr:class rfb:Establishment;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:full_cnpj,rfb:cnpj,rfb:person_identifier;
+		rr:objectMap [
+			rr:column '"cnpj"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:company_name, rdfs:label;
+		rr:objectMap [
+			rr:column '"razao_social"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:trade_name, rdfs:label;
+		rr:objectMap [
+			rr:column '"nome_fantasia"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_size;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Size_Company/{porte}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_cadastral_situation;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Cadastral_Situation/{situacao}-{cnpj}-{data_situacao}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:activity_start_date;
+		rr:objectMap [
+			rr:column '"data_inicio_ativ"';
+			rr:datatype xsd:date
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_main_economic_activity, rfb:has_economic_activity;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Economic_Activity/{cnae_fiscal}"
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_address;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Address/{id_endereco}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_establishment_type;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Establishment_Type/{matriz_filial}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate vcard:email;
+		rr:objectMap [
+			rr:column '"email"';
+			rr:datatype xsd:anyURI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:share_capital;
+		rr:objectMap [
+			rr:column '"capital_social"';
+			rr:datatype xsd:double
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:phone_number, rfb:contact_number;
+		rr:objectMap [
+			rr:column '"phone_1"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:phone_number, rfb:contact_number;
+		rr:objectMap [
+			rr:column '"phone_2"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:fax_number, rfb:contact_number;
+		rr:objectMap [
+			rr:column '"fax"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+#has_economic_activity
+map:has_secondary_activity a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT cs.cnae as cnae,e.cnpj as cnpj, REPLACE(regexp_replace(e.nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri FROM public.empresas e INNER JOIN cnaes_secundarios cs ON e.cnpj = cs.cnpj 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Establishment/{cnpj}-{nome_uri}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_economic_activity;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Economic_Activity/{cnae}"
+		];
+	].
+
+
+
+
+
+
+
+
+#Cadastral_Situation
+
+map:Cadastral_Situation a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT cnpj,REPLACE(regexp_replace(nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri,
+				CASE data_situacao WHEN '00000000' THEN NULL ELSE to_char(data_situacao::date,'YYYY_MM_DD') END as data_situacao,
+				CASE data_situacao WHEN '00000000' THEN NULL ELSE data_situacao::date END as val_data_situacao,
+				CASE situacao WHEN '01' THEN 'NULA'
+					WHEN '02' THEN 'ATIVA'
+					WHEN '03' THEN 'SUSPENSA'
+					WHEN '04' THEN 'INAPTA'
+					WHEN '08' THEN 'BAIXADA'
+				END as situacao,
+				id_uri
+			FROM public.empresas LEFT OUTER JOIN motivos_situacao ON motivo_situacao::int = "Código" 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Cadastral_Situation/{situacao}-{cnpj}-{data_situacao}";
+		rr:class rfb:Cadastral_Situation;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:cadastral_situation_date;
+		rr:objectMap [
+			rr:column '"val_data_situacao"';
+			rr:datatype xsd:date
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_reason_situation;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Reason_Cadastral_Situation/{id_uri}"
+		];
+	].
+
+map:Cadastral_Situation_Class a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT cnpj,REPLACE(regexp_replace(nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri,
+				CASE data_situacao WHEN '00000000' THEN NULL ELSE to_char(data_situacao::date,'YYYY_MM_DD') END as data_situacao,
+				CASE situacao WHEN '01' THEN 'NULA'
+					WHEN '02' THEN 'ATIVA'
+					WHEN '03' THEN 'SUSPENSA'
+					WHEN '04' THEN 'INAPTA'
+					WHEN '08' THEN 'BAIXADA'
+				END as situacao,
+				CASE situacao WHEN '01' THEN 'NULL'
+					WHEN '02' THEN 'ACTIVE'
+					WHEN '03' THEN 'SUSPENDED'
+					WHEN '04' THEN 'UNFIT'
+					WHEN '08' THEN 'DOWN'
+				END as type_situacao
+			FROM public.empresas 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Cadastral_Situation/{situacao}-{cnpj}-{data_situacao}";
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdf:type;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/ontology/Cadastral_Situation/{type_situacao}"
+		];
+	].
+
+
+
+
+
+#Address
+map:Address a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT CASE WHEN cep = '' THEN NULL ELSE cep END as cep,
+				CASE WHEN logradouro = '' THEN NULL ELSE REPLACE(regexp_replace(CONCAT(tipo_logradouro,' ',logradouro), '[^a-zA-Z0-9 ]', '', 'g'),' ','_') END as logradouro ,
+				CASE WHEN bairro = '' THEN NULL ELSE REPLACE(regexp_replace(bairro, '[^a-zA-Z ]', '', 'g'),' ','_') END as bairro ,
+				CASE WHEN nm_cidade_exterior = '' THEN NULL ELSE REPLACE(regexp_replace(nm_cidade_exterior, '[^a-zA-Z ]', '', 'g'),' ','_') END as nm_cidade_exterior ,
+				CASE WHEN municipio = '' THEN NULL ELSE REPLACE(regexp_replace(municipio, '[^a-zA-Z ]', '', 'g'),' ','_') END as municipio,
+				CASE WHEN nome_pais = '' THEN 'BRASIL' ELSE REPLACE(regexp_replace(nome_pais, '[^a-zA-Z ]', '', 'g'),' ','_') END as nome_pais,
+				CASE uf 
+						WHEN 'AC' THEN 'ACRE'
+						WHEN 'AL' THEN 'ALAGOAS'
+						WHEN 'AP' THEN 'AMAPA'
+						WHEN 'AM' THEN 'AMAZONAS'
+						WHEN 'BA' THEN 'BAHIA'
+						WHEN 'CE' THEN 'CEARA'
+						WHEN 'ES' THEN 'ESPIRITO_SANTO'
+						WHEN 'GO' THEN 'GOIAS'
+						WHEN 'MA' THEN 'MARANHAO'
+						WHEN 'MT' THEN 'MATO_GROSSO'
+						WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
+						WHEN 'MG' THEN 'MINAS_GERAIS'
+						WHEN 'PA' THEN 'PARA'
+						WHEN 'PB' THEN 'PARAIBA'
+						WHEN 'PR' THEN 'PARANA'
+						WHEN 'PE' THEN 'PERNAMBUCO'
+						WHEN 'PI' THEN 'PIAUI'
+						WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
+						WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
+						WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
+						WHEN 'RO' THEN 'RONDONIA'
+						WHEN 'RR' THEN 'RORAIMA'
+						WHEN 'SC' THEN 'SANTA_CATARINA'
+						WHEN 'SP' THEN 'SAO_PAULO'
+						WHEN 'SE' THEN 'SERGIPE'
+						WHEN 'TO' THEN 'TOCANTINS'
+						WHEN 'DF' THEN 'DISTRITO_FEDERAL'
+						ELSE NULL
+				END as uf,
+				CASE WHEN numero = '' THEN NULL ELSE numero END as numero,
+				CASE WHEN complemento = '' THEN NULL ELSE complemento END as complemento,
+				MD5(CONCAT(nm_cidade_exterior,cod_pais,nome_pais,tipo_logradouro,logradouro,numero,complemento,bairro,cep,uf,cod_municipio,municipio)) as id_endereco,
+				CONCAT(tipo_logradouro,' ',logradouro,', nº ',numero,', ',complemento,' \n ',bairro,' \n ',municipio,' - ',uf,' \n ',cep) as endereco
+			FROM public.empresas 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Address/{id_endereco}";
+		rr:class rfb:Address;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:address_number;
+		rr:objectMap [
+			rr:column '"numero"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:address_complement;
+		rr:objectMap [
+			rr:column '"complemento"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"endereco"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_federative_unit;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Federative_Unit/{uf}"
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_country;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Country/{nome_pais}"
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_city;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/City/{municipio}-{uf}"
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_city;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/City/{nm_cidade_exterior}-{nome_pais}"
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_district;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/District/{bairro}-{municipio}"
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:has_locality;
+		rr:objectMap [
+			rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Locality/{logradouro}-{bairro}"
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate vcard:postal-code ;
+		rr:objectMap [
+			rr:column '"cep"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+#Country
+map:Country a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT DISTINCT CASE WHEN nome_pais = '' THEN 'BRASIL' ELSE REPLACE(regexp_replace(nome_pais, '[^a-zA-Z ]', '', 'g'),' ','_') END as nome_pais,
+							CASE WHEN nome_pais = '' THEN 'BRASIL' ELSE nome_pais END as pais, cod_pais
+			FROM public.empresas 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Country/{nome_pais}";
+		rr:class rfb:Country;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"pais"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:country_code_RFB;
+		rr:objectMap [
+			rr:column '"cod_pais"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+
+#Federative Unit
+map:Federative_Unit a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT CASE uf 
+						WHEN 'AC' THEN 'ACRE'
+						WHEN 'AL' THEN 'ALAGOAS'
+						WHEN 'AP' THEN 'AMAPA'
+						WHEN 'AM' THEN 'AMAZONAS'
+						WHEN 'BA' THEN 'BAHIA'
+						WHEN 'CE' THEN 'CEARA'
+						WHEN 'ES' THEN 'ESPIRITO_SANTO'
+						WHEN 'GO' THEN 'GOIAS'
+						WHEN 'MA' THEN 'MARANHAO'
+						WHEN 'MT' THEN 'MATO_GROSSO'
+						WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
+						WHEN 'MG' THEN 'MINAS_GERAIS'
+						WHEN 'PA' THEN 'PARA'
+						WHEN 'PB' THEN 'PARAIBA'
+						WHEN 'PR' THEN 'PARANA'
+						WHEN 'PE' THEN 'PERNAMBUCO'
+						WHEN 'PI' THEN 'PIAUI'
+						WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
+						WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
+						WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
+						WHEN 'RO' THEN 'RONDONIA'
+						WHEN 'RR' THEN 'RORAIMA'
+						WHEN 'SC' THEN 'SANTA_CATARINA'
+						WHEN 'SP' THEN 'SAO_PAULO'
+						WHEN 'SE' THEN 'SERGIPE'
+						WHEN 'TO' THEN 'TOCANTINS'
+						WHEN 'DF' THEN 'DISTRITO_FEDERAL'
+						ELSE NULL
+				END as estado, uf
+			FROM public.empresas 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Federative_Unit/{estado}";
+		rr:class rfb:Federative_Unit;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"estado"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:abbreviation_UF;
+		rr:objectMap [
+			rr:column '"uf"';
+			rr:datatype xsd:string
+		];
+	].
+
+#City
+map:City a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT CASE WHEN municipio = '' THEN NULL ELSE REPLACE(regexp_replace(municipio, '[^a-zA-Z ]', '', 'g'),' ','_') END as municipio,
+				CASE uf 
+						WHEN 'AC' THEN 'ACRE'
+						WHEN 'AL' THEN 'ALAGOAS'
+						WHEN 'AP' THEN 'AMAPA'
+						WHEN 'AM' THEN 'AMAZONAS'
+						WHEN 'BA' THEN 'BAHIA'
+						WHEN 'CE' THEN 'CEARA'
+						WHEN 'ES' THEN 'ESPIRITO_SANTO'
+						WHEN 'GO' THEN 'GOIAS'
+						WHEN 'MA' THEN 'MARANHAO'
+						WHEN 'MT' THEN 'MATO_GROSSO'
+						WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
+						WHEN 'MG' THEN 'MINAS_GERAIS'
+						WHEN 'PA' THEN 'PARA'
+						WHEN 'PB' THEN 'PARAIBA'
+						WHEN 'PR' THEN 'PARANA'
+						WHEN 'PE' THEN 'PERNAMBUCO'
+						WHEN 'PI' THEN 'PIAUI'
+						WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
+						WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
+						WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
+						WHEN 'RO' THEN 'RONDONIA'
+						WHEN 'RR' THEN 'RORAIMA'
+						WHEN 'SC' THEN 'SANTA_CATARINA'
+						WHEN 'SP' THEN 'SAO_PAULO'
+						WHEN 'SE' THEN 'SERGIPE'
+						WHEN 'TO' THEN 'TOCANTINS'
+						WHEN 'DF' THEN 'DISTRITO_FEDERAL'
+						ELSE NULL
+				END as uf, cod_municipio, municipio as municipio_raw
+			FROM public.empresas 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/City/{municipio}-{uf}";
+		rr:class rfb:City;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"municipio_raw"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:city_code;
+		rr:objectMap [
+			rr:column '"cod_municipio"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+
+
+map:Ext_City a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT CASE WHEN nm_cidade_exterior = '' THEN NULL ELSE REPLACE(regexp_replace(nm_cidade_exterior, '[^a-zA-Z ]', '', 'g'),' ','_') END as nm_cidade_exterior ,
+				CASE WHEN nome_pais = '' THEN 'BRASIL' ELSE REPLACE(regexp_replace(nome_pais, '[^a-zA-Z ]', '', 'g'),' ','_') END as nome_pais,
+				nm_cidade_exterior as cidade
+			FROM public.empresas WHERE nm_cidade_exterior != '' 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/City/Ext/{nm_cidade_exterior}-{nome_pais}";
+		rr:class rfb:City;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"cidade"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+
+
+
+
+#District
+map:District a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT CASE WHEN bairro = '' THEN NULL ELSE REPLACE(regexp_replace(bairro, '[^a-zA-Z ]', '', 'g'),' ','_') END as bairro ,
+				CASE WHEN municipio = '' THEN NULL ELSE REPLACE(regexp_replace(municipio, '[^a-zA-Z ]', '', 'g'),' ','_') END as municipio,
+				bairro as nome_bairro
+			FROM public.empresas 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/District/{bairro}-{municipio}";
+		rr:class rfb:District;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"nome_bairro"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+#Locality
+map:Locality a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT 			CASE WHEN logradouro = '' THEN NULL ELSE REPLACE(regexp_replace(CONCAT(tipo_logradouro,' ',logradouro), '[^a-zA-Z0-9 ]', '', 'g'),' ','_') END as logradouro ,
+				CASE WHEN bairro = '' THEN NULL ELSE REPLACE(regexp_replace(bairro, '[^a-zA-Z ]', '', 'g'),' ','_') END as bairro ,
+				CASE WHEN logradouro = '' THEN NULL ELSE logradouro END as logradouro_raw,tipo_logradouro
+			FROM public.empresas 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Locality/{logradouro}-{bairro}";
+		rr:class rfb:Locality;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rdfs:label;
+		rr:objectMap [
+			rr:column '"logradouro_raw"';
+			rr:datatype xsd:string
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:locality_type;
+		rr:objectMap [
+			rr:column '"tipo_logradouro"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+
+
+
+#Economic_Activity
+
+map:Economic_Activity a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT DISTINCT cnae_fiscal FROM empresas 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Economic_Activity/{cnae_fiscal}";
+		rr:class rfb:Economic_Activity;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:raw_cnae;
+		rr:objectMap [
+			rr:column '"cnae_fiscal"';
+			rr:datatype xsd:string
+		];
+	].
+
+
+map:Economic_Activity_sec a rr:TripleMap;
+	rr:logicalTable [
+		rr:sqlQuery """
+			SELECT DISTINCT cnae FROM cnaes_secundarios 
+		""";
+	];
+	rr:subjectMap [
+		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Economic_Activity/{cnae}";
+		rr:class rfb:Economic_Activity;
+	];
+	rr:predicateObjectMap [
+		rr:predicate rfb:raw_cnae;
+		rr:objectMap [
+			rr:column '"cnae"';
+			rr:datatype xsd:string
+		];
+	].

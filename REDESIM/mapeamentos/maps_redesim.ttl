@@ -1,0 +1,1381 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix redesim: <http://www.sefaz.ma.gov.br/ontology/> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix event: <http://purl.org/NET/c4dm/event.owl#> .
+@prefix : <http://www.sefaz.ma.gov.br/ontology/> .
+@base <http://www.sefaz.ma.gov.br/ontology/> .
+
+<#TriplesMapOrganization>
+    rr:logicalTable [ rr:sqlQuery """SELECT TEM_ID, TEM_TCC_ID, TEM_RAZAOSOCIAL, TEM_NIRE, 
+    CASE WHEN TEM_NOMEFANTASIA IS NULL THEN 'VAZIO' ELSE TEM_NOMEFANTASIA END AS nome_fantasia, TEM_NATUREZAJURIDICA, 
+    CASE TEM_PORTE WHEN 1 THEN 'ME'
+        WHEN 2 THEN 'EPP'
+        WHEN 3 THEN 'MEI'
+        WHEN 4 THEN 'DEMAIS'
+    END AS PORTE,
+    TEM_DTASSINATURA, TEM_DTULTARQUIVAMENTO, 
+    CASE WHEN TEM_SITIO IS NULL THEN 'VAZIO'
+                    END as site,
+    TEM_CAPITALSOCIAL, TEM_SITUACAO, TEM_DTCONSTITUICAO, TEM_DESTAQUECAPITAL, TEM_TIPOUNIDADE, 
+    SUBSTR(TEM_CNPJ,0,8) AS CNPJ, CONCAT(CONCAT(SUBSTR(TEM_CNPJ,0,8),'-'),TEM_NOMEFANTASIA) AS identidade,
+    CASE TCC_CTBICMS WHEN 1 THEN 'ICMS_TAXPAYER'
+                    ELSE 'NON_TAXPAYER'
+                END as type,
+    CASE TCC_CTBICMS WHEN 1 THEN 'CONTRIBUINTE ICMS'
+                    ELSE 'NÃO CONTRIBUINTE DO ICMS'
+                END as tipo 
+    FROM TULIOSEMANTIC.TAB_EMPRESA,  TULIOSEMANTIC.TAB_SOLICITACAO 
+    WHERE TEM_TCC_ID = TCC_ID""" ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}-{nome_fantasia}";
+        rr:class foaf:Organization;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, redesim:company_name;
+        rr:objectMap [ rr:column "identidade"; rr:datatype xsd:string ];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:root_cnpj, redesim:cnpj;
+        rr:objectMap [ rr:column "CNPJ"; rr:datatype xsd:string ];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:state_registration;
+        rr:objectMap [ rr:column "TEM_TCC_ID"; rr:datatype xsd:integer];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:nire;
+        rr:objectMap [ rr:column "TEM_NIRE"; rr:datatype xsd:string ];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:update_date;
+        rr:objectMap [ rr:column "TEM_DTULTARQUIVAMENTO"; rr:datatype xsd:date];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:constitution_date;
+        rr:objectMap [ rr:column "TEM_DTCONSTITUICAO"; rr:datatype xsd:date ];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:share_capital;
+        rr:objectMap [ rr:column "TEM_CAPITALSOCIAL"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:homepage;
+        rr:objectMap [ rr:column "site"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_size;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Size_Company/{PORTE}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_contribution_type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/{type}/{tipo}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_legal_nature;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Legal_Nature/{TEM_NATUREZAJURIDICA}"; ];
+    ].
+
+<#LegalNature>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT TNC_COD_NATURALEZA, TNC_NOM_NATURALEZA FROM TULIOSEMANTIC.TAB_NAT_CONTRIBUYENTE, TULIOSEMANTIC.TAB_EMPRESA WHERE TEM_NATUREZAJURIDICA = TNC_COD_NATURALEZA"""
+  ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Legal_Nature/{TNC_COD_NATURALEZA}";
+      rr:class redesim:Legal_Nature;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "TNC_NOM_NATURALEZA"; ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:legal_nature_code;
+        rr:objectMap [ rr:column "TNC_COD_NATURALEZA"; ]
+    ].
+
+
+<#TriplesMapOrganizationHasPartnership>
+    rr:logicalTable [ rr:sqlQuery """SELECT TEM_ID, TEM_TCC_ID, 
+    SUBSTR(TEM_CNPJ,0,8) AS CNPJ, CASE WHEN TEM_NOMEFANTASIA IS NULL THEN 'VAZIO' ELSE TEM_NOMEFANTASIA END AS nome_fantasia, CONCAT(CONCAT(TSO_CPF_CNPJ,'-'),TSO_NOME) AS identidade_socio 
+    FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_SOCIOS WHERE TEM_TCC_ID = TSO_TCC_ID""" ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}-{nome_fantasia}";
+        rr:class foaf:Organization;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_partnership;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Partnership/{identidade_socio}"; ];
+    ].
+
+<#OrganizationhasEstablishment>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT CASE WHEN TEM_NOMEFANTASIA IS NULL THEN 'VAZIO' ELSE TEM_NOMEFANTASIA END AS nome_fantasia, SUBSTR(TEM_CNPJ,0,8) CNPJ, TEN_TEM_ID, TCC_RUC, TCC_ID FROM TULIOSEMANTIC.TAB_EMPRESA org, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO,
+    TULIOSEMANTIC.TAB_SOLICITACAO 
+    WHERE org.TEM_ID = TEN_TEM_ID AND TEM_TCC_ID = TCC_ID"""];
+
+    rr:subjectMap [
+      rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}-{nome_fantasia}";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_establishment;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}";
+        ]
+    ].
+
+<#TriplesMapHasSubsidiary>
+    rr:logicalTable [ rr:sqlQuery """SELECT TEM_ID, TEM_TCC_ID, SUBSTR(TEM_CNPJ,0,8) AS CNPJ,
+    CASE WHEN TCC_CTBICMS IS NULL THEN 0 ELSE TCC_CTBICMS END AS contribution_type, TCC_RUC, TEN_TEM_ID, CASE WHEN TEM_NOMEFANTASIA IS NULL THEN 'VAZIO' ELSE TEM_NOMEFANTASIA END AS nome_fantasia 
+    FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_SOLICITACAO
+    WHERE TEM_ID = TEN_TEM_ID AND TEM_TCC_ID = TCC_ID AND TCC_FILIAL = 1""" ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}-{nome_fantasia}";
+        rr:class foaf:Organization;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_subsidiary;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}"; ];
+    ].
+
+<#TriplesMapEconomicActivity>
+    rr:logicalTable [ rr:sqlQuery """SELECT TAC_TCC_ID, TAC_COD_CNAE, TEM_OBJETOSOCIAL, 
+    CASE WHEN TAC_PRINCIPAL IS NULL THEN 0 ELSE TAC_PRINCIPAL END AS cnae_principal,
+    CASE WHEN TAC_EXERCENOENDERECO IS NULL THEN 0 ELSE TAC_EXERCENOENDERECO END as estabelecimento_desempenhado 
+    FROM TULIOSEMANTIC.TAB_ATIVIDADE_ECONOMICA, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_EMPRESA WHERE TAC_TCC_ID = TEM_TCC_ID AND TEM_ID = TEN_TEM_ID""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Economic_Activity/{TAC_COD_CNAE}";
+        rr:class redesim:Economic_Activity;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:cnae, redesim:raw_cnae;
+        rr:objectMap [ rr:column "TAC_COD_CNAE"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:activity_description;
+        rr:objectMap [ rr:column "TEM_OBJETOSOCIAL"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_main_economic_activity;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Economic_Activity/{cnae_principal}"; ];
+    ].
+
+<#TriplesMapEstablishmenthasEconomicActivity>
+    rr:logicalTable [ rr:sqlQuery """SELECT TEN_TEM_ID, TCC_RUC, cnae.TAC_TCC_ID, TAC_COD_CNAE  
+    FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_ATIVIDADE_ECONOMICA cnae, TULIOSEMANTIC.TAB_SOLICITACAO
+    WHERE cnae.TAC_TCC_ID = TEM_TCC_ID AND TEM_ID = TEN_TEM_ID AND TEM_TCC_ID = TCC_ID"""; ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}";
+        rr:class redesim:Establishment;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_economic_activity;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Economic_Activity/{TAC_COD_CNAE}"; ];
+    ].
+
+<#TriplesMapEstablishment>
+    rr:logicalTable [ rr:sqlQuery """    
+    SELECT TCC_RUC, TEM_ID, TEN_TEM_ID, CONCAT('0',TEM_CNPJ) AS CNPJ, 
+    CASE WHEN TEM_NOMEFANTASIA IS NULL THEN 'VAZIO' ELSE TEM_NOMEFANTASIA
+                END as nome_fantasia,
+    CASE WHEN TEN_AREAUTILIZADA IS NULL THEN 0 ELSE TEN_AREAUTILIZADA
+                END as area,
+    CASE WHEN TEN_INSCRICAOIMOBILIARIA IS NULL THEN 'VAZIO' ELSE TEN_INSCRICAOIMOBILIARIA
+                    END as inscricao_imobiliaria,
+    CASE WHEN TEN_NIRF IS NULL THEN 'VAZIO' ELSE TEN_NIRF
+                    END as nirf,
+    CASE WHEN TEN_INCRA IS NULL THEN 'VAZIO' ELSE TEN_INCRA
+                    END as incra,        
+    CASE WHEN TEN_METRAGEM IS NULL THEN 0 ELSE TEN_METRAGEM
+                    END as metragem,
+    CASE WHEN TEM_DDDFAX IS NULL THEN 0 ELSE TEM_DDDFAX
+                    END as dddFax,
+    CASE WHEN TEM_FAX IS NULL THEN 0 ELSE TEM_FAX
+                    END as fax,
+    CASE WHEN TEM_DDDTEL IS NULL THEN 0 ELSE TEM_DDDTEL
+                    END as dddTelefone,
+    CASE WHEN TEM_TELEFONE IS NULL THEN 0 ELSE TEM_TELEFONE
+                    END as telefone,
+    CASE WHEN TEM_SITIO IS NULL THEN 'VAZIO' ELSE TEM_SITIO
+                    END as site,
+    CASE WHEN TEN_EMAIL IS NULL THEN 'VAZIO' ELSE TEN_EMAIL
+                    END as email,
+    CONCAT(CONCAT(TEM_DDDFAX,'-'),TEM_FAX) AS fax_completo,
+    CONCAT(CONCAT(TEM_DDDTEL,'-'),TEM_TELEFONE) AS telefone_completo,
+    CASE TEM_TIPOUNIDADE WHEN 0 THEN 'UNIDADE_PRODUTIVA'
+                WHEN 1 THEN 'SEDE'
+                WHEN 2 THEN 'ESCRITÓRIO_ADMINISTRATIVO'
+                WHEN 3 THEN 'DEPOSITO_FECHADO'
+                WHEN 4 THEN 'ALMOXARIFADO'
+                WHEN 5 THEN 'OFICINA_REPARACAO'
+                WHEN 6 THEN 'GARAGEM'
+                WHEN 7 THEN 'UNIDADE_ABASTECIMENTO_COMBUSTIVEL'
+                WHEN 8 THEN 'PONTO_EXPOSICAO'
+                WHEN 9 THEN 'CENTRO_DE_TREINAMENTO'
+                WHEN 10 THEN 'CENTRO_DE_PROCESSAMENTO_DE_DADOS'
+                WHEN 14 THEN 'POSTO_DE_COLETA'
+                END as tipo_estabelecimento,
+    CASE TEN_TIPOIMOVEL WHEN 0 THEN 'CONTROLE_ACESSO_EXTERNO'
+                WHEN 1 THEN 'ATIVO'
+                WHEN 2 THEN 'BLOQUEADO'
+                WHEN 3 THEN 'EXCLUÍDO'
+                WHEN 4 THEN 'SENHA_EXPIRADA'
+                ELSE 'VAZIO'
+                END as tipo_imovel,
+    CASE WHEN TEM_INSCRICAOESTADUAL IS NULL THEN 0 ELSE TEM_INSCRICAOESTADUAL
+                END as inscricao_estadual,
+    CASE WHEN TEM_INSCRICAOMUNICIPAL IS NULL THEN 0 ELSE TEM_INSCRICAOMUNICIPAL
+                END as inscricao_municipal,
+    CASE WHEN TEN_COMPLEMENTO IS NULL THEN 'VAZIO' ELSE TEN_COMPLEMENTO
+                END as complemento,
+    CASE WHEN TEN_CEP IS NULL THEN 0 ELSE TEN_CEP
+                END as caixa_postal,
+    CASE WHEN TEN_REFERENCIA IS NULL THEN 'VAZIO' ELSE TEN_REFERENCIA
+                END as referencia,   
+    CASE WHEN TEM_DTINICIOATIVIDADE IS NULL THEN TO_DATE('01/01/00', 'MM/DD/YY') ELSE TEM_DTINICIOATIVIDADE
+                END as data_inicio_atividade,
+    CASE WHEN TEM_DTTERMINOATIVIDADE IS NULL THEN TO_DATE('01/01/00', 'MM/DD/YY') ELSE TEM_DTTERMINOATIVIDADE
+                END as data_termino_atividade,
+    TEN_TIPOLOGRADOURO, TEN_ENDERECO, TEN_NUMERO, TEN_BAIRRO, TEN_CODMUNICIPIO  
+    FROM TULIOSEMANTIC.TAB_EMPRESA_ENDERECO est, TULIOSEMANTIC.TAB_EMPRESA empresa, TULIOSEMANTIC.TAB_SOLICITACAO solicitacao 
+    WHERE empresa.TEM_ID = est.TEN_TEM_ID AND empresa.TEM_TCC_ID = solicitacao.TCC_ID""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}";
+        rr:class redesim:Establishment;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome_fantasia"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:cnpj, redesim:full_cnpj;
+        rr:objectMap [ rr:column "CNPJ"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:trade_name;
+        rr:objectMap [ rr:column "nome_fantasia"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:real_state_number;
+        rr:objectMap [ rr:column "inscricao_imobiliaria"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:establishment_area;
+        rr:objectMap [ rr:column "area"; rr:datatype xsd:double ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:nirf;
+        rr:objectMap [ rr:column "nirf"; rr:datatype xsd:string  ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:incra;
+        rr:objectMap [ rr:column "incra"; rr:datatype xsd:string  ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:phone_number;
+        rr:objectMap [ rr:column "telefone_completo"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:faxNumber;
+        rr:objectMap [ rr:column "fax_completo"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate vcard:email;
+        rr:objectMap [ rr:column "email"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:metrage;
+        rr:objectMap [ rr:column "metragem"; rr:datatype xsd:double ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:activity_start_date;
+        rr:objectMap [ rr:column "data_inicio_atividade"; rr:datatype xsd:date ];
+    ]; 
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:activity_end_date;
+        rr:objectMap [ rr:column "data_termino_atividade"; rr:datatype xsd:date ];
+    ]; 
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:state_registration;
+        rr:objectMap [ rr:column "inscricao_estadual"; rr:datatype xsd:integer  ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:city_registration;
+        rr:objectMap [ rr:column "inscricao_municipal"; rr:datatype xsd:integer ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_establishment_type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment_Type/{tipo_estabelecimento}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_property_type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Property_Type/{tipo_imovel}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_address;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Address/{TEN_TIPOLOGRADOURO}-{TEN_ENDERECO}-{TEN_NUMERO}-{TEN_BAIRRO}-{TEN_CODMUNICIPIO}"
+        ];
+    ].
+
+<#PropertyType>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE TEN_TIPOIMOVEL WHEN 0 THEN 'CONTROLE_ACESSO_EXTERNO'
+        WHEN 1 THEN 'ATIVO'
+        WHEN 2 THEN 'BLOQUEADO'
+        WHEN 3 THEN 'EXCLUÍDO'
+        WHEN 4 THEN 'SENHA_EXPIRADA'
+        ELSE 'VAZIO'
+        END as tipo_imovel, TEN_TIPOIMOVEL FROM TULIOSEMANTIC.TAB_EMPRESA_ENDERECO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Property_Type/{tipo_imovel}";
+        rr:class redesim:Property_Type;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "tipo_imovel"; rr:datatype xsd:string ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:property_type_code;
+        rr:objectMap [ rr:column "TEN_TIPOIMOVEL"; rr:datatype xsd:integer ]
+    ].
+
+# ------- OK ACIMA- ----
+
+<#SizesCompanies>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE TGE_COD_TIP_TABLA WHEN 1 THEN 'ME'
+      WHEN 2 THEN 'EPP'
+      WHEN 3 THEN 'MEI'
+      WHEN 4 THEN 'DEMAIS'
+    ELSE 'VAZIO'
+    END AS PORTE FROM TULIOSEMANTIC.TAB_GENERICA WHERE TGE_TIP_TABLA = 920""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Size_Company/{PORTE}";
+        rr:class redesim:Size_Company;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "PORTE"; rr:datatype xsd:string ]
+    ].
+
+<#EstablishmentType>
+    rr:logicalTable [ rr:sqlQuery """SELECT 
+    CASE TEM_TIPOUNIDADE WHEN 0 THEN 'UNIDADE_PRODUTIVA'
+                WHEN 1 THEN 'SEDE'
+                WHEN 2 THEN 'ESCRITÓRIO_ADMINISTRATIVO'
+                WHEN 3 THEN 'DEPOSITO_FECHADO'
+                WHEN 4 THEN 'ALMOXARIFADO'
+                WHEN 5 THEN 'OFICINA_REPARACAO'
+                WHEN 6 THEN 'GARAGEM'
+                WHEN 7 THEN 'UNIDADE_ABASTECIMENTO_COMBUSTIVEL'
+                WHEN 8 THEN 'PONTO_EXPOSICAO'
+                WHEN 9 THEN 'CENTRO_DE_TREINAMENTO'
+                WHEN 10 THEN 'CENTRO_DE_PROCESSAMENTO_DE_DADOS'
+                WHEN 14 THEN 'POSTO_DE_COLETA'
+                ELSE 'VAZIO'
+                END as tipo_estabelecimento 
+    FROM TULIOSEMANTIC.TAB_EMPRESA""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment_Type/{tipo_estabelecimento}";
+        rr:class redesim:Establishment_Type;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "tipo_estabelecimento"; rr:datatype xsd:string ]
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:establishment_type_code;
+        rr:objectMap [ rr:column "tipo_estabelecimento"; rr:datatype xsd:string ]
+    ].
+
+<#TriplesMapHeadquarter>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE WHEN TCC_CNPJMATRIZ IS NULL THEN 0 ELSE TCC_CNPJMATRIZ END AS CNPJ_MATRIZ, CASE WHEN TEM_NOMEFANTASIA IS NULL THEN 'VAZIO' ELSE TEM_NOMEFANTASIA END AS nome_fantasia,
+    SUBSTR(TEM_CNPJ,0,8) AS CNPJ, TEN_TEM_ID, TCC_RUC
+    FROM TULIOSEMANTIC.TAB_EMPRESA jur, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO est, TULIOSEMANTIC.TAB_SOLICITACAO
+    WHERE jur.TEM_ID = est.TEN_TEM_ID AND TEM_TCC_ID = TCC_ID AND TCC_FILIAL = 0""" ];
+    
+    rr:subjectMap [
+      rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}-{nome_fantasia}";
+    ];
+
+     rr:predicateObjectMap [
+        rr:predicate redesim:has_headquarters;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}";
+        ]
+    ].
+
+<#TriplesMapDepot>
+    rr:logicalTable [ rr:sqlQuery """SELECT SUBSTR(TEM_CNPJ,0,8) AS CNPJ, CASE WHEN TEM_NOMEFANTASIA IS NULL THEN 'VAZIO' ELSE TEM_NOMEFANTASIA END AS nome_fantasia, TEN_TEM_ID, TCC_RUC
+    FROM TULIOSEMANTIC.TAB_EMPRESA jur, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_GENERICA generica, TULIOSEMANTIC.TAB_SOLICITACAO solicitacao
+    WHERE jur.TEM_ID = TEN_TEM_ID AND TEM_ID = solicitacao.TCC_ID AND generica.TGE_COD_TIP_TABLA = 3 AND generica.TGE_TIP_TABLA = 921""" ];
+    
+    rr:subjectMap [
+      rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}-{nome_fantasia}";
+    ];
+
+     rr:predicateObjectMap [
+        rr:predicate redesim:has_depot;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}";
+        ]
+    ].
+
+<#TriplesMapSubsidiary>
+    rr:logicalTable [ rr:sqlQuery """SELECT SUBSTR(TEM_CNPJ,0,8) AS CNPJ, CASE WHEN TEM_NOMEFANTASIA IS NULL THEN 'VAZIO' ELSE TEM_NOMEFANTASIA END AS nome_fantasia, TEN_TEM_ID, TCC_RUC, TEM_TCC_ID FROM TULIOSEMANTIC.TAB_EMPRESA jur, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_SOLICITACAO solicitacao
+    WHERE jur.TEM_ID = TEN_TEM_ID AND jur.TEM_ID = solicitacao.TCC_ID AND solicitacao.TCC_FILIAL = 1""" ];
+    
+    rr:subjectMap [
+      rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}-{nome_fantasia}";
+    ];
+
+     rr:predicateObjectMap [
+        rr:predicate redesim:has_subsidiary;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}";
+        ]
+    ].
+
+<#EsthasLegalRepresentantPF>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT DISTINCT TSO_CPF_CNPJ, TEM_TCC_ID, TEM_REPLEGALNOME, CONCAT(CONCAT(TSO_CPF_CNPJ, '-'),TEM_REPLEGALNOME) AS identidade, TCC_RUC, TEN_TEM_ID FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_SOCIOS, TULIOSEMANTIC.TAB_SOLICITACAO WHERE TSO_TCC_ID = TEM_TCC_ID AND TEN_TEM_ID = TEM_ID AND TSO_TIPOPESSOA = 1"""];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}";
+      rr:class redesim:Establishment;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_legal_representant;
+        rr:objectMap [
+            rr:template "http://xmlns.com/foaf/0.1/Person/{identidade}"
+        ];
+    ].
+
+<#EsthasLegalRepresentantPJ>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT TSO_CPF_CNPJ, TCC_RUC, TCC_ID, TEM_REPLEGALNOME, TEM_REPLEGALEMAIL, TEM_REPLEGALDDD, TEM_REPLEGALFONE, CONCAT(CONCAT(TSO_CPF_CNPJ, '-'),TEM_REPLEGALNOME) AS identidade, TEN_TEM_ID FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_SOCIOS, TULIOSEMANTIC.TAB_SOLICITACAO WHERE TSO_TCC_ID = TEM_TCC_ID AND TEN_TEM_ID = TEM_ID AND TSO_TIPOPESSOA = 2"""];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}";
+      rr:class redesim:Establishment;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_legal_representant;
+        rr:objectMap [
+            rr:template "http://xmlns.com/foaf/0.1/Organization/{identidade}"
+        ];
+    ].
+
+<#AddressEstablishment>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT 
+    CASE WHEN TEN_COMPLEMENTO IS NULL THEN 'VAZIO' ELSE TEN_COMPLEMENTO END AS complemento,
+    CASE WHEN TEN_CODMUNICIPIO IS NULL THEN 0 ELSE TEN_CODMUNICIPIO END AS municipio,
+    CASE WHEN TEN_REFERENCIA IS NULL THEN 'VAZIO' ELSE TEN_REFERENCIA END AS referencia,
+    CASE WHEN TEN_BAIRRO IS NULL THEN 'VAZIO' ELSE TEN_BAIRRO END as bairro, 
+    CASE WHEN TEN_ENDERECO IS NULL THEN 'VAZIO' ELSE TEN_ENDERECO END as logradouro,
+    CASE WHEN TEN_CEP IS NULL THEN 0 ELSE TEN_CEP END as caixa_postal,
+    CASE WHEN TEN_CAIXAPOSTALCEP IS NULL THEN 0 ELSE TEN_CAIXAPOSTALCEP END as caixa_postal_cep, 
+    CASE WHEN TEN_TIPOLOGRADOURO IS NULL THEN 0 ELSE TEN_TIPOLOGRADOURO END as tipo_logradouro, TEN_NUMERO, 
+    CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(TEN_TIPOLOGRADOURO,'-'),TEN_ENDERECO),'-'),TEN_NUMERO),'-'),TEN_BAIRRO),'-'),TEN_CODMUNICIPIO) AS nome_endereco
+    FROM TULIOSEMANTIC.TAB_EMPRESA_ENDERECO endereco"""];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Address/{nome_endereco}";
+      rr:class redesim:Address;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome_endereco"; rr:datatype xsd:string ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:address_number;
+        rr:objectMap [ rr:column "TEN_NUMERO"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:address_complement;
+        rr:objectMap [ rr:column "complemento"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:reference;
+        rr:objectMap [ rr:column "referencia"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:postal_code_zone;
+        rr:objectMap [ rr:column "caixa_postal_cep"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate vcard:postal-code;
+        rr:objectMap [ rr:column "caixa_postal"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_city;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/City/{municipio}"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_district;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/District/{bairro}-{municipio}"
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_locality;
+        rr:objectMap [
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Locality/{logradouro}-{bairro}"
+        ];
+    ].
+   
+<#City>
+  rr:logicalTable [
+    rr:sqlQuery """SELECT CASE WHEN TEN_CODMUNICIPIO IS NULL THEN 0 ELSE TEN_CODMUNICIPIO END AS municipio FROM TULIOSEMANTIC.TAB_EMPRESA_ENDERECO"""
+    ];
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/City/{municipio}";
+      rr:class redesim:City;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, redesim:city_code;
+        rr:objectMap [ rr:column "municipio"; rr:datatype xsd:string];
+    ].
+
+<#DistrictEstablishment>
+    rr:logicalTable [
+        rr:sqlQuery """SELECT CASE WHEN TEN_BAIRRO IS NULL THEN 'VAZIO' ELSE TEN_BAIRRO END AS bairro,
+        CASE WHEN TEN_CODMUNICIPIO IS NULL THEN 0 ELSE TEN_CODMUNICIPIO END as municipio FROM TULIOSEMANTIC.TAB_EMPRESA_ENDERECO""";
+    ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/District/{bairro}-{municipio}";
+        rr:class redesim:District;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [
+            rr:column "bairro";
+            rr:datatype xsd:string
+        ];
+    ].
+
+<#LocalityEstablishment>
+    rr:logicalTable [
+        rr:sqlQuery """SELECT CASE WHEN TEN_ENDERECO IS NULL THEN 'VAZIO' ELSE TEN_ENDERECO END as logradouro, TEN_TIPOLOGRADOURO, CASE WHEN TEN_BAIRRO IS NULL THEN 'VAZIO' ELSE TEN_BAIRRO END as bairro FROM TULIOSEMANTIC.TAB_EMPRESA_ENDERECO""";
+    ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Locality/{logradouro}-{bairro}";
+        rr:class redesim:Locality;
+    ];
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, redesim:street_name;
+        rr:objectMap [
+            rr:column "logradouro";
+            rr:datatype xsd:string
+        ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:locality_type;
+        rr:objectMap [
+            rr:column "TEN_TIPOLOGRADOURO";
+            rr:datatype xsd:string
+        ];
+    ].
+
+<#Qualification>
+    rr:logicalTable [
+      rr:sqlQuery """SELECT TGE_COD_TIP_TABLA, TGE_NOMBRE_DESCRIPCION FROM  TULIOSEMANTIC.TAB_GENERICA WHERE TGE_TIP_TABLA = 34"""
+    ];
+    
+    rr:subjectMap [
+      rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Qualification/{TGE_COD_TIP_TABLA}";
+      rr:class redesim:Qualification;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "TGE_NOMBRE_DESCRIPCION"; rr:datatype xsd:string];
+
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:qualification_code;
+        rr:objectMap [ rr:column "TGE_COD_TIP_TABLA"; rr:datatype xsd:long];
+    ].
+
+<#TriplesMapEstablishmentCadastralSituation>
+    rr:logicalTable [ rr:sqlQuery """SELECT TEM_SITUACAO as situacao, TCC_RUC, TEN_TEM_ID
+    FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_GENERICA, TULIOSEMANTIC.TAB_SOLICITACAO WHERE TGE_COD_TIP_TABLA = 923 AND TCC_ID = TEM_TCC_ID""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Establishment/{TEN_TEM_ID}";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_cadastral_situation;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/REDESIM/{situacao}"; ];
+    ].
+
+<#TriplesMapCadastral_Situation>
+    rr:logicalTable [ rr:sqlQuery """SELECT TEM_SITUACAO,
+    CASE TEM_SITUACAO WHEN '0' THEN 'CONTROLE_ACESSO_EXTERNO' 
+                    WHEN '1' THEN 'ATIVO'
+                    WHEN '2' THEN 'BLOQUEADO'
+                    WHEN '3' THEN 'EXCLUÍDO'
+                    WHEN '4' THEN 'SENHA_EXPIRADA'
+                END as situacao,
+    CASE TEM_SITUACAO WHEN '0' THEN 'EXTERNAL_ACCESS_CONTROL'
+                    WHEN '1' THEN 'ACTIVE'
+                    WHEN '2' THEN 'BLOCKED'
+                    WHEN '3' THEN 'DELETED'
+                    WHEN '4' THEN 'PASSWORD_EXPIRED'
+                END as type_situacao, TEM_CNPJ
+    FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_GENERICA WHERE TGE_COD_TIP_TABLA = 923""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/REDESIM/{situacao}-{TEM_CNPJ}";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, redesim:situation_name;
+        rr:objectMap [ rr:column "situacao" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdf:type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/ontology/{type_situacao}" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:situation_code;
+        rr:objectMap [ rr:column "TEM_SITUACAO" ];
+    ].
+
+<#TriplesEvent>
+    rr:logicalTable [ rr:sqlQuery """SELECT TEV_TCC_ID, TEV_EVENTO, CONCAT('EVENTO-',TEV_EVENTO) identificacao_evento FROM TULIOSEMANTIC.TAB_EVENTO""" ];
+    rr:subjectMap [
+        rr:template "http://purl.org/NET/c4dm/event.owl#{TEV_EVENTO}";
+        rr:class event:Event;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "identificacao_evento"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:event_code;
+        rr:objectMap [ rr:column "TEV_EVENTO"; rr:datatype xsd:integer ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_request;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Request/{TEV_TCC_ID}" ];
+    ].
+
+
+<#TriplesMapTaxpayerType>
+    rr:logicalTable [ 
+    rr:sqlQuery """SELECT CASE TCC_CTBICMS WHEN 1 THEN 'ICMS_TAXPAYER'
+                    ELSE 'NON_TAXPAYER'
+                END as type, 
+                CASE TCC_CTBICMS WHEN 1 THEN 'CONTRIBUINTE ICMS'
+                    ELSE 'NÃO CONTRIBUINTE DO ICMS'
+                END as tipo, TEM_CNPJ, TEM_ID, TCC_CTBICMS FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_SOLICITACAO WHERE TEM_TCC_ID = TCC_ID""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/{type}/{tipo}";
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "tipo" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:taxpayer_type_code;
+        rr:objectMap [ rr:column "TCC_CTBICMS" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdf:type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/ontology/{tipo}"; ];
+    ].
+
+<#TriplesMapRegimeType>
+    rr:logicalTable [ rr:sqlQuery """SELECT TCO_COD_CONDICION, TCO_NOM_CONDICION FROM TULIOSEMANTIC.TAB_COND_CONTRIBUYENTE""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Payment_Regime/{TCO_NOM_CONDICION}";
+        rr:class redesim:Payment_Regime;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "TCO_NOM_CONDICION" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:regime_code;
+        rr:objectMap [ rr:column "TCO_COD_CONDICION" ];
+    ].
+
+<#TriplesMapPartnershipPerson>
+    rr:logicalTable [ rr:sqlQuery """SELECT TSO_ID, TSO_NOME, CASE WHEN TSO_DTENTRADASOCIEDADE IS NOT NULL THEN TSO_DTENTRADASOCIEDADE ELSE TO_DATE('01/01/00', 'MM/DD/YY') END AS data_entrada, 
+    CASE WHEN TSO_DTSAIDASOCIEDADE IS NOT NULL THEN TSO_DTSAIDASOCIEDADE ELSE TO_DATE('01/01/00', 'MM/DD/YY') END AS fim_participacao, 
+    TSO_VALORPARTICIPACAO, CASE WHEN TSO_PERCPARTICIPACAO IS NULL THEN 0 ELSE TSO_PERCPARTICIPACAO END as percentual, TSO_SEQTIPQUALIFICACAO, TGE_NOMBRE_DESCRIPCION, CONCAT(CONCAT(TSO_CPF_CNPJ,'-'),TSO_NOME) AS identidade_socio 
+    FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_SOCIOS, TULIOSEMANTIC.TAB_GENERICA WHERE TSO_TCC_ID = TEM_TCC_ID AND TSO_TIPOPESSOA = 1 AND TSO_SEQTIPQUALIFICACAO = TGE_COD_TIP_TABLA AND TGE_TIP_TABLA = 34""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Partnership/{identidade_socio}";
+        rr:class redesim:Partnership;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, foaf:name;
+        rr:objectMap [ rr:column "TSO_NOME"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:percentage_participation;
+        rr:objectMap [ rr:column "percentual"; rr:datatype xsd:decimal ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:start_date_participation;
+        rr:objectMap [ rr:column "data_entrada"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:end_date_participation;
+        rr:objectMap [ rr:column "fim_participacao"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "identidade_socio"; rr:datatype xsd:string];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_partner;
+        rr:objectMap [  rr:template "http://xmlns.com/foaf/0.1/Person/{identidade_socio}"; ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:partner_qualification;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Qualification/{TSO_SEQTIPQUALIFICACAO}" ];
+    ].
+
+<#TriplesMapPerson>
+    rr:logicalTable [ rr:sqlQuery """SELECT TSO_ID, TSO_NOME, TSO_IDENTIDADE, TSO_ORGAOEMISSOR, TSO_UFEMISSOR, TSO_CPF_CNPJ, TSO_ESTADOCIVIL, TSO_DTNASCIMENTO, TSO_SEXO, 
+TSO_NOMEMAE, TSO_TIPOPESSOA, TSO_EMANCIPADO, TSO_TIPODOCUMENTO, 
+    CASE WHEN TSO_NOMEPAI IS NULL THEN 'VAZIO' ELSE TSO_NOMEPAI END as nome_pai,
+    CASE WHEN TSO_REGCARTORIO IS NULL THEN 'VAZIO' ELSE TSO_REGCARTORIO END as registro_cartorio,
+    CASE WHEN TSO_ANOREGCARTORIO IS NULL THEN TO_DATE('01/01/00', 'MM/DD/YY') ELSE TSO_ANOREGCARTORIO END as ano_reg_cartorio,
+    CASE WHEN TSO_NUMCARTORIO IS NULL THEN 'VAZIO' ELSE TSO_NUMCARTORIO END as num_cartorio,
+    CASE WHEN TSO_NACIONALIDADE IS NULL THEN 'VAZIO' ELSE TSO_NACIONALIDADE END as nacionalidade,
+    CASE WHEN TSO_MUNICIPIONATURALIDADE IS NULL THEN 0 ELSE TSO_MUNICIPIONATURALIDADE END as municipio_naturalidade,
+    CASE WHEN TSO_UFNATURALIDADE IS NULL THEN 0 ELSE TSO_UFNATURALIDADE END as uf_naturalidade,
+    CASE WHEN TSO_NOMECOMARCA IS NULL THEN 'VAZIO' ELSE TSO_NOMECOMARCA END as nome_comarca,
+    CASE WHEN TSO_REGIMEBENS IS NULL THEN 'VAZIO' ELSE TSO_REGIMEBENS END as regime_bens, 
+    CASE WHEN TSO_DOCORGAOEMISSOR IS NULL THEN 'VAZIO' ELSE TSO_DOCORGAOEMISSOR END as doc_orgao_emissor,
+    CASE WHEN TSO_ORGAOEMISSOR IS NULL THEN 'VAZIO' ELSE TSO_ORGAOEMISSOR END as orgao_emissor,
+    CASE WHEN TSO_PRAZOINDETERMINADO IS NULL THEN 0 ELSE TSO_PRAZOINDETERMINADO END as prazo_indeterminado,
+    CASE WHEN TSO_CARGOADMINISTRADOR IS NULL THEN 'VAZIO' ELSE TSO_CARGOADMINISTRADOR END as cargo_administrador,
+    CASE WHEN TSO_CPFCNPJREPRESENTADO IS NULL THEN 0 ELSE TSO_CPFCNPJREPRESENTADO END as cpfcnpjrepresentado,
+    CASE WHEN TSO_FAX IS NULL THEN 'VAZIO' ELSE TSO_FAX END as fax,
+    CASE WHEN TSO_TELEFONE IS NULL THEN 'VAZIO' ELSE TSO_TELEFONE END as telefone,
+    TSO_SEQTIPQUALIFICACAO, CONCAT(CONCAT(TSO_CPF_CNPJ,'-'),TSO_NOME) identidade,
+    CASE WHEN TSO_COMPLEMENTO IS NULL THEN 'VAZIO' ELSE TSO_COMPLEMENTO END AS complemento,
+    CASE WHEN TSO_CODMUNICIPIO IS NULL THEN 0 ELSE TSO_CODMUNICIPIO END AS municipio,
+    CASE WHEN TSO_BAIRRO IS NULL THEN 'VAZIO' ELSE TSO_BAIRRO END as bairro, 
+    CASE WHEN TSO_ENDERECO IS NULL THEN 'VAZIO' ELSE TSO_ENDERECO END as logradouro, 
+    CASE WHEN TSO_CEP IS NULL THEN 'VAZIO' ELSE TSO_CEP END as caixa_postal_cep, 
+    CASE WHEN TSO_NUMERO IS NULL THEN 'VAZIO' ELSE TSO_NUMERO END as numero,
+    CASE WHEN TSO_TIPOLOGRADOURO IS NULL THEN 0 ELSE TSO_TIPOLOGRADOURO END as tipo_logradouro,
+    CASE WHEN TSO_EMAIL IS NULL THEN 'VAZIO' ELSE TSO_EMAIL END as email,
+    CASE WHEN TSO_DDDTEL IS NULL THEN 0 ELSE TSO_DDDTEL END as ddd_telefone,
+    CASE WHEN TSO_ESTADOCIVIL IS NULL THEN 'VAZIO' ELSE TSO_ESTADOCIVIL END as estado_civil,
+    CASE WHEN TSO_DDDFAX IS NULL THEN 0 ELSE TSO_DDDFAX END as ddd_fax,
+    CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(TSO_TIPOLOGRADOURO,'-'),TSO_ENDERECO),'-'),TSO_NUMERO),'-'),TSO_BAIRRO),'-'),TSO_CODMUNICIPIO) AS nome_endereco
+    FROM TULIOSEMANTIC.TAB_SOCIOS
+    """ ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/0.1/Person/{identidade}";
+        rr:class foaf:Person, foaf:Agent;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:cpf;
+        rr:objectMap [ rr:column "TSO_CPF_CNPJ"; rr:datatype xsd:integer ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:name, rdfs:label;
+        rr:objectMap [ rr:column "TSO_NOME"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate vcard:email;
+        rr:objectMap [ rr:column "email"; rr:datatype xsd:string ];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:phone_number;
+        rr:objectMap [ rr:column "telefone"; rr:datatype xsd:string ];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:faxNumber;
+        rr:objectMap [ rr:column "fax"; rr:datatype xsd:string ];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:identity_number;
+        rr:objectMap [ rr:column "TSO_IDENTIDADE"; rr:datatype xsd:string ];
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate redesim:identity_issuing_entity;
+        rr:objectMap [ rr:column "TSO_ORGAOEMISSOR"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:marital_status;
+        rr:objectMap [ rr:column "TSO_ESTADOCIVIL"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate vcard:bday;
+        rr:objectMap [ rr:column "TSO_DTNASCIMENTO"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:gender;
+        rr:objectMap [ rr:column "TSO_SEXO"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:property_regime;
+        rr:objectMap [ rr:column "regime_bens"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:undefined_period;
+        rr:objectMap [ rr:column "prazo_indeterminado"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:manager_position;
+        rr:objectMap [ rr:column "cargo_administrador"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_mother;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Mother/{TSO_NOMEMAE}" ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_father;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Father/{nome_pai}"
+        ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_registry_office_register;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Registry_Office_Register/{registro_cartorio}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_document;
+        rr:objectMap [ 
+            rr:template "http://xmlns.com/foaf/spec/Document/{TSO_TIPODOCUMENTO}"
+        ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_address;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Address/{nome_endereco}"
+        ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_naturalness_city;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/City/{municipio_naturalidade}"
+        ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_naturalness_uf;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Federative_Unit/{uf_naturalidade}"
+        ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_nacionality;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Nacionality/{nacionalidade}"
+        ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:is_emancipated;
+        rr:objectMap [ 
+            rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Emancipated/{TSO_ID}-{TSO_NOME}"
+        ];
+    ].
+
+<#TriplesDocumentType>
+    rr:logicalTable [ rr:sqlQuery """SELECT TSO_ID, 
+    CASE TSO_TIPODOCUMENTO 
+        WHEN 1 THEN 'RG'
+        WHEN 2 THEN 'CARTEIRA_DE_TRABALHO_E_PREVIDENCIA_SOCIAL'
+        WHEN 3 THEN 'CERTIFICADO_DE_RESERVISTA'
+        WHEN 4 THEN 'PASSAPORTE'
+        WHEN 5 THEN 'CARTEIRA_DE_IDENTIDADE_PROFISSIONAL'
+        WHEN 6 THEN 'CNH'
+        WHEN 7 THEN 'CEDULA_DE_IDENTIDADE_ESTRANGEIRO'
+        END AS documento,
+    CASE WHEN TSO_DOCORGAOEMISSOR IS NULL THEN 'VAZIO' ELSE TSO_DOCORGAOEMISSOR END as doc_orgao_emissor,
+    CASE WHEN TSO_ORGAOEMISSOR IS NULL THEN 'VAZIO' ELSE TSO_ORGAOEMISSOR END as orgao_emissor
+    FROM TULIOSEMANTIC.TAB_SOCIOS""" ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/spec/Document/{documento}";
+        rr:class foaf:Document;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label, redesim:document_code;
+        rr:objectMap [ rr:column "documento"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:identity_issuing_entity;
+        rr:objectMap [ rr:column "doc_orgao_emissor"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:issuing_entity;
+        rr:objectMap [ rr:column "orgao_emissor"; ];
+    ].
+
+<#TriplesRegistryOfficeRegister>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT
+    CASE WHEN TSO_REGCARTORIO IS NULL THEN 'VAZIO' ELSE TSO_REGCARTORIO END as registro_cartorio, 
+    CASE WHEN TSO_NUMCARTORIO IS NULL THEN 'VAZIO' ELSE TSO_NUMCARTORIO END as num_cartorio,
+    CONCAT('REGISTRO-',TSO_REGCARTORIO) AS nome, 
+    CASE WHEN TSO_ANOREGCARTORIO IS NULL THEN TO_DATE('01/01/00', 'MM/DD/YY') ELSE TSO_ANOREGCARTORIO END as ano_registro 
+    FROM TULIOSEMANTIC.TAB_SOCIOS""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Registry_Office/{registro_cartorio}";
+        rr:class redesim:Registry_Office_Register;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:registry_number;
+        rr:objectMap [ rr:column "registro_cartorio"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:year_registry_office;
+        rr:objectMap [ rr:column "ano_registro"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_registry_office;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Registry_Office/{num_cartorio}"; ];
+    ].
+
+<#TriplesMapLegalRepresentantPF>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT 
+CASE WHEN TSO_CPFCNPJREPRESENTADO IS NULL THEN 0 ELSE TSO_CPFCNPJREPRESENTADO END as cpfcnpjrepresentado, 
+CASE WHEN TEM_REPLEGALEMAIL IS NULL THEN 'VAZIO' ELSE TEM_REPLEGALEMAIL END as email,
+CONCAT(TEM_REPLEGALDDD, TEM_REPLEGALFONE) as telefone,
+TEM_REPLEGALNOME, CONCAT(CONCAT(TSO_CPFCNPJREPRESENTADO, '-'),TEM_REPLEGALNOME) AS identidade FROM TULIOSEMANTIC.TAB_EMPRESA, TULIOSEMANTIC.TAB_EMPRESA_ENDERECO, TULIOSEMANTIC.TAB_SOCIOS, TULIOSEMANTIC.TAB_SOLICITACAO WHERE TSO_TCC_ID = TEM_TCC_ID AND TEN_TEM_ID = TEM_ID AND TSO_TIPOPESSOA = 1""" ];
+    rr:subjectMap [
+        rr:template "http://xmlns.com/foaf/0.1/Person/{identidade}";
+        rr:class foaf:Person, foaf:Agent;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:cpf;
+        rr:objectMap [ rr:column "cpfcnpjrepresentado"; rr:datatype xsd:integer ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:name, rdfs:label;
+        rr:objectMap [ rr:column "TEM_REPLEGALNOME"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate vcard:email;
+        rr:objectMap [ rr:column "email"; rr:datatype xsd:string ];
+    ];
+    rr:predicateObjectMap [
+        rr:predicate redesim:phone_number;
+        rr:objectMap [ rr:column "telefone"; rr:datatype xsd:string ];
+    ].
+
+<#TriplesRegistryOffice>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE WHEN TSO_NUMCARTORIO IS NULL THEN 'VAZIO' ELSE CONCAT('CARTÓRIO-',TSO_NUMCARTORIO) END as num_cartorio, 
+    CASE WHEN TSO_NOMECOMARCA IS NULL THEN 'VAZIO' ELSE TSO_NOMECOMARCA END as nome_comarca FROM TULIOSEMANTIC.TAB_SOCIOS""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Registry_Office/{num_cartorio}";
+        rr:class redesim:Registry_Office;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "num_cartorio"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_county;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/County/{nome_comarca}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:registry_office_number;
+        rr:objectMap [ rr:column "num_cartorio"; ];
+    ].
+
+<#TriplesRequest>
+    rr:logicalTable [ rr:sqlQuery """SELECT TCC_ID, TCC_RUC, CONCAT('REQUISIÇÃO-',TCC_ID) AS nome_requisicao,
+    CASE TCC_DEFERIMENTOPREF WHEN 0 THEN 'SEM_DEFERIMENTO_PREFEITURA' ELSE 'COM_DEFERIMENTO_PREFEITURA' END as deferimento,
+    CASE TCC_INSCRICAOOUTRAUF WHEN 0 THEN 'INSCRICAO_PROPRIA_UF' ELSE 'INSCRICAO_OUTRA_UF' END as inscricao_trauf, 
+    CASE TCC_TIPOATOSEFAZ WHEN 1 THEN 'INSCRIÇÃO' WHEN 2 THEN 'ALTERAÇÃO' WHEN 3 THEN 'BAIXA' END as tipo_ato,
+    CASE TCC_GERARUC WHEN 0 THEN 'NECESSITA_INSCRICAO_ESTADUAL' ELSE 'NAO_NECESSITA_INSCRICAO_ESTADUAL' END as gera_ruc,
+    CASE TCC_STATUSENVIO WHEN 0 THEN 'NAO_PRECISA_ENVIAR' WHEN 1 THEN 'PENDENTE_ENVIO' WHEN 2 THEN 'ENVIADO_COM_SUCESSO' WHEN 3 THEN 'ENVIADO_COM_ERRO' END as status_envio,
+    CASE TCC_ENVOLVESEFAZ WHEN 0 THEN 'ENVOLVE_SEFAZ' ELSE 'NAO_ENVOLVE_SEFAZ' END as envolve_sefaz,
+    CASE WHEN TCC_PROTOCOLOCPE IS NULL THEN 'VAZIO' ELSE TCC_PROTOCOLOCPE END as protocolo,
+    CASE WHEN TCC_PROTOCOLODBE IS NULL THEN 'VAZIO' ELSE TCC_PROTOCOLODBE END as protocolo_dbe,  
+    CASE WHEN TCC_CODEMISSOR IS NULL THEN 0 ELSE TCC_CODEMISSOR END as codigo_emissor,
+    SUBSTR(TEM_CNPJ,0,8) AS CNPJ, CASE WHEN TEM_NOMEFANTASIA IS NULL THEN 'VAZIO' ELSE TEM_NOMEFANTASIA END AS nome_fantasia  
+    FROM TULIOSEMANTIC.TAB_SOLICITACAO, TULIOSEMANTIC.TAB_EMPRESA WHERE TCC_ID = TEM_TCC_ID""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Request/{TCC_ID}";
+        rr:class redesim:Request;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome_requisicao"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:city_hall_approval;
+        rr:objectMap [ rr:column "deferimento"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:trauf_registration;
+        rr:objectMap [ rr:column "inscricao_trauf"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:register_entity_protocol;
+        rr:objectMap [ rr:column "protocolo_dbe"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_action_type;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Action_Type/{tipo_ato}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:generates_ruc;
+        rr:objectMap [ rr:column "gera_ruc"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_sending_status;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Sending_Status/{status_envio}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:sefaz_interest;
+        rr:objectMap [ rr:column "envolve_sefaz"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_protocol;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Protocol/{protocolo}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_organization;
+        rr:objectMap [ rr:template "http://xmlns.com/foaf/0.1/Organization/{CNPJ}-{nome_fantasia}"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_integrated_entity;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Integrated_Entity/{codigo_emissor}"; ];
+    ].
+
+<#TriplesFile>
+    rr:logicalTable [ rr:sqlQuery """SELECT TAR_ID,
+    CASE WHEN TAR_HASH IS NULL THEN 'VAZIO' ELSE TAR_HASH END as hash, 
+    CASE WHEN TAR_DTARQUIVO IS NULL THEN TO_DATE('01/01/00', 'MM/DD/YY') ELSE TAR_DTARQUIVO END as data_arquivo, 
+    CASE WHEN TAR_DTRECEPCAO IS NULL THEN TO_DATE('01/01/00', 'MM/DD/YY') ELSE TAR_DTRECEPCAO END as data_recepcao, 
+    CASE WHEN TAR_DTDESMEMBRAMENTO IS NULL THEN TO_DATE('01/01/00', 'MM/DD/YY') ELSE TAR_DTDESMEMBRAMENTO END as data_desmembramento, 
+    CASE WHEN TAR_DTPROCESSAMENTO IS NULL THEN TO_DATE('01/01/00', 'MM/DD/YY') ELSE TAR_DTPROCESSAMENTO END as data_processamento, 
+    CASE WHEN TAR_VERSAO IS NULL THEN 'VAZIO' ELSE TAR_VERSAO END as versao, 
+    CASE WHEN TAR_CATEGORIA IS NULL THEN 'VAZIO' ELSE TAR_CATEGORIA END as categoria,
+    CASE WHEN TAR_NOMEARQUIVO IS NULL THEN 'VAZIO' ELSE TAR_NOMEARQUIVO END as nome_arquivo,
+    CASE WHEN TAR_PROTOCOLO IS NULL THEN 'VAZIO' ELSE TAR_PROTOCOLO END as protocolo_dbe,
+    CASE WHEN TCC_PROTOCOLOCPE IS NULL THEN 'VAZIO' ELSE TCC_PROTOCOLOCPE END AS protocolo,
+    CASE WHEN TAR_INSCRICAO IS NULL THEN 0 ELSE TAR_INSCRICAO END as inscricao,  
+    CASE WHEN TAR_CNPJ IS NULL THEN 'VAZIO' ELSE TAR_CNPJ END as cnpj
+    FROM TULIOSEMANTIC.TAB_ARQUIVO, TULIOSEMANTIC.TAB_SOLICITACAO WHERE TAR_ID = TCC_ID""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/File/{TAR_ID}";
+        rr:class redesim:File, foaf:Document;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome_arquivo"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:hash;
+        rr:objectMap [ rr:column "hash"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:date_of_file_load;
+        rr:objectMap [ rr:column "data_arquivo"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:file_generation_date;
+        rr:objectMap [ rr:column "data_recepcao"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:date_of_file_dismemberment;
+        rr:objectMap [ rr:column "data_desmembramento"; rr:datatype xsd:date ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:processing_date;
+        rr:objectMap [ rr:column "data_processamento"; rr:datatype xsd:date];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:version;
+        rr:objectMap [ rr:column "versao"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:categoria;
+        rr:objectMap [ rr:column "categoria"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:register_entity_protocol;
+        rr:objectMap [ rr:column "protocolo_dbe"; ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:has_protocol;
+        rr:objectMap [ rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Protocol/{protocolo}"; ]
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:registration;
+        rr:objectMap [ rr:column "inscricao"; ];
+    ].
+
+<#TriplesProtocol>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT CASE WHEN TCC_PROTOCOLOCPE IS NULL THEN 'VAZIO' ELSE TCC_PROTOCOLOCPE END as protocolo, CONCAT('PROTOCOLO-',TCC_PROTOCOLOCPE) AS nome_protocolo, CASE WHEN TCC_PROTOCOLODBE IS NULL THEN 'VAZIO' ELSE TCC_PROTOCOLODBE END as protocolo_dbe FROM TULIOSEMANTIC.TAB_SOLICITACAO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Protocol/{protocolo}";
+        rr:class redesim:Protocol;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome_protocolo"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:previous_query_protocol;
+        rr:objectMap [ rr:column "protocolo"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:register_entity_protocol;
+        rr:objectMap [ rr:column "protocolo_dbe"; rr:datatype xsd:string ];
+    ].
+
+<#TriplesIntegratedEntity>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT CASE WHEN TCC_CODEMISSOR IS NULL THEN 0 ELSE TCC_CODEMISSOR END as codigo_emissor, CONCAT('EMISSOR-',TCC_CODEMISSOR) AS nome_emissor FROM TULIOSEMANTIC.TAB_SOLICITACAO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Integrated_Entity/{codigo_emissor}";
+        rr:class redesim:Integrated_Entity;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome_emissor"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:integrated_entity_code;
+        rr:objectMap [ rr:column "codigo_emissor"; rr:datatype xsd:integer ];
+    ].
+
+<#TriplesSendingStatus>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT CASE TCC_STATUSENVIO WHEN 0 THEN 'NAO_PRECISA_ENVIAR'
+    WHEN 1 THEN 'PENDENTE_ENVIO'
+    WHEN 2 THEN 'ENVIADO_COM_SUCESSO' 
+    WHEN 3 THEN 'ENVIADO_COM_ERRO'  
+    END as status_envio 
+    FROM TULIOSEMANTIC.TAB_SOLICITACAO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Sending_Status/{status_envio}";
+        rr:class redesim:Sending_Status;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "status_envio"; rr:datatype xsd:string ];
+    ].
+
+<#TriplesActionType>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE TCC_TIPOATOSEFAZ WHEN 1 THEN 'INSCRIÇÃO' WHEN 2 THEN 'ALTERAÇÃO' WHEN 3 THEN 'BAIXA' END as tipo_ato, TCC_TIPOATOSEFAZ
+    FROM TULIOSEMANTIC.TAB_SOLICITACAO""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Action_Type/{tipo_ato}";
+        rr:class redesim:Action_Type;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "tipo_ato"; rr:datatype xsd:string ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:action_type;
+        rr:objectMap [ rr:column "TCC_TIPOATOSEFAZ"; rr:datatype xsd:integer ];
+    ].
+
+<#TriplesCounty>
+    rr:logicalTable [ rr:sqlQuery """SELECT DISTINCT CASE WHEN TSO_NUMCARTORIO IS NULL THEN 'VAZIO' ELSE TSO_NUMCARTORIO END as num_cartorio, 
+    CASE WHEN TSO_NOMECOMARCA IS NULL THEN 'VAZIO' ELSE TSO_NOMECOMARCA END as nome_comarca
+    FROM TULIOSEMANTIC.TAB_SOCIOS""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/County/{nome_comarca}";
+        rr:class redesim:County;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nome_comarca"; rr:datatype xsd:string ];
+    ].
+
+
+<#TriplesPersonIsEmanciped>
+    rr:logicalTable [ rr:sqlQuery """SELECT TSO_ID, TSO_CPF_CNPJ, TSO_NOME, 
+    CASE WHEN TSO_EMANCIPADO IS NULL THEN 0 ELSE TSO_EMANCIPADO END AS emancipado, 
+    CASE WHEN TSO_MOTIVOEMANCIPACAO IS NULL THEN 'VAZIO' ELSE TSO_MOTIVOEMANCIPACAO END motivo_emancipado FROM TULIOSEMANTIC.TAB_SOCIOS
+    WHERE TSO_EMANCIPADO = 1""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Emancipated/{TSO_CPF_CNPJ}-{TSO_NOME}";
+        rr:class redesim:Emancipated, foaf:Person;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate redesim:emancipated_reason;
+        rr:objectMap [ rr:column "motivo_emancipado"; rr:datatype xsd:integer ];
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:name, rdfs:label;
+        rr:objectMap [ rr:column "TSO_NOME"; rr:datatype xsd:string ];
+    ].
+
+<#TriplesNacionality>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE WHEN TSO_NACIONALIDADE IS NULL THEN 'VAZIA' ELSE TSO_NACIONALIDADE END as nacionalidade 
+    FROM TULIOSEMANTIC.TAB_SOCIOS""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Nacionality/{nacionalidade}";
+        rr:class redesim:Nacionality;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "nacionalidade"; ];
+    ].
+
+<#TriplesCityNaturalness>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE WHEN TSO_MUNICIPIONATURALIDADE IS NULL THEN 0 ELSE TSO_MUNICIPIONATURALIDADE END as municipio_naturalidade
+    FROM TULIOSEMANTIC.TAB_SOCIOS""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/City/{municipio_naturalidade}";
+        rr:class redesim:City;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "municipio_naturalidade"; rr:datatype xsd:string ];
+    ].
+
+<#TriplesUFNaturalness>
+    rr:logicalTable [ rr:sqlQuery """SELECT CASE WHEN TSO_UFNATURALIDADE IS NULL THEN 0 ELSE TSO_UFNATURALIDADE END as estado_naturalidade
+    FROM TULIOSEMANTIC.TAB_SOCIOS""" ];
+    rr:subjectMap [
+        rr:template "http://www.sefaz.ma.gov.br/REDESIM/resource/Federative_Unit/{estado_naturalidade}";
+        rr:class redesim:Federative_Unit;
+    ];
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label;
+        rr:objectMap [ rr:column "estado_naturalidade"; ];
+    ].
