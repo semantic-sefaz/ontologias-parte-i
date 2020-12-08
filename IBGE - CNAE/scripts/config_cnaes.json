@@ -1,0 +1,9 @@
+[
+	{"path":"cnaes/cnae0.csv", "version": "0.0","validity_start":"1998-06-25","seeAlso":"https://biblioteca.ibge.gov.br/visualizacao/livros/liv2725.pdf","previous_version":""},
+	{"path":"cnaes/cnae1.csv", "version": "1.0","validity_start":"2002-01-01","seeAlso":"https://biblioteca.ibge.gov.br/visualizacao/livros/liv2725.pdf","previous_version":"0.0"},
+	{"path":"cnaes/cnae1-1.csv", "version": "1.1","validity_start":"2003-04-01","seeAlso":"https://biblioteca.ibge.gov.br/visualizacao/livros/liv2725.pdf","previous_version":"1.0"},
+	{"path":"cnaes/cnae2.csv", "version": "2.0","validity_start":"2007-01-01","seeAlso":"https://concla.ibge.gov.br/documentacao/cronologia/204-concla/classificacao/por-tema/1365-cnae-2-0.html","previous_version":"1.1"},
+	{"path":"cnaes/cnae2-1.csv", "version": "2.1","validity_start":"2010-12-01","seeAlso":"https://concla.ibge.gov.br/classificacoes/por-tema/atividades-economicas/subclasses-da-cnae-2-1.html","previous_version":"2.0"},
+	{"path":"cnaes/cnae2-2.csv", "version": "2.2","validity_start":"2015-01-01","seeAlso":"https://cnae.ibge.gov.br/classificacoes/por-tema/atividades-economicas/subclasses-da-cnae-2-2.html","previous_version":"2.1"},
+	{"path":"cnaes/cnae2-3.csv", "version": "2.3","validity_start":"2019-01-01","seeAlso":"https://www.ibge.gov.br/novo-portal-destaques/23506-ibge-disponibiliza-versao-2-3-das-subclasses-da-classificacao-nacional-de-atividades-economicas.html","previous_version":"2.2"}
+]
