@@ -1,0 +1,31 @@
+<Interlink id="Links_Country_DBpedia" linkLimit="1000000" matchingExecutionTimeout="3600">
+  <MetaData>
+    <Label>Links Country DBpedia</Label>
+    <Description></Description>
+    <Modified>2020-08-13T19:38:04.392930Z</Modified>
+  </MetaData>
+  <SourceDataset dataSource="SEFAZ_ENDPOINT" var="a" typeUri="http://www.sefaz.ma.gov.br/ontology/Country">
+    <RestrictTo> </RestrictTo>
+  </SourceDataset>
+  <TargetDataset dataSource="DBpedia" var="b" typeUri="http://dbpedia.org/ontology/Country">
+    <RestrictTo> </RestrictTo>
+  </TargetDataset>
+  <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+    <Compare id="equality1" required="false" weight="1" metric="equality" threshold="0.0" indexing="true">
+      <TransformInput id="normalizeChars1" function="normalizeChars">
+        <TransformInput id="lowerCase1" function="lowerCase">
+          <Input id="sourcePath1" path="&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;"/>
+        </TransformInput>
+      </TransformInput>
+      <TransformInput id="normalizeChars2" function="normalizeChars">
+        <TransformInput id="lowerCase2" function="lowerCase">
+          <Input id="targetPath1" path="&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;"/>
+        </TransformInput>
+      </TransformInput>
+    </Compare>
+    <Filter/>
+  </LinkageRule>
+  <Outputs>
+    <Output id="links"></Output>
+  </Outputs>
+</Interlink>

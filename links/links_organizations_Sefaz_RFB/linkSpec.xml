@@ -1,0 +1,28 @@
+<Interlink id="links_organizations_Sefaz_RFB" linkLimit="1000000" matchingExecutionTimeout="3600">
+  <MetaData>
+    <Label>links organizations Sefaz RFB</Label>
+    <Description></Description>
+    <Modified>2020-09-14T14:30:49.497698Z</Modified>
+  </MetaData>
+  <SourceDataset dataSource="SEFAZ_ENDPOINT" var="a" typeUri="http://xmlns.com/foaf/0.1/Organization">
+    <RestrictTo> GRAPH ?g{ ?a ?b ?c } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;SEFAZ Cadastral Situation&quot; . </RestrictTo>
+  </SourceDataset>
+  <TargetDataset dataSource="SEFAZ_ENDPOINT" var="b" typeUri="http://xmlns.com/foaf/0.1/Organization">
+    <RestrictTo> GRAPH ?g{ ?a ?a ?c } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;RFB Cadastro&quot; . </RestrictTo>
+  </TargetDataset>
+  <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+    <Compare id="equality" required="false" weight="1" metric="equality" threshold="0.0" indexing="true">
+      <TransformInput id="substring" function="substring">
+        <Input id="sourcePath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/root_cnpj&gt;"/>
+        <Param name="beginIndex" xml:space="preserve"><![CDATA[0]]></Param>
+        <Param name="endIndex" xml:space="preserve"><![CDATA[8]]></Param>
+        <Param name="stringMustBeInRange" xml:space="preserve"><![CDATA[true]]></Param>
+      </TransformInput>
+      <Input id="targetPath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/root_cnpj&gt;"/>
+    </Compare>
+    <Filter/>
+  </LinkageRule>
+  <Outputs>
+    <Output id="links"></Output>
+  </Outputs>
+</Interlink>

@@ -1,2 +1,0 @@
-<http://xmlns.com/foaf/0.1/Person/22584013304-ILSON%20MATEUS%20RODRIGUES> <http://www.w3.org/2002/07/owl#sameAs> <http://xmlns.com/foaf/0.1/Person/22584013304-ILSON%20MATEUS%20RODRIGUES> .
-<http://xmlns.com/foaf/0.1/Person/62342789300-ILSON%20MATEUS%20RODRIGUES%20JUNIOR> <http://www.w3.org/2002/07/owl#sameAs> <http://xmlns.com/foaf/0.1/Person/62342789300-ILSON%20MATEUS%20RODRIGUES%20JUNIOR> .

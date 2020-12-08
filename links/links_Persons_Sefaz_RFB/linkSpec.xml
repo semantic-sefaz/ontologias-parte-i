@@ -1,0 +1,43 @@
+<Interlink id="links_Persons_Sefaz_RFB" linkLimit="1000000" matchingExecutionTimeout="3600">
+  <MetaData>
+    <Label></Label>
+    <Description></Description>
+    <Modified>2020-09-14T14:37:10.972403Z</Modified>
+  </MetaData>
+  <SourceDataset dataSource="SEFAZ_ENDPOINT" var="a" typeUri="http://xmlns.com/foaf/0.1/Person">
+    <RestrictTo> GRAPH ?g{ ?a ?b ?c } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;SEFAZ Cadastral Situation&quot; . </RestrictTo>
+  </SourceDataset>
+  <TargetDataset dataSource="SEFAZ_ENDPOINT" var="b" typeUri="http://xmlns.com/foaf/0.1/Person">
+    <RestrictTo> GRAPH ?g{ ?a &lt;http://www.sefaz.ma.gov.br/ontology/cpf&gt; ?c. FILTER(CONTAINS(STR(?c),&quot;*&quot;)) } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;RFB Cadastro&quot; . </RestrictTo>
+  </TargetDataset>
+  <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+    <Aggregate id="average1" required="false" weight="1" type="average">
+      <Compare id="equality1" required="false" weight="1" metric="equality" threshold="0.0" indexing="true">
+        <TransformInput id="lowerCase1" function="lowerCase">
+          <Input id="sourcePath2" path="&lt;http://xmlns.com/foaf/0.1/name&gt;"/>
+        </TransformInput>
+        <TransformInput id="lowerCase2" function="lowerCase">
+          <Input id="targetPath2" path="&lt;http://xmlns.com/foaf/0.1/name&gt;"/>
+        </TransformInput>
+      </Compare>
+      <Compare id="equality" required="true" weight="1" metric="equality" threshold="0.0" indexing="true">
+        <TransformInput id="substring1" function="substring">
+          <Input id="sourcePath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/cpf&gt;"/>
+          <Param name="beginIndex" xml:space="preserve"><![CDATA[3]]></Param>
+          <Param name="endIndex" xml:space="preserve"><![CDATA[9]]></Param>
+          <Param name="stringMustBeInRange" xml:space="preserve"><![CDATA[true]]></Param>
+        </TransformInput>
+        <TransformInput id="substring2" function="substring">
+          <Input id="targetPath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/cpf&gt;"/>
+          <Param name="beginIndex" xml:space="preserve"><![CDATA[3]]></Param>
+          <Param name="endIndex" xml:space="preserve"><![CDATA[9]]></Param>
+          <Param name="stringMustBeInRange" xml:space="preserve"><![CDATA[true]]></Param>
+        </TransformInput>
+      </Compare>
+    </Aggregate>
+    <Filter/>
+  </LinkageRule>
+  <Outputs>
+    <Output id="links"></Output>
+  </Outputs>
+</Interlink>

@@ -1,0 +1,41 @@
+<Interlink id="links_address_Sefaz_RFB" linkLimit="1000000" matchingExecutionTimeout="3600">
+  <MetaData>
+    <Label></Label>
+    <Description></Description>
+    <Modified>2020-09-11T18:55:57.007557Z</Modified>
+  </MetaData>
+  <SourceDataset dataSource="SEFAZ_ENDPOINT" var="a" typeUri="http://www.sefaz.ma.gov.br/ontology/Address">
+    <RestrictTo> GRAPH ?g{ ?a ?b ?c } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;SEFAZ Cadastral Situation&quot; . </RestrictTo>
+  </SourceDataset>
+  <TargetDataset dataSource="SEFAZ_ENDPOINT" var="b" typeUri="http://www.sefaz.ma.gov.br/ontology/Address">
+    <RestrictTo> GRAPH ?g{ ?a ?a ?c } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;RFB Cadastro&quot; . </RestrictTo>
+  </TargetDataset>
+  <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+    <Aggregate id="average1" required="true" weight="1" type="average">
+      <Compare id="equality1" required="true" weight="1" metric="equality" threshold="0.0" indexing="true">
+        <Input id="sourcePath1" path="&lt;http://www.w3.org/2006/vcard/ns#postal-code&gt;"/>
+        <Input id="targetPath1" path="&lt;http://www.w3.org/2006/vcard/ns#postal-code&gt;"/>
+      </Compare>
+      <Compare id="equality2" required="true" weight="1" metric="equality" threshold="0.0" indexing="true">
+        <TransformInput id="lowerCase1" function="lowerCase">
+          <TransformInput id="removeSpecialChars1" function="removeSpecialChars">
+            <TransformInput id="removeBlanks1" function="removeBlanks">
+              <Input id="sourcePath2" path="&lt;http://www.sefaz.ma.gov.br/ontology/address_number&gt;"/>
+            </TransformInput>
+          </TransformInput>
+        </TransformInput>
+        <TransformInput id="lowerCase2" function="lowerCase">
+          <TransformInput id="removeSpecialChars2" function="removeSpecialChars">
+            <TransformInput id="removeBlanks2" function="removeBlanks">
+              <Input id="targetPath2" path="&lt;http://www.sefaz.ma.gov.br/ontology/address_number&gt;"/>
+            </TransformInput>
+          </TransformInput>
+        </TransformInput>
+      </Compare>
+    </Aggregate>
+    <Filter/>
+  </LinkageRule>
+  <Outputs>
+    <Output id="links"></Output>
+  </Outputs>
+</Interlink>

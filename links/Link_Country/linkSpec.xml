@@ -1,0 +1,23 @@
+<Interlink id="Link_Country" linkLimit="1000000" matchingExecutionTimeout="3600">
+  <MetaData>
+    <Label>Link Country</Label>
+    <Description></Description>
+    <Modified>2020-08-07T19:11:43.123090Z</Modified>
+  </MetaData>
+  <SourceDataset dataSource="SEFAZ_ENDPOINT" var="a" typeUri="http://www.sefaz.ma.gov.br/ontology/Country">
+    <RestrictTo> GRAPH ?g{ ?a a &lt;http://www.sefaz.ma.gov.br/ontology/Country&gt; } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;RFB Cadastro&quot; . </RestrictTo>
+  </SourceDataset>
+  <TargetDataset dataSource="SEFAZ_ENDPOINT" var="b" typeUri="http://www.sefaz.ma.gov.br/ontology/Country">
+    <RestrictTo> GRAPH ?g{ ?a a &lt;http://www.sefaz.ma.gov.br/ontology/Country&gt; } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;IBGE Location&quot; . </RestrictTo>
+  </TargetDataset>
+  <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+    <Compare id="equality1" required="false" weight="1" metric="equality" threshold="0.0" indexing="true">
+      <Input id="sourcePath1" path="&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;"/>
+      <Input id="targetPath1" path="&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;"/>
+    </Compare>
+    <Filter/>
+  </LinkageRule>
+  <Outputs>
+    <Output id="links"></Output>
+  </Outputs>
+</Interlink>

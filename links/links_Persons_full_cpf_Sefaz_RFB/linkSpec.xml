@@ -1,0 +1,23 @@
+<Interlink id="links_Persons_full_cpf_Sefaz_RFB" linkLimit="1000000" matchingExecutionTimeout="3600">
+  <MetaData>
+    <Label></Label>
+    <Description></Description>
+    <Modified>2020-09-11T20:51:52.174076Z</Modified>
+  </MetaData>
+  <SourceDataset dataSource="SEFAZ_ENDPOINT" var="a" typeUri="http://xmlns.com/foaf/0.1/Person">
+    <RestrictTo> GRAPH ?g{ ?a ?b ?c } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;SEFAZ Cadastral Situation&quot; . </RestrictTo>
+  </SourceDataset>
+  <TargetDataset dataSource="SEFAZ_ENDPOINT" var="b" typeUri="http://xmlns.com/foaf/0.1/Person">
+    <RestrictTo> GRAPH ?g{ ?a &lt;http://www.sefaz.ma.gov.br/ontology/cpf&gt; ?c. FILTER(!CONTAINS(STR(?c),&quot;*&quot;)) } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;RFB Cadastro&quot; . </RestrictTo>
+  </TargetDataset>
+  <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+    <Compare id="equality" required="true" weight="1" metric="equality" threshold="0.0" indexing="true">
+      <Input id="sourcePath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/cpf&gt;"/>
+      <Input id="targetPath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/cpf&gt;"/>
+    </Compare>
+    <Filter/>
+  </LinkageRule>
+  <Outputs>
+    <Output id="links"></Output>
+  </Outputs>
+</Interlink>

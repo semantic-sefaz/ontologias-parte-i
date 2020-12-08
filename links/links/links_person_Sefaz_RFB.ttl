@@ -1,3 +1,0 @@
-<http://xmlns.com/foaf/0.1/Person/22584013304-ILSON%20MATEUS%20RODRIGUES/> <http://www.w3.org/2002/07/owl#sameAs> <http://www.sefaz.ma.gov.br/RFB/resource/Person/___840133__-ILSON_MATEUS_RODRIGUES> .
-<http://xmlns.com/foaf/0.1/Person/62342789300-ILSON%20MATEUS%20RODRIGUES%20JUNIOR/> <http://www.w3.org/2002/07/owl#sameAs> <http://www.sefaz.ma.gov.br/RFB/resource/Person/___427893__-ILSON_MATEUS_RODRIGUES_JUNIOR> .
-<http://xmlns.com/foaf/0.1/Person/62342762372-DENILSON%20PINHEIRO%20RODRIGUES/> <http://www.w3.org/2002/07/owl#sameAs> <http://www.sefaz.ma.gov.br/RFB/resource/Person/___427623__-DENILSON_PINHEIRO_RODRIGUES> .

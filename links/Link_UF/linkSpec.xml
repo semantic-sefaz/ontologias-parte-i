@@ -1,0 +1,23 @@
+<Interlink id="Link_UF" linkLimit="1000000" matchingExecutionTimeout="3600">
+  <MetaData>
+    <Label></Label>
+    <Description></Description>
+    <Modified>2020-08-07T19:15:22.068416Z</Modified>
+  </MetaData>
+  <SourceDataset dataSource="SEFAZ_ENDPOINT" var="a" typeUri="http://www.sefaz.ma.gov.br/ontology/Federative_Unit">
+    <RestrictTo> GRAPH ?g{ ?a a &lt;http://www.sefaz.ma.gov.br/ontology/Federative_Unit&gt; } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;RFB Cadastro&quot; . </RestrictTo>
+  </SourceDataset>
+  <TargetDataset dataSource="SEFAZ_ENDPOINT" var="b" typeUri="http://www.sefaz.ma.gov.br/ontology/Federative_Unit">
+    <RestrictTo> GRAPH ?g{ ?a a &lt;http://www.sefaz.ma.gov.br/ontology/Federative_Unit&gt; } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;IBGE Location&quot; . </RestrictTo>
+  </TargetDataset>
+  <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+    <Compare id="equality1" required="false" weight="1" metric="equality" threshold="0.0" indexing="true">
+      <Input id="sourcePath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/abbreviation_UF&gt;"/>
+      <Input id="targetPath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/abbreviation_UF&gt;"/>
+    </Compare>
+    <Filter/>
+  </LinkageRule>
+  <Outputs>
+    <Output id="links"></Output>
+  </Outputs>
+</Interlink>

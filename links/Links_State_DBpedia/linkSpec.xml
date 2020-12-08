@@ -1,0 +1,32 @@
+<Interlink id="Links_State_DBpedia" linkLimit="1000000" matchingExecutionTimeout="3600">
+  <MetaData>
+    <Label></Label>
+    <Description></Description>
+    <Modified>2020-08-10T19:38:33.680780Z</Modified>
+  </MetaData>
+  <SourceDataset dataSource="SEFAZ_ENDPOINT" var="a" typeUri="http://www.sefaz.ma.gov.br/ontology/Federative_Unit">
+    <RestrictTo> GRAPH ?g{ ?a a &lt;http://www.sefaz.ma.gov.br/ontology/Federative_Unit&gt; } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;IBGE Location&quot; . </RestrictTo>
+  </SourceDataset>
+  <TargetDataset dataSource="DBpedia" var="b" typeUri="http://dbpedia.org/class/yago/WikicatStatesOfBrazil">
+    <RestrictTo> </RestrictTo>
+  </TargetDataset>
+  <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+    <Compare id="equality2" required="false" weight="1" metric="equality" threshold="0.0" indexing="true">
+      <TransformInput id="lowerCase1" function="lowerCase">
+        <Input id="sourcePath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/abbreviation_UF&gt;"/>
+      </TransformInput>
+      <TransformInput id="lowerCase2" function="lowerCase">
+        <TransformInput id="substring1" function="substring">
+          <Input id="targetPath1" path="&lt;http://dbpedia.org/ontology/isoCodeRegion&gt;"/>
+          <Param name="beginIndex" xml:space="preserve"><![CDATA[3]]></Param>
+          <Param name="endIndex" xml:space="preserve"><![CDATA[0]]></Param>
+          <Param name="stringMustBeInRange" xml:space="preserve"><![CDATA[true]]></Param>
+        </TransformInput>
+      </TransformInput>
+    </Compare>
+    <Filter/>
+  </LinkageRule>
+  <Outputs>
+    <Output id="links"></Output>
+  </Outputs>
+</Interlink>

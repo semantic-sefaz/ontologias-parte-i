@@ -1,0 +1,23 @@
+<Interlink id="links_cnae_sefaz_ibge" linkLimit="10000000" matchingExecutionTimeout="3600">
+  <MetaData>
+    <Label></Label>
+    <Description></Description>
+    <Modified>2020-09-11T19:02:07.116067Z</Modified>
+  </MetaData>
+  <SourceDataset dataSource="SEFAZ_ENDPOINT" var="a" typeUri="http://www.sefaz.ma.gov.br/ontology/Economic_Activity">
+    <RestrictTo> GRAPH ?g{ ?a a &lt;http://www.sefaz.ma.gov.br/ontology/Economic_Activity&gt; } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;SEFAZ Cadastral Situation&quot; . </RestrictTo>
+  </SourceDataset>
+  <TargetDataset dataSource="SEFAZ_ENDPOINT" var="b" typeUri="http://www.sefaz.ma.gov.br/ontology/Economic_Activity">
+    <RestrictTo> GRAPH ?g{ ?a a &lt;http://www.sefaz.ma.gov.br/ontology/Economic_Activity&gt;; &lt;http://www.sefaz.ma.gov.br/ontology/has_version&gt; &lt;http://www.sefaz.ma.gov.br/IBGE/CNAE/resource/CNAE_Version/CNAE_2.3&gt;. } ?g &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;IBGE CNAE&quot; . </RestrictTo>
+  </TargetDataset>
+  <LinkageRule linkType="&lt;http://www.w3.org/2002/07/owl#sameAs&gt;">
+    <Compare id="equality1" required="false" weight="1" metric="equality" threshold="0.0" indexing="true">
+      <Input id="sourcePath1" path="&lt;http://www.sefaz.ma.gov.br/ontology/raw_cnae&gt;"/>
+      <Input id="targetPath" path="&lt;http://www.sefaz.ma.gov.br/ontology/raw_cnae&gt;"/>
+    </Compare>
+    <Filter/>
+  </LinkageRule>
+  <Outputs>
+    <Output id="links"></Output>
+  </Outputs>
+</Interlink>
