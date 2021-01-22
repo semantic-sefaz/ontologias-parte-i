@@ -16,26 +16,9 @@
 @prefix map:<http://sistemas.sefaz.ma.gov.br/maps/RFB/2020-04-01> .
 @prefix rfb_resource: <http://www.sefaz.ma.gov.br/RFB/resource/> .
 
-
-
-
-
-
 #Organization
 map:Organization a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(cnpj,0,9) as root_cnpj,cnpj , REPLACE(regexp_replace(nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri, REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,razao_social, CASE WHEN opc_simples = '' OR opc_simples = '0' THEN 'NAO_OPTANTE'
-					WHEN opc_simples = '5' OR opc_simples = '7' THEN 'OPTANTE'
-					WHEN opc_simples = '6' OR opc_simples = '8' THEN 'EXCLUIDO'
-				END as opc_simples, 
-				CASE opc_mei WHEN 'S' THEN 'true'
-					WHEN 'N' THEN 'false'
-					ELSE NULL
-				END as opc_mei, q.id_uri as id_qualif, n.id_uri as id_nat
-			FROM public.empresas INNER JOIN qualificacao_socio q ON qualif_resp::int = q."CÓDIGO" INNER JOIN natureza_juridica n ON cod_nat_juridica::int = n.id WHERE empresas.matriz_filial = '1' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Empresa" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
 		rr:class foaf:Organization,foaf:Agent;
@@ -87,11 +70,7 @@ map:Organization a rr:TripleMap;
 	].
 
 map:Organization_partner a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(cnpj_cpf_socio,0,9) as root_cnpj, REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri, nome_socio FROM public.socios WHERE tipo_socio = '1' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Empresa_Socio" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
 		rr:class foaf:Organization,foaf:Agent;
@@ -115,11 +94,7 @@ map:Organization_partner a rr:TripleMap;
 #foaf:Person
 
 map:Person a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT regexp_replace(cnpj_cpf_socio, '[^0-9]', '_', 'g') as uri_cpf,cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as uri_nome,nome_socio FROM public.socios WHERE tipo_socio = '2' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Pessoa" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Person/{uri_cpf}-{uri_nome}";
 		rr:class foaf:Person,foaf:Agent;
@@ -141,14 +116,7 @@ map:Person a rr:TripleMap;
 
 
 map:Person_represen a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT regexp_replace(cpf_repres, '[^0-9]', '_', 'g') as uri_cpf,cpf_repres,
-				REPLACE(regexp_replace(nome_repres, '[^a-zA-Z ]', '', 'g'),' ','_') as uri_nome, 
-				CASE nome_repres WHEN '' THEN NULL ELSE nome_repres END as nome_repres 
-			FROM public.socios WHERE cpf_repres != '' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Representante" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Person/{uri_cpf}-{uri_nome}";
 		rr:class foaf:Person,foaf:Agent;
@@ -172,11 +140,7 @@ map:Person_represen a rr:TripleMap;
 #rfb:is_foreign
 
 map:is_foreign a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT DISTINCT CONCAT('_','-',REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_')) as uri_nome, nome_socio FROM public.socios WHERE tipo_socio = '3' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Estrangeiro" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Agent/{uri_nome}";
 		rr:class foaf:Agent;
@@ -199,12 +163,7 @@ map:is_foreign a rr:TripleMap;
 
 #has_special_situation@Organization
 map:Organization_has_special_situation a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(cnpj,0,9) as root_cnpj , REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri, CASE data_sit_especial WHEN '00000000' THEN '0000_00_00' ELSE to_char(data_sit_especial::date,'YYYY_MM_DD') END as data_sit_especial
-			FROM public.empresas WHERE empresas.matriz_filial = '1' AND sit_especial != '' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Tem_Situacao_Especial" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
 	];
@@ -217,12 +176,7 @@ map:Organization_has_special_situation a rr:TripleMap;
 
 #has_subsidiary@Organization
 map:has_subsidiary a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(e.cnpj,0,9) as root_cnpj_e, f.cnpj as cnpj_f , REPLACE(regexp_replace(e.razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri_e, REPLACE(regexp_replace(f.nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri_f
-			FROM public.empresas e INNER JOIN public.empresas f ON SUBSTRING(e.cnpj,0,9) = SUBSTRING(f.cnpj,0,9) WHERE e.matriz_filial = '1' AND f.matriz_filial = '2'  
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Tem_Estabelecimento" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj_e}-{razao_uri_e}";
 	];
@@ -235,11 +189,7 @@ map:has_subsidiary a rr:TripleMap;
 
 #has_partnership@Organization
 map:has_partnership_fisic a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri,regexp_replace(cnpj_cpf_socio, '[^0-9]', '_', 'g') as cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO"  WHERE tipo_socio = '2' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Tem_Socio_Fisico" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
 	];
@@ -252,11 +202,7 @@ map:has_partnership_fisic a rr:TripleMap;
 
 
 map:has_partnership_juri a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri, SUBSTRING(cnpj_cpf_socio,0,9) as cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO"  WHERE tipo_socio = '1' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Tem_Socio_Juridico" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
 	];
@@ -268,11 +214,7 @@ map:has_partnership_juri a rr:TripleMap;
 	].
 
 map:has_partnership_extrang a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri, CONCAT('_','-',REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_')) as uri_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO"  WHERE tipo_socio = '3' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Tem_Socio_Estrangeiro" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Organization/{root_cnpj}-{razao_uri}";
 	];
@@ -283,16 +225,9 @@ map:has_partnership_extrang a rr:TripleMap;
 		];
 	].
 
-
-
-
 #Partnership
 map:Partnership_fisic a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT CASE data_entrada WHEN '00000000' THEN NULL ELSE data_entrada::date END as data_entrada,SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,CONCAT(q."DESCRIÇÃO",': ',nome_socio) as descricao,q.id_uri as id_uri,regexp_replace(cnpj_cpf_socio, '[^0-9]', '_', 'g') as cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO"  WHERE tipo_socio = '2' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Sociedade_Fisica" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Parternship/{id_uri}-{root_cnpj}-{cnpj_cpf_socio}-{nome_socio}";
 			rr:class rfb:Partnership
@@ -325,11 +260,7 @@ map:Partnership_fisic a rr:TripleMap;
 	].
 
 map:Partnership_juri a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT CASE data_entrada WHEN '00000000' THEN NULL ELSE data_entrada::date END as data_entrada,CONCAT(q."DESCRIÇÃO",': ',nome_socio) as descricao,r.id_uri as rep_quali,REPLACE(regexp_replace(nome_repres, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_rep,regexp_replace(cpf_repres, '[^0-9]', '_', 'g') as cpf_rep, SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri, SUBSTRING(cnpj_cpf_socio,0,9) as cnpj_cpf_socio,REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO" INNER JOIN qualificacao_socio r ON s.cod_qualif_repres::int = r."CÓDIGO"  WHERE tipo_socio = '1' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Sociedade_Juridica" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Parternship/{id_uri}-{root_cnpj}-{cnpj_cpf_socio}-{nome_socio}";
 			rr:class rfb:Partnership
@@ -373,14 +304,8 @@ map:Partnership_juri a rr:TripleMap;
 		];
 	].
 
-
-
 map:Partnership_estrang a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT DISTINCT CASE data_entrada WHEN '00000000' THEN NULL ELSE data_entrada::date END as data_entrada,CONCAT(q."DESCRIÇÃO",': ',nome_socio) as descricao,r.id_uri as rep_quali,REPLACE(regexp_replace(nome_repres, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_rep,regexp_replace(cpf_repres, '[^0-9]', '_', 'g') as cpf_rep, SUBSTRING(s.cnpj,0,9) as root_cnpj,REPLACE(regexp_replace(razao_social, '[^a-zA-Z ]', '', 'g'),' ','_') as razao_uri,q.id_uri as id_uri, CONCAT('_','-',REPLACE(regexp_replace(nome_socio, '[^a-zA-Z ]', '', 'g'),' ','_')) as uri_socio FROM public.socios s INNER JOIN empresas e ON e.cnpj = s.cnpj INNER JOIN qualificacao_socio q ON s.cod_qualificacao::int = q."CÓDIGO" INNER JOIN qualificacao_socio r ON s.cod_qualif_repres::int = r."CÓDIGO"  WHERE tipo_socio = '3' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Sociedade_Estrangeira" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Parternship/{id_uri}-{root_cnpj}-{uri_socio}";
 			rr:class rfb:Partnership
@@ -427,11 +352,7 @@ map:Partnership_estrang a rr:TripleMap;
 
 #Qualification
 map:Qualification a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT id_uri,"CÓDIGO","DESCRIÇÃO" FROM qualificacao_socio
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Qualificacao" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Qualification/{id_uri}";
 		rr:class rfb:Qualification;
@@ -452,27 +373,9 @@ map:Qualification a rr:TripleMap;
 	].
 
 
-
-
 #Option_SIMPLES
 map:Option_SIMPLES a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(cnpj,0,9) as root_cnpj, opc_simples as simples_type,CASE WHEN opc_simples = '' OR opc_simples = '0' THEN 'NAO_OPTANTE'
-					WHEN opc_simples = '5' OR opc_simples = '7' THEN 'OPTANTE'
-					WHEN opc_simples = '6' OR opc_simples = '8' THEN 'EXCLUIDO'
-				END as opc_simples,
-				CASE data_opc_simples WHEN '' THEN NULL
-					WHEN '00000000' THEN NULL
-					ELSE data_opc_simples::date
-				END as data_opc_simples,
-				CASE data_exc_simples WHEN '' THEN NULL
-					WHEN '00000000' THEN NULL
-					ELSE data_exc_simples::date
-				END as data_exc_simples
-			FROM public.empresas WHERE empresas.matriz_filial = '1' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Opcao_SIMPLES" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Option_SIMPLES/{opc_simples}-{root_cnpj}";
 		rr:class rfb:Option_SIMPLES;
@@ -501,19 +404,7 @@ map:Option_SIMPLES a rr:TripleMap;
 
 
 map:Option_SIMPLES_SubClass a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(cnpj,0,9) as root_cnpj,CASE WHEN opc_simples = '' OR opc_simples = '0' THEN 'NAO_OPTANTE'
-					WHEN opc_simples = '5' OR opc_simples = '7' THEN 'OPTANTE'
-					WHEN opc_simples = '6' OR opc_simples = '8' THEN 'EXCLUIDO'
-				END as opc_simples, 
-				CASE WHEN opc_simples = '' OR opc_simples = '0' THEN 'Not_Optant'
-					WHEN opc_simples = '5' OR opc_simples = '7' THEN 'Optant'
-					WHEN opc_simples = '6' OR opc_simples = '8' THEN 'Excluded'
-				END as class_simples
-			FROM public.empresas WHERE empresas.matriz_filial = '1' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Subclasse_Opcao_SIMPLES" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Option_SIMPLES/{opc_simples}-{root_cnpj}";
 	];
@@ -524,17 +415,9 @@ map:Option_SIMPLES_SubClass a rr:TripleMap;
 		];
 	].
 
-
-
-
 #Special_Situation
 map:Special_Situation a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT SUBSTRING(cnpj,0,9) as root_cnpj,CASE data_sit_especial WHEN '00000000' THEN NULL ELSE to_char(data_sit_especial::date,'YYYY_MM_DD') END as data_sit_especial, CASE data_sit_especial WHEN '00000000' THEN NULL ELSE data_sit_especial::date END as data_sit, sit_especial
-			FROM public.empresas WHERE empresas.matriz_filial = '1' AND sit_especial != '' 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Situacao_Especial" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Special_Situation/{root_cnpj}-{data_sit_especial}";
 		rr:class rfb:Special_Situation;
@@ -558,11 +441,7 @@ map:Special_Situation a rr:TripleMap;
 
 #Legal_Nature
 map:Legal_Nature a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT codigo,id_uri,natureza_jurica FROM natureza_juridica
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Natureza_Legal" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Legal_Nature/{id_uri}";
 		rr:class rfb:Legal_Nature;
@@ -588,11 +467,7 @@ map:Legal_Nature a rr:TripleMap;
 
 #Reason_Cadastral_Situation
 map:Reason_Cadastral_Situation a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT id_uri,"Descrição","Código" FROM motivos_situacao
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Razao_Situacao_Cadastral" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Reason_Cadastral_Situation/{id_uri}";
 		rr:class rfb:Reason_Cadastral_Situation;
@@ -612,52 +487,9 @@ map:Reason_Cadastral_Situation a rr:TripleMap;
 		];
 	].
 
-
-
-
-
-
-
-
-
-
-
 #Establishment
 map:Establishment a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT cnpj,REPLACE(regexp_replace(nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri,razao_social,
-				CASE nome_fantasia WHEN '' THEN NULL
-					ELSE nome_fantasia
-				END as nome_fantasia,
-				CASE porte WHEN '05' THEN 'DEMAIS'
-					WHEN '01' THEN 'MICRO_EMPRESA'
-					WHEN '00' THEN 'NAO_INFORMADO'
-					WHEN '03' THEN 'PEQUENO_PORTE'
-				END as porte,
-				CASE data_situacao WHEN '00000000' THEN NULL ELSE to_char(data_situacao::date,'YYYY_MM_DD') END as data_situacao,
-				CASE situacao WHEN '01' THEN 'NULA'
-					WHEN '02' THEN 'ATIVA'
-					WHEN '03' THEN 'SUSPENSA'
-					WHEN '04' THEN 'INAPTA'
-					WHEN '08' THEN 'BAIXADA'
-				END as situacao,
-				CASE email WHEN '' THEN NULL
-					ELSE email
-				END as email,
-				CASE capital_social WHEN 0 THEN NULL
-					ELSE capital_social
-				END as capital_social,
-				CASE matriz_filial WHEN '1' THEN 'MATRIZ'
-					ELSE 'FILIAL'
-				END as matriz_filial,
-				cnae_fiscal, CASE data_inicio_ativ WHEN '00000000' THEN NULL ELSE data_inicio_ativ::date END as data_inicio_ativ, MD5(CONCAT(nm_cidade_exterior,cod_pais,nome_pais,tipo_logradouro,logradouro,numero,complemento,bairro,cep,uf,cod_municipio,municipio)) as id_endereco,
-				CASE CONCAT(ddd_1,telefone_1) WHEN '' THEN NULL ELSE CONCAT('(',ddd_1,') ',telefone_1) END as phone_1,
-				CASE CONCAT(ddd_2,telefone_2) WHEN '' THEN NULL ELSE CONCAT('(',ddd_2,') ',telefone_2) END as phone_2,
-				CASE CONCAT(ddd_fax,num_fax) WHEN '' THEN NULL ELSE CONCAT('(',ddd_fax,') ',num_fax) END as fax
-			FROM public.empresas 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Estabelecimento" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Establishment/{cnpj}-{nome_uri}";
 		rr:class rfb:Establishment;
@@ -759,11 +591,7 @@ map:Establishment a rr:TripleMap;
 
 #has_economic_activity
 map:has_secondary_activity a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT cs.cnae as cnae,e.cnpj as cnpj, REPLACE(regexp_replace(e.nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri FROM public.empresas e INNER JOIN cnaes_secundarios cs ON e.cnpj = cs.cnpj 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Tem_Atividade_Economica_Secundaria" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Establishment/{cnpj}-{nome_uri}";
 	];
@@ -784,21 +612,7 @@ map:has_secondary_activity a rr:TripleMap;
 #Cadastral_Situation
 
 map:Cadastral_Situation a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT cnpj,REPLACE(regexp_replace(nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri,
-				CASE data_situacao WHEN '00000000' THEN NULL ELSE to_char(data_situacao::date,'YYYY_MM_DD') END as data_situacao,
-				CASE data_situacao WHEN '00000000' THEN NULL ELSE data_situacao::date END as val_data_situacao,
-				CASE situacao WHEN '01' THEN 'NULA'
-					WHEN '02' THEN 'ATIVA'
-					WHEN '03' THEN 'SUSPENSA'
-					WHEN '04' THEN 'INAPTA'
-					WHEN '08' THEN 'BAIXADA'
-				END as situacao,
-				id_uri
-			FROM public.empresas LEFT OUTER JOIN motivos_situacao ON motivo_situacao::int = "Código" 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Situacao_Cadastral" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Cadastral_Situation/{situacao}-{cnpj}-{data_situacao}";
 		rr:class rfb:Cadastral_Situation;
@@ -818,25 +632,7 @@ map:Cadastral_Situation a rr:TripleMap;
 	].
 
 map:Cadastral_Situation_Class a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT cnpj,REPLACE(regexp_replace(nome_fantasia, '[^a-zA-Z ]', '', 'g'),' ','_') as nome_uri,
-				CASE data_situacao WHEN '00000000' THEN NULL ELSE to_char(data_situacao::date,'YYYY_MM_DD') END as data_situacao,
-				CASE situacao WHEN '01' THEN 'NULA'
-					WHEN '02' THEN 'ATIVA'
-					WHEN '03' THEN 'SUSPENSA'
-					WHEN '04' THEN 'INAPTA'
-					WHEN '08' THEN 'BAIXADA'
-				END as situacao,
-				CASE situacao WHEN '01' THEN 'NULL'
-					WHEN '02' THEN 'ACTIVE'
-					WHEN '03' THEN 'SUSPENDED'
-					WHEN '04' THEN 'UNFIT'
-					WHEN '08' THEN 'DOWN'
-				END as type_situacao
-			FROM public.empresas 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Classe_Situacao_Cadastral" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Cadastral_Situation/{situacao}-{cnpj}-{data_situacao}";
 	];
@@ -847,57 +643,9 @@ map:Cadastral_Situation_Class a rr:TripleMap;
 		];
 	].
 
-
-
-
-
 #Address
-map:Address a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT CASE WHEN cep = '' THEN NULL ELSE cep END as cep,
-				CASE WHEN logradouro = '' THEN NULL ELSE REPLACE(regexp_replace(CONCAT(tipo_logradouro,' ',logradouro), '[^a-zA-Z0-9 ]', '', 'g'),' ','_') END as logradouro ,
-				CASE WHEN bairro = '' THEN NULL ELSE REPLACE(regexp_replace(bairro, '[^a-zA-Z ]', '', 'g'),' ','_') END as bairro ,
-				CASE WHEN nm_cidade_exterior = '' THEN NULL ELSE REPLACE(regexp_replace(nm_cidade_exterior, '[^a-zA-Z ]', '', 'g'),' ','_') END as nm_cidade_exterior ,
-				CASE WHEN municipio = '' THEN NULL ELSE REPLACE(regexp_replace(municipio, '[^a-zA-Z ]', '', 'g'),' ','_') END as municipio,
-				CASE WHEN nome_pais = '' THEN 'BRASIL' ELSE REPLACE(regexp_replace(nome_pais, '[^a-zA-Z ]', '', 'g'),' ','_') END as nome_pais,
-				CASE uf 
-						WHEN 'AC' THEN 'ACRE'
-						WHEN 'AL' THEN 'ALAGOAS'
-						WHEN 'AP' THEN 'AMAPA'
-						WHEN 'AM' THEN 'AMAZONAS'
-						WHEN 'BA' THEN 'BAHIA'
-						WHEN 'CE' THEN 'CEARA'
-						WHEN 'ES' THEN 'ESPIRITO_SANTO'
-						WHEN 'GO' THEN 'GOIAS'
-						WHEN 'MA' THEN 'MARANHAO'
-						WHEN 'MT' THEN 'MATO_GROSSO'
-						WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
-						WHEN 'MG' THEN 'MINAS_GERAIS'
-						WHEN 'PA' THEN 'PARA'
-						WHEN 'PB' THEN 'PARAIBA'
-						WHEN 'PR' THEN 'PARANA'
-						WHEN 'PE' THEN 'PERNAMBUCO'
-						WHEN 'PI' THEN 'PIAUI'
-						WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
-						WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
-						WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
-						WHEN 'RO' THEN 'RONDONIA'
-						WHEN 'RR' THEN 'RORAIMA'
-						WHEN 'SC' THEN 'SANTA_CATARINA'
-						WHEN 'SP' THEN 'SAO_PAULO'
-						WHEN 'SE' THEN 'SERGIPE'
-						WHEN 'TO' THEN 'TOCANTINS'
-						WHEN 'DF' THEN 'DISTRITO_FEDERAL'
-						ELSE NULL
-				END as uf,
-				CASE WHEN numero = '' THEN NULL ELSE numero END as numero,
-				CASE WHEN complemento = '' THEN NULL ELSE complemento END as complemento,
-				MD5(CONCAT(nm_cidade_exterior,cod_pais,nome_pais,tipo_logradouro,logradouro,numero,complemento,bairro,cep,uf,cod_municipio,municipio)) as id_endereco,
-				CONCAT(tipo_logradouro,' ',logradouro,', nº ',numero,', ',complemento,' \n ',bairro,' \n ',municipio,' - ',uf,' \n ',cep) as endereco
-			FROM public.empresas 
-		""";
-	];
+map:Address a rr:TripleMap;	
+	rr:logicalTable [ rr:tableName "Endereco" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Address/{id_endereco}";
 		rr:class rfb:Address;
@@ -970,13 +718,7 @@ map:Address a rr:TripleMap;
 
 #Country
 map:Country a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT DISTINCT CASE WHEN nome_pais = '' THEN 'BRASIL' ELSE REPLACE(regexp_replace(nome_pais, '[^a-zA-Z ]', '', 'g'),' ','_') END as nome_pais,
-							CASE WHEN nome_pais = '' THEN 'BRASIL' ELSE nome_pais END as pais, cod_pais
-			FROM public.empresas 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Pais" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Country/{nome_pais}";
 		rr:class rfb:Country;
@@ -999,42 +741,8 @@ map:Country a rr:TripleMap;
 
 
 #Federative Unit
-map:Federative_Unit a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT CASE uf 
-						WHEN 'AC' THEN 'ACRE'
-						WHEN 'AL' THEN 'ALAGOAS'
-						WHEN 'AP' THEN 'AMAPA'
-						WHEN 'AM' THEN 'AMAZONAS'
-						WHEN 'BA' THEN 'BAHIA'
-						WHEN 'CE' THEN 'CEARA'
-						WHEN 'ES' THEN 'ESPIRITO_SANTO'
-						WHEN 'GO' THEN 'GOIAS'
-						WHEN 'MA' THEN 'MARANHAO'
-						WHEN 'MT' THEN 'MATO_GROSSO'
-						WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
-						WHEN 'MG' THEN 'MINAS_GERAIS'
-						WHEN 'PA' THEN 'PARA'
-						WHEN 'PB' THEN 'PARAIBA'
-						WHEN 'PR' THEN 'PARANA'
-						WHEN 'PE' THEN 'PERNAMBUCO'
-						WHEN 'PI' THEN 'PIAUI'
-						WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
-						WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
-						WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
-						WHEN 'RO' THEN 'RONDONIA'
-						WHEN 'RR' THEN 'RORAIMA'
-						WHEN 'SC' THEN 'SANTA_CATARINA'
-						WHEN 'SP' THEN 'SAO_PAULO'
-						WHEN 'SE' THEN 'SERGIPE'
-						WHEN 'TO' THEN 'TOCANTINS'
-						WHEN 'DF' THEN 'DISTRITO_FEDERAL'
-						ELSE NULL
-				END as estado, uf
-			FROM public.empresas 
-		""";
-	];
+map:Federative_Unit a rr:TripleMap;	
+	rr:logicalTable [ rr:tableName "Unidade_Federativa" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Federative_Unit/{estado}";
 		rr:class rfb:Federative_Unit;
@@ -1056,42 +764,7 @@ map:Federative_Unit a rr:TripleMap;
 
 #City
 map:City a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT CASE WHEN municipio = '' THEN NULL ELSE REPLACE(regexp_replace(municipio, '[^a-zA-Z ]', '', 'g'),' ','_') END as municipio,
-				CASE uf 
-						WHEN 'AC' THEN 'ACRE'
-						WHEN 'AL' THEN 'ALAGOAS'
-						WHEN 'AP' THEN 'AMAPA'
-						WHEN 'AM' THEN 'AMAZONAS'
-						WHEN 'BA' THEN 'BAHIA'
-						WHEN 'CE' THEN 'CEARA'
-						WHEN 'ES' THEN 'ESPIRITO_SANTO'
-						WHEN 'GO' THEN 'GOIAS'
-						WHEN 'MA' THEN 'MARANHAO'
-						WHEN 'MT' THEN 'MATO_GROSSO'
-						WHEN 'MS' THEN 'MATO_GROSSO DO SUL'
-						WHEN 'MG' THEN 'MINAS_GERAIS'
-						WHEN 'PA' THEN 'PARA'
-						WHEN 'PB' THEN 'PARAIBA'
-						WHEN 'PR' THEN 'PARANA'
-						WHEN 'PE' THEN 'PERNAMBUCO'
-						WHEN 'PI' THEN 'PIAUI'
-						WHEN 'RJ' THEN 'RIO_DE_JANEIRO'
-						WHEN 'RN' THEN 'RIO_GRANDE_DO_NORTE'
-						WHEN 'RS' THEN 'RIO_GRANDE_DO_SUL'
-						WHEN 'RO' THEN 'RONDONIA'
-						WHEN 'RR' THEN 'RORAIMA'
-						WHEN 'SC' THEN 'SANTA_CATARINA'
-						WHEN 'SP' THEN 'SAO_PAULO'
-						WHEN 'SE' THEN 'SERGIPE'
-						WHEN 'TO' THEN 'TOCANTINS'
-						WHEN 'DF' THEN 'DISTRITO_FEDERAL'
-						ELSE NULL
-				END as uf, cod_municipio, municipio as municipio_raw
-			FROM public.empresas 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Cidade" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/City/{municipio}-{uf}";
 		rr:class rfb:City;
@@ -1111,18 +784,8 @@ map:City a rr:TripleMap;
 		];
 	].
 
-
-
-
-map:Ext_City a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT CASE WHEN nm_cidade_exterior = '' THEN NULL ELSE REPLACE(regexp_replace(nm_cidade_exterior, '[^a-zA-Z ]', '', 'g'),' ','_') END as nm_cidade_exterior ,
-				CASE WHEN nome_pais = '' THEN 'BRASIL' ELSE REPLACE(regexp_replace(nome_pais, '[^a-zA-Z ]', '', 'g'),' ','_') END as nome_pais,
-				nm_cidade_exterior as cidade
-			FROM public.empresas WHERE nm_cidade_exterior != '' 
-		""";
-	];
+map:Ext_City a rr:TripleMap;	
+	rr:logicalTable [ rr:tableName "Cidade_Estrangeira" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/City/Ext/{nm_cidade_exterior}-{nome_pais}";
 		rr:class rfb:City;
@@ -1136,20 +799,9 @@ map:Ext_City a rr:TripleMap;
 	].
 
 
-
-
-
-
 #District
 map:District a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT CASE WHEN bairro = '' THEN NULL ELSE REPLACE(regexp_replace(bairro, '[^a-zA-Z ]', '', 'g'),' ','_') END as bairro ,
-				CASE WHEN municipio = '' THEN NULL ELSE REPLACE(regexp_replace(municipio, '[^a-zA-Z ]', '', 'g'),' ','_') END as municipio,
-				bairro as nome_bairro
-			FROM public.empresas 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Bairro" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/District/{bairro}-{municipio}";
 		rr:class rfb:District;
@@ -1165,14 +817,7 @@ map:District a rr:TripleMap;
 
 #Locality
 map:Locality a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT 			CASE WHEN logradouro = '' THEN NULL ELSE REPLACE(regexp_replace(CONCAT(tipo_logradouro,' ',logradouro), '[^a-zA-Z0-9 ]', '', 'g'),' ','_') END as logradouro ,
-				CASE WHEN bairro = '' THEN NULL ELSE REPLACE(regexp_replace(bairro, '[^a-zA-Z ]', '', 'g'),' ','_') END as bairro ,
-				CASE WHEN logradouro = '' THEN NULL ELSE logradouro END as logradouro_raw,tipo_logradouro
-			FROM public.empresas 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Localidade" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Locality/{logradouro}-{bairro}";
 		rr:class rfb:Locality;
@@ -1192,18 +837,9 @@ map:Locality a rr:TripleMap;
 		];
 	].
 
-
-
-
-
 #Economic_Activity
-
 map:Economic_Activity a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT DISTINCT cnae_fiscal FROM empresas 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Atividade_Economica" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Economic_Activity/{cnae_fiscal}";
 		rr:class rfb:Economic_Activity;
@@ -1216,13 +852,8 @@ map:Economic_Activity a rr:TripleMap;
 		];
 	].
 
-
 map:Economic_Activity_sec a rr:TripleMap;
-	rr:logicalTable [
-		rr:sqlQuery """
-			SELECT DISTINCT cnae FROM cnaes_secundarios 
-		""";
-	];
+	rr:logicalTable [ rr:tableName "Atividade_Economica_Secundaria" ];
 	rr:subjectMap [
 		rr:template "http://www.sefaz.ma.gov.br/RFB/resource/Economic_Activity/{cnae}";
 		rr:class rfb:Economic_Activity;

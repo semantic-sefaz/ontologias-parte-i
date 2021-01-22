@@ -1663,7 +1663,7 @@ EMPRESARIO"""@pt ;
 
 ###  http://www.sefaz.ma.gov.br/Size_Company
 :Size_Company rdf:type owl:Class ;
-              rdfs:comment "Tamanho da Empresa, adotando-se a classificação de MEI para Empresas com capital inferior ou igual a R$81.000; ME para Empresas com capital entre R$360.00 e R$4.800.000; EMP para Empresas com capital superior a R$4.800.000 e até R$300.000.000; e EGP para Empresas com capital superior a R$300.000.000."@pt ;
+              rdfs:comment "Tamanho da Empresa, adotando-se a classificação de MEI para Empresas com capital inferior ou igual a R$81.000; ME para Empresas com capital entre R$81.001 e R$360.000; EPP para empresas com capital superior a R$360.000 e inferior ou igual 4.800.000; EMP para Empresas com capital superior a R$4.800.000 indo até R$300.000.000; e EGP para Empresas com capital superior a R$300.000.000."@pt ;
               rdfs:label "Porte da Empresa"@pt ,
                          "Size Company"@en .
 
